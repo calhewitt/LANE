@@ -1,6 +1,5 @@
-# libLUCID
-A library containing general utilities necessary for the LUCID project using 
-C++11, Doxygen and GoogleTest.
+# TestPlugin
+A generic plugin skeleton.
 
 
 ## Prerequisites and installation
@@ -8,7 +7,6 @@ To build this code you will need
 
 * [CMake][] build system
 * A C++11 compiler
-* (Optionally) [Doxygen][]
 
 
 ## Building
@@ -23,20 +21,11 @@ make all
 ```
 
 
-## Tests
-Tests can be built and run using:
-
-```shell
-make test
-```
-
-
 ## Project organization
 The project is organized in a couple of subdirectories.
 
-* The [include](include) directory contains the public header files for the 
-library.
-* The [test](test) directory contains the source files for the unit tests.
+* The [src](src) directory contains the source files of the main part
+of the project.
 
 
 ## License
@@ -44,13 +33,5 @@ Issued under the Simplified (2-clause) BSD license.
 Please see [LICENSE.md](LICENSE.md).
 
 
-##External Libraries:
-
-[GoogleTest][] - Under New BSD license
-
-
 <!-- Links -->
-[Doxygen]: http://www.doxygen.org
 [CMake]: http://www.cmake.org
-[GoogleTest]: https://code.google.com/p/googletest/
-
