@@ -74,6 +74,64 @@ public:
         return !(*this == other);
     }
 
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Sets the channel ID of the frame
+    /// \param other Object to be compared against
+    void setChannelID(const std::uint32_t channel) {
+        channel_ = channel;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Sets the time stamp of the frame
+    /// \param timeStamp The time stamp to set the frame's time stamp to
+    void setTimeStamp(const std::uint32_t timeStamp) {
+        timeStamp_ = timeStamp;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Sets a pixel
+    /// \param x The x value
+    /// \param y The y value
+    /// \param c The count value
+    void setPixel(
+        const std::uint32_t x,
+        const std::uint32_t y,
+        const std::uint32_t c
+    ) {
+        pixels_[x * 256 + y] = Pixel(x, y, c);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Gets the channel ID of the frame
+    /// \return The channel ID associated with this frame
+    std::uint32_t getChannelID() const {
+        return channel_;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Gets the time stamp of the frame
+    /// \return The time stamp associated with the frame
+    std::uint32_t getTimeStamp() const {
+        return timeStamp_;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Gets a pixel
+    /// \param x The x value of the pixel
+    /// \param y The y value of the pixel
+    /// \return The pixel object containing the pixel data
+    Pixel getPixel(
+        const std::uint32_t x,
+        const std::uint32_t y
+    ) const {
+        return pixels_.at(x * 256 + y);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////
+    /// \brief Overloaded ostream operator for the Frame class
+    /// \param os The output stream
+    /// \param frame The Frame to stream out
+    /// \return A reference to the ostream in use
     friend std::ostream& operator<<(std::ostream& os, const Frame& frame);
 
 private:
@@ -82,12 +140,6 @@ private:
     std::map<std::uint32_t, Pixel> pixels_;
 };
 
-
-///////////////////////////////////////////////////////////////////////////////
-/// \brief Overloaded ostream operator for the Frame class
-/// \param os The output stream
-/// \param frame The Frame to stream out
-/// \return A reference to the ostream in use
 std::ostream& operator<<(std::ostream& os, const Frame& frame) {
     os << "Channel: " << frame.channel_ << "\n"
         << "Time Stamp: " << frame.timeStamp_ << "\n"

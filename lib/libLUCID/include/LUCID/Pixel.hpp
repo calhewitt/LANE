@@ -82,18 +82,60 @@ public:
         return !(*this == other);
     }
 
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Sets the x value of the pixel
+    /// \param x The x value of the pixel
+    void setX(const std::uint32_t x) {
+        x_ = x;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Sets the y value of the pixel
+    /// \param y The y value of the pixel
+    void setY(const std::uint32_t y) {
+        y_ = y;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Sets the c value of the pixel
+    /// \param c The c value of the pixel
+    void setC(const std::uint32_t c) {
+        c_ = c;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Gets the x value of the pixel
+    /// \return The x value of the pixel
+    std::uint32_t getX() const {
+        return x_;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Gets the y value of the pixel
+    /// \return The y value of the pixel
+    std::uint32_t getY() const {
+        return y_;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Gets the c value of the pixel
+    /// \return The c value of the pixel
+    std::uint32_t getC() const {
+        return c_;
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Overloaded ostream operator for the Frame class
+    /// \param os The output stream
+    /// \param pixel The Pixel to stream out
+    /// \return A reference to the ostream in use
     friend std::ostream& operator<<(std::ostream& os, const Pixel& pixel);
 
 private:
     std::uint32_t x_, y_, c_;
 };
 
-
-///////////////////////////////////////////////////////////////////////////////
-/// \brief Overloaded ostream operator for the Frame class
-/// \param os The output stream
-/// \param pixel The Pixel to stream out
-/// \return A reference to the ostream in use
 std::ostream& operator<<(std::ostream& os, const Pixel& pixel) {
     os << "X: " << pixel.x_ << "\n"
         << "Y: " << pixel.y_ << "\n"

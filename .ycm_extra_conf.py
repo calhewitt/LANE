@@ -16,13 +16,12 @@ flags = [
 '-Wextra',
 '-pedantic',
 # headers
-'-isystem', '/usr/lib/gcc/x86_64-unknown-linux-gnu/4.8.1/include',
-'-isystem', '/usr/lib/gcc/x86_64-unknown-linux-gnu/4.8.1/include-fixed'
-'-isystem', '/usr/include/c++/4.8.1',
+'-isystem', '/usr/lib/gcc/x86_64-linux-gnu/4.8/include',
+'-isystem', '/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed'
+'-isystem', '/usr/include/c++/4.8',
 '-I', '/usr/include',
 '-I', '/usr/local/include',
 # Project headers
-'-I', '.',
 '-I', './lib/libLUCID/include',
 '-I', './lib/external/gtest/include',
 ]

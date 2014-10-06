@@ -58,7 +58,7 @@ Python plugins can be added by copying the
 the CMakeLists.txt to reference your plugin scripts.
 
 Remember to add the details of your plugin to
-[plugins/plugins.conf](plugins/plugins.conf).
+[plugins/plugins.conf](plugins/plugins.ini).
 
 
 ## License

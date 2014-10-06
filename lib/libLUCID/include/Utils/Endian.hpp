@@ -5,7 +5,7 @@
 ///
 /// \brief An endian handling class
 ///
-/// \copyright Copyright (c) 2014, Hector Stalker. All rights reserved. 
+/// \copyright Copyright (c) 2014, Hector Stalker. All rights reserved.
 /// This file is under the Simplified (2-clause) BSD license
 /// For conditions of distribution and use, see:
 /// http://opensource.org/licenses/BSD-2-Clause
@@ -26,7 +26,7 @@ inline bool isBigEndian() noexcept {
         std::uint16_t i;
         char c[2];
     } data = { 0x0102 };
-    
+
     return data.c[0] == 0x01;
 }
 
@@ -38,7 +38,7 @@ inline bool isLittleEndian() noexcept {
         std::uint16_t i;
         char c[2];
     } data = { 0x0102 };
-    
+
     return data.c[0] == 0x02;
 }
 
@@ -63,7 +63,7 @@ inline std::uint32_t swapEndian(const std::uint32_t value) noexcept {
 /// \param value The value to be endian swapped
 /// \return The swapped value
 inline std::uint64_t swapEndian(const std::uint64_t value) noexcept {
-	std::uint64_t swapped;
+	std::uint64_t swapped = value;
     swapped = (swapped & 0x00000000FFFFFFFF) << 32 | (swapped & 0xFFFFFFFF00000000) >> 32;
     swapped = (swapped & 0x0000FFFF0000FFFF) << 16 | (swapped & 0xFFFF0000FFFF0000) >> 16;
     swapped = (swapped & 0x00FF00FF00FF00FF) << 8  | (swapped & 0xFF00FF00FF00FF00) >> 8;
@@ -91,7 +91,7 @@ inline std::int32_t swapEndian(const std::int32_t value) noexcept {
 /// \param value The value to be endian swapped
 /// \return The swapped value
 inline std::int64_t swapEndian(const std::int64_t value) noexcept {
-	std::uint64_t swapped;
+	std::uint64_t swapped = value;
     swapped = (swapped & 0x00000000FFFFFFFF) << 32 | (swapped & 0xFFFFFFFF00000000) >> 32;
     swapped = (swapped & 0x0000FFFF0000FFFF) << 16 | (swapped & 0xFFFF0000FFFF0000) >> 16;
     swapped = (swapped & 0x00FF00FF00FF00FF) << 8  | (swapped & 0xFF00FF00FF00FF00) >> 8;

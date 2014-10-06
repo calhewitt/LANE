@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 /// \file FileReadTest.cpp
 /// \author Hector Stalker <hstalker0@gmail.com>
 /// \version 0.1
@@ -18,7 +18,7 @@
 
 TEST(FileReadTest, File) {
     const unsigned int numberOfFiles = 2;
-    const std::string dataPath = "../testdata/";
+    const std::string dataPath = "../../../testdata/";
     const std::string dataFiles[numberOfFiles] = {
         "TestFile1",
         "TestFile2"
