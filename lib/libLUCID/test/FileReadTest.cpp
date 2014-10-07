@@ -24,16 +24,11 @@ TEST(FileReadTest, File) {
         "TestFile2"
     };
 
-    try {
+    ASSERT_NO_THROW({
         for (unsigned int i = 0; i < numberOfFiles; ++i) {
             auto file = lucid::LUCIDFile(dataPath + dataFiles[i]);
-            std::cout << file << "\n";
+            //std::cout << file << "\n";
         }
-
-    } catch (const std::runtime_error& e) {
-        std::cout << "A fatal exception occurred: " << e.what() << "\n";
-    } catch (...) {
-        std::cout << "An unknown exception occurred!\n";
-    }
+    });
 }
 

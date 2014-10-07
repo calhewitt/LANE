@@ -1,14 +1,15 @@
 #!/usr/bin/env python
-# TODO: Write the actual script so it works with C++ plugins
 # Plugins will go into ./build/bin when compiled as of the moment
-# Add support for a new type of configuration file
-# Consider automating compilation of plugins when necessary
-# Consider adding python plugin support
+# Consider adding proper plugin dependency handling
 
 """The plugin manager for LUCID data analysis"""
 import os, sys, ConfigParser, operator, time, datetime
 
-pluginPath = "plugins"
+pluginPath = os.path.abspath('plugins')
+inputPath = '"' + os.path.abspath('data') + '"'
+outputPath = '"' + os.path.abspath('results') + '"'
+pluginParameters = inputPath + " " + outputPath
+
 
 class Plugin:
     """A plugin object, containing plugin metadata"""
@@ -57,9 +58,9 @@ if __name__ == "__main__":
                 "%Y-%m-%d %H:%M:%S")
         print "Running: " + p.name
         if p.language.lower() == "cpp" or p.language.lower() == "c":
-            os.system("build/bin/" + p.name)
+            os.system("build/bin/" + p.name + " " + pluginParameters)
         elif p.language.lower() == "py" or p.language.lower() == "python":
-            os.system("python build/bin/" + p.name + ".py")
+            os.system("python build/bin/" + p.name + ".py" + " " + pluginParameters)
         else:
             print "Invalid language option set for '" + p.name + "' in config"
             sys.exit(1)

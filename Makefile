@@ -1,7 +1,7 @@
 # Simple Makefile to ease day-to-day development
 
-BUILD_TYPE=Debug
-#BUILD_TYPE=Release
+#BUILD_TYPE=Debug
+BUILD_TYPE=Release
 
 .PHONY: clean all doc test gen-cmake clean-cmake
 

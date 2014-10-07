@@ -60,6 +60,7 @@ public:
         if (this != &other) {
             return (
                 timeStamp_ == other.timeStamp_ &&
+                timeStampSub_ == other.timeStampSub_&&
                 pixels_ == other.pixels_
             );
         }
@@ -86,6 +87,14 @@ public:
     /// \param timeStamp The time stamp to set the frame's time stamp to
     void setTimeStamp(const std::uint32_t timeStamp) {
         timeStamp_ = timeStamp;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Sets the time stamp sub second time of the frame
+    /// \param timeStampSub The sub second time stamp to set the frame's sub
+    /// time stamp to
+    void setTimeStampSub(const std::uint32_t timeStampSub) {
+        timeStampSub_ = timeStampSub;
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -116,6 +125,13 @@ public:
     }
 
     ///////////////////////////////////////////////////////////////////////////
+    /// \brief Gets the time stamp sub second time of the frame
+    /// \return The time stamp sub second time associated with the frame
+    std::uint32_t getTimeStampSub() const {
+        return timeStampSub_;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
     /// \brief Gets a pixel
     /// \param x The x value of the pixel
     /// \param y The y value of the pixel
@@ -137,15 +153,17 @@ public:
 private:
     std::uint32_t channel_;
     std::uint32_t timeStamp_;
+    std::uint32_t timeStampSub_;
     std::map<std::uint32_t, Pixel> pixels_;
 };
 
 std::ostream& operator<<(std::ostream& os, const Frame& frame) {
     os << "Channel: " << frame.channel_ << "\n"
         << "Time Stamp: " << frame.timeStamp_ << "\n"
-        << "Number of pixels: " << frame.pixels_.size() << "\n";
+        << "Sub-second Time Stamp: " << frame.timeStampSub_ << "\n"
+        << "Number of hit pixels: " << frame.pixels_.size() << "\n";
     for (const auto& p : frame.pixels_) {
-        os << p.second;
+        os << p.second << "\n";
     }
     return os;
 }

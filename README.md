@@ -4,7 +4,6 @@ A software ecosystem for analysis of the data from the LUCID
 
 This software package contains:
 
-* (TODO) An automated FTP-enabled data grabbing tool.
 * A plugin management/automation python script.
 * A selection of analysis plugins.
 * A library of C++ code for use in analysis of LUCID data.
@@ -27,7 +26,7 @@ You can now build and run the project.
 The following commands may differ for different compilers/build-systems:
 
 ```shell
-make all
+python LANEman.py
 ```
 
 
@@ -46,6 +45,7 @@ libraries used in this software.
 use in the plugins.
 * The [doc](doc) directory contains the configuration files for documentation 
 generation.
+* The [testdata](testdata) directory contains some uncompressed test data.
 
 
 ## How to add plugins (TODO)
@@ -54,7 +54,7 @@ name in the CMakeLists.txt, update the README.md, add the code files to
 the src/CMakeLists.txt, update LICENSE.md, and finally write the code in src.
 
 Python plugins can be added by copying the 
-(plugins/testPluginPython)[plugins/testPluginPython] directory and modifying 
+[plugins/testPluginPython](plugins/testPluginPython) directory and modifying 
 the CMakeLists.txt to reference your plugin scripts.
 
 Remember to add the details of your plugin to
@@ -74,13 +74,10 @@ Please see [LICENSE.md](LICENSE.md).
 
 ## TODO
 
-* Write the plugin manager script.
-* Integrate Cal's FTP grabbing code.
-* Standardise the plugin interface for C++ plugins, and write some plugins.
-* Finish adding LUCID data file reading support to libLUCID.
+* Write some plugins.
 * Possibly change to using mmap/buffering for IO in libLUCID to enable reading 
 in files of size greater than ~16GB.
-* Add support for RLE and XYV compression to libLUCID.
+* Add support for XYV compression to libLUCID.
 * Add support for some more of the settings in the data files' header to 
 libLUCID.
 * Add some convenience functions to libLUCID.

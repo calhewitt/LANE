@@ -17,7 +17,6 @@
 
 // TODO: Figure out matrix tables
 // TODO: Figure out shutter mode 16 bits bitfield
-// TODO: Implement frame reading
 // TODO: Provide public accessors
 // TODO: Clean up reading in code?
 
@@ -33,8 +32,7 @@
 // 4 bytes - file ID
 
 // -Frame Format:-
-// Start of Frame
-// Header
+// Start of Frame demarker
 // Control data word w/ timestamp
 // and multiple of the following until the next time stamp:
 // Control data word w/ channel marker, 5 bit bitfield indexing from 0 at 2nd
@@ -47,9 +45,9 @@
 // 0  - Number of zeroes
 // 10 - Payload data
 // 11 - Control data - Start of frame data characters etc.
-//
 
 #include <iostream>
+#include <stdio.h>
 #include <ostream>
 #include <vector>
 #include <array>
@@ -206,8 +204,8 @@ public:
                 "'" + fileName + "' is not a LUCID data file"
             );
         }
-        // Check that the file size is big enough for the header and frames demarker
-        if (fileSize < 18) {
+        // Check that the file size is big enough for the header
+        if (fileSize < 16) {
             throw std::runtime_error(
                 "'" + fileName + "' is not a valid LUCID data file"
             );
@@ -264,34 +262,36 @@ public:
 
         // Read in frames
         bool isFindingFrames = true;
-        // Check for frames demarkers
-        if (!(data[16] == 0xDC && data[17] == 0xDF)) {
-            throw std::runtime_error("Malformed data file - Expected frame header");
-        }
-
-        std::uint64_t index = 18;
+        std::uint64_t index = 16;
         while (isFindingFrames) {
-            if (index + 5 > fileSize) {
+            // Check integrity for demarker and timestamp
+            if (index + 7 > fileSize) {
                 throw std::runtime_error("Malformed data file - Unexpected end of file in frame");
             }
 
+            // Check for frames demarkers
+            if (!(data[index] == 0xDC && data[index + 1] == 0xDF)) {
+                throw std::runtime_error("Malformed data file - Expected frame header");
+            }
+
             // Get timestamp - 4 byte UNIX time, 1 byte sub second time
-            std::uint32_t frameTime = *(reinterpret_cast<std::uint32_t*>(&data[index]));
+            std::uint32_t frameTime = *(reinterpret_cast<std::uint32_t*>(&data[index + 2]));
             if (isLittleEndian) {
                 frameTime = utils::swapEndian(frameTime);
             }
-            //std::uint32_t frameTimeSub = *(reinterpret_cast<std::uint8_t*>(&data[index + 4]));
+            std::uint32_t frameTimeSub = *(reinterpret_cast<std::uint8_t*>(&data[index + 6]));
+
+            // Move forwards 7 bytes
+            index += 7;
 
             bool isFindingChannelData = true;
-            index += 5;
             while (isFindingChannelData) {
-                if (index + 1 > fileSize) {
+                if (index + 1 > fileSize - 1) {
                     throw std::runtime_error("Malformed data file - Unexpected end of file in channel header");
                 }
 
                 // Get channel
                 std::uint32_t channel = 6;
-                std::cout << "index = " << index << std::endl;
                 if ((data[index] >> 6) == 0x03) {
                     if ((data[index] & 0x01) == 1) {
                         channel = 1;
@@ -308,31 +308,55 @@ public:
                     throw std::runtime_error("Malformed data file - Expected channel control word");
                 }
 
+                // Move past the channel marker
                 index += 1;
 
                 // Xs and Ys starting from the bottom left of the pixel grid
                 std::uint8_t x = 0;
                 std::uint8_t y = 0;
+                // Create the frame
                 auto currentFrame = Frame();
                 currentFrame.setTimeStamp(frameTime);
+                currentFrame.setTimeStampSub(frameTimeSub);
                 currentFrame.setChannelID(channel);
-                // Get data until next control word (channel marker or timestamp then marker)
-                // Control word (11-)
-                // NOTE: THIS BIT MIGHT WELL BE BROKEN
-                // TESTING SHOWS THAT THE CODE ISN'T RECOGNISING THE CONTROL WORDS PROPERLY
-                while (!((data[index] >> 6) == 0x03)) {
-                    if ((data[index] >> 6) == 0x01) {
+                // Get data until next control word (channel marker or frame demarking)
+                bool isFindingData = true;
+                while (isFindingData) {
+                    // Check if this is the last word, and stop reading after this iteration if so
+                    if (index + 2 == fileSize - 1) {
+                        isFindingData = false;
+                        isFindingChannelData = false;
+                        isFindingFrames = false;
+                    // Check the next word for a new frame demarker
+                    } else if (data[index + 2] == 0xDC && data[index + 3] == 0xDF) {
+                        isFindingData = false;
+                        isFindingChannelData = false;
+                    // Check for a channel marker
+                    } else if ((data[index + 2] >> 6) == 0x03) {
+                        isFindingData = false;
+                    }
+
+                    // Get actual data
+                    if ((data[index] >> 6) == 0x02) {
                         // Payload data (10-)
                         std::uint16_t payload = *(reinterpret_cast<std::uint16_t*>(&data[index]));
                         if (isLittleEndian) {
                             payload = utils::swapEndian(payload);
                         }
-                        payload = payload & !(static_cast<std::uint16_t>(32768));
-                        currentFrame.setPixel(x, y, payload);
+                        payload = payload & static_cast<std::uint16_t>(32767);
+                        if (x == 255) {
+                            x = 0;
+                            ++y;
+                        } else {
+                            ++x;
+                        }
+
+                        if (payload > 0) {
+                            currentFrame.setPixel(x, y, payload);
+                        }
                     } else if ((data[index] >> 7) == 0x00) {
                         // Number of zeroes (0-)
                         std::uint16_t numberOfZeroes = *(reinterpret_cast<std::uint16_t*>(&data[index]));
-                        // Should we store zeroes? or just leave them?
                         for (std::uint16_t i = 0; i < numberOfZeroes; ++i) {
                             if (x == 255) {
                                 x = 0;
@@ -345,24 +369,20 @@ public:
 
                     index += 2;
                     if (index > fileSize) {
-                        break;
+                        isFindingData = false;
                     }
                 }
 
                 // Add frame to channel map
                 channels_[channel].push_back(currentFrame);
 
-                if (index < fileSize) {
-                    isFindingChannelData = true;
-                } else {
+                if (index > fileSize) {
                     isFindingChannelData = false;
                 }
             }
 
             // Rinse and repeat
-            if (index < fileSize) {
-                isFindingFrames = true;
-            } else {
+            if (index > fileSize) {
                 isFindingFrames = false;
             }
         }
@@ -372,7 +392,7 @@ public:
     /// \brief Gets the frames associated with a channel
     /// \param channelID The ID of the channel to grab from
     /// \return A vector of frames
-    std::vector<Frame> getFrames(const std::uint32_t channelID) const {
+    const std::vector<Frame>& getFrames(const std::uint32_t channelID) const {
         assert(channelID > 0 && channelID <= 5);
         return channels_.at(channelID);
     }
@@ -412,7 +432,6 @@ std::ostream& operator<<(std::ostream& os, const LUCIDFile& file) {
         << "Uses Linear LUT?: "
             << (file.isLinearLUT ? "True" : "False") << "\n";
     for (const auto& channel : file.channels_) {
-        os << "Channel: " << channel.first << "\n";
         for (const auto& frame : channel.second) {
             os << frame;
         }
