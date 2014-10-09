@@ -1,6 +1,6 @@
 # Automatically adds any sub-directory to the build list
 
-include(../lib/libLUCID/include)
+include_directories(../lib/libLUCID/include)
 
 macro(subdirlist result curdir)
   file(GLOB children RELATIVE ${curdir} ${curdir}/*)

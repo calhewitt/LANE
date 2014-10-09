@@ -20,7 +20,7 @@
 #include <array>
 #include <string>
 #include <cstdint>
-#include "Frame.hpp"
+#include "../Frame.hpp"
 #include "../Utils/Endian.hpp"
 #include "../Utils/Misc.hpp"
 
@@ -63,22 +63,22 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Copy constructor
     /// \param other Object to be copy constructed from
-    LUCIDFile(const LUCIDFile& other) noexcept;
+    LUCIDFile(const LUCIDFile& other);
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Move constructor
     /// \param other Object to be move constructed from
-    LUCIDFile(LUCIDFile&& other) noexcept;
+    LUCIDFile(LUCIDFile&& other);
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Copy assignment operator
     /// \param other Object to be copy assigned from
-    LUCIDFile& operator=(const LUCIDFile& other) noexcept;
+    LUCIDFile& operator=(const LUCIDFile& other);
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Move assignment operator
     /// \param other Object to be move assigned from
-    LUCIDFile& operator=(LUCIDFile&& other) noexcept;
+    LUCIDFile& operator=(LUCIDFile&& other);
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Equality operator

@@ -13,7 +13,7 @@
 
 #include <ostream>
 #include <cstdint>
-#include "LUCID/Pixel.hpp"
+#include "Pixel.hpp"
 
 namespace lucid {
 

@@ -50,7 +50,7 @@
 #include <cstdint>
 #include <cassert>
 #include "LUCID/LUCIDFile.hpp"
-#include "LUCID/Frame.hpp"
+#include "Frame.hpp"
 #include "Utils/Endian.hpp"
 #include "Utils/Misc.hpp"
 
@@ -97,13 +97,13 @@ channels_() {
 
 LUCIDFile::~LUCIDFile() noexcept = default;
 
-LUCIDFile::LUCIDFile(const LUCIDFile& other) noexcept = default;
+LUCIDFile::LUCIDFile(const LUCIDFile& other) = default;
 
-LUCIDFile::LUCIDFile(LUCIDFile&& other) noexcept = default;
+LUCIDFile::LUCIDFile(LUCIDFile&& other) = default;
 
-LUCIDFile& LUCIDFile::operator=(const LUCIDFile& other) noexcept = default;
+LUCIDFile& LUCIDFile::operator=(const LUCIDFile& other) = default;
 
-LUCIDFile& LUCIDFile::operator=(LUCIDFile&& other) noexcept = default;
+LUCIDFile& LUCIDFile::operator=(LUCIDFile&& other) = default;
 
 bool LUCIDFile::operator==(const LUCIDFile& other) const noexcept {
     if (this != &other) {

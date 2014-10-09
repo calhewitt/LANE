@@ -13,7 +13,7 @@
 
 #include <ostream>
 #include <cstdint>
-#include "LUCID/Frame.hpp"
+#include "Frame.hpp"
 
 namespace lucid {
 
@@ -25,13 +25,13 @@ Frame::Frame() noexcept
 
 Frame::~Frame() noexcept = default;
 
-Frame::Frame(const Frame& other) noexcept = default;
+Frame::Frame(const Frame& other) = default;
 
-Frame::Frame(Frame&& other) noexcept = default;
+Frame::Frame(Frame&& other) = default;
 
-Frame& Frame::operator=(const Frame& other) noexcept = default;
+Frame& Frame::operator=(const Frame& other) = default;
 
-Frame& Frame::operator=(Frame&& other) noexcept = default;
+Frame& Frame::operator=(Frame&& other) = default;
 
 bool Frame::operator==(const Frame& other) const noexcept {
     if (this != &other) {

@@ -23,7 +23,7 @@ const std::string dataFiles[numberOfFiles] = {
     "TestFile2"
 };
 
-TEST(ReadTest, LUCIDFile) {
+TEST(LUCIDFile, ReadTest) {
     ASSERT_NO_THROW({
         for (unsigned int i = 0; i < numberOfFiles; ++i) {
             auto file = lucid::LUCIDFile(dataPath + dataFiles[i]);
@@ -31,7 +31,7 @@ TEST(ReadTest, LUCIDFile) {
     });
 }
 
-TEST(EqualityTest, LUCIDFile) {
+TEST(LUCIDFile, EqualityTest) {
     auto file1 = lucid::LUCIDFile(dataPath + dataFiles[0]);
     auto file2 = lucid::LUCIDFile(dataPath + dataFiles[1]);
     

@@ -135,3 +135,4 @@ macro(add_test_executable TEST_NAME TEST_SOURCES)
 endmacro()
 
 add_test_executable(LUCIDFileTest test/LUCIDFileTest.cpp)
+add_test_executable(FilesystemTest test/FilesystemTest.cpp)

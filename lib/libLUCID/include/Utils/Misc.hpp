@@ -38,7 +38,7 @@ std::unique_ptr<T> make_unique_helper(std::true_type, Args&&... args) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-/// \brief A unique_ptr version of make_shared. Heap allocates andm constructs
+/// \brief A unique_ptr version of make_shared. Heap allocates and constructs
 /// the object
 /// \param args The arguments for the constructor of the object being pointed
 /// to

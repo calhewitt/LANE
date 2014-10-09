@@ -36,22 +36,22 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Copy constructor
     /// \param other Object to be copy constructed from
-    Frame(const Frame& other) noexcept;
+    Frame(const Frame& other);
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Move constructor
     /// \param other Object to be move constructed from
-    Frame(Frame&& other) noexcept;
+    Frame(Frame&& other);
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Copy assignment operator
     /// \param other Object to be copy assigned from
-    Frame& operator=(const Frame& other) noexcept;
+    Frame& operator=(const Frame& other);
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Move assignment operator
     /// \param other Object to be move assigned from
-    Frame& operator=(Frame&& other) noexcept;
+    Frame& operator=(Frame&& other);
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Equality operator
