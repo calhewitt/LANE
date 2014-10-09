@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////////////
-/// \file FileReadTest.cpp
+/// \file LUCIDFileTest.cpp
 /// \author Hector Stalker <hstalker0@gmail.com>
 /// \version 0.1
 ///
@@ -16,19 +16,25 @@
 #include <string>
 #include "LUCID/LUCIDFile.hpp"
 
-TEST(FileReadTest, File) {
-    const unsigned int numberOfFiles = 2;
-    const std::string dataPath = "../../../testdata/";
-    const std::string dataFiles[numberOfFiles] = {
-        "TestFile1",
-        "TestFile2"
-    };
+const unsigned int numberOfFiles = 2;
+const std::string dataPath = "../../../testdata/";
+const std::string dataFiles[numberOfFiles] = {
+    "TestFile1",
+    "TestFile2"
+};
 
+TEST(ReadTest, LUCIDFile) {
     ASSERT_NO_THROW({
         for (unsigned int i = 0; i < numberOfFiles; ++i) {
             auto file = lucid::LUCIDFile(dataPath + dataFiles[i]);
-            //std::cout << file << "\n";
         }
     });
 }
 
+TEST(EqualityTest, LUCIDFile) {
+    auto file1 = lucid::LUCIDFile(dataPath + dataFiles[0]);
+    auto file2 = lucid::LUCIDFile(dataPath + dataFiles[1]);
+    
+    EXPECT_EQ(file1 == file2, false);
+    EXPECT_EQ(file1 != file2, true);
+}

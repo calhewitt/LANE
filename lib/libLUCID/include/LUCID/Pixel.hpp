@@ -32,118 +32,83 @@ public:
         const std::uint32_t x = 0,
         const std::uint32_t y = 0,
         const std::uint32_t c = 0
-    )
-    : x_(x), y_(y), c_(c) {
-    }
+    ) noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Destructor
-    ~Pixel() = default;
+    ~Pixel() noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Copy constructor
     /// \param other Object to be copy constructed from
-    Pixel(const Pixel& other) = default;
+    Pixel(const Pixel& other) noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Move constructor
     /// \param other Object to be move constructed from
-    Pixel(Pixel&& other) = default;
+    Pixel(Pixel&& other) noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Copy assignment operator
     /// \param other Object to be copy assigned from
-    Pixel& operator=(const Pixel& other) = default;
+    Pixel& operator=(const Pixel& other) noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Move assignment operator
     /// \param other Object to be move assigned from
-    Pixel& operator=(Pixel&& other) = default;
+    Pixel& operator=(Pixel&& other) noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Equality operator
     /// \param other Object to be compared against
-    bool operator==(const Pixel& other) const {
-        if (this != &other) {
-            return (
-                x_ == other.x_ &&
-                y_ == other.y_ &&
-                c_ == other.c_
-            );
-        }
-
-        return true;
-    }
+    bool operator==(const Pixel& other) const noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Inequality operator
     /// \param other Object to be compared against
-    bool operator!=(const Pixel& other) const {
-        return !(*this == other);
-    }
+    bool operator!=(const Pixel& other) const noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Sets the x value of the pixel
     /// \param x The x value of the pixel
-    void setX(const std::uint32_t x) {
-        x_ = x;
-    }
+    void setX(const std::uint32_t x) noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Sets the y value of the pixel
     /// \param y The y value of the pixel
-    void setY(const std::uint32_t y) {
-        y_ = y;
-    }
+    void setY(const std::uint32_t y) noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Sets the c value of the pixel
     /// \param c The c value of the pixel
-    void setC(const std::uint32_t c) {
-        c_ = c;
-    }
+    void setC(const std::uint32_t c) noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Gets the x value of the pixel
     /// \return The x value of the pixel
-    std::uint32_t getX() const {
-        return x_;
-    }
+    std::uint32_t getX() const noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Gets the y value of the pixel
     /// \return The y value of the pixel
-    std::uint32_t getY() const {
-        return y_;
-    }
+    std::uint32_t getY() const noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Gets the c value of the pixel
     /// \return The c value of the pixel
-    std::uint32_t getC() const {
-        return c_;
-    }
-
+    std::uint32_t getC() const noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Overloaded ostream operator for the Frame class
     /// \param os The output stream
     /// \param pixel The Pixel to stream out
     /// \return A reference to the ostream in use
-    friend std::ostream& operator<<(std::ostream& os, const Pixel& pixel);
+    friend std::ostream& operator<<(std::ostream& os, const Pixel& pixel) noexcept;
 
 private:
     std::uint32_t x_, y_, c_;
 };
 
-std::ostream& operator<<(std::ostream& os, const Pixel& pixel) {
-    os << "X: " << pixel.x_ << "\n"
-        << "Y: " << pixel.y_ << "\n"
-        << "C: " << pixel.c_ << "\n";
-    return os;
-}
-
 } // lucid
 
 #endif // LUCID_FRAME_HPP
-

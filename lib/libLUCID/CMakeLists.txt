@@ -106,6 +106,15 @@ add_definitions(
 
 
 #=============================================================================
+# Build library
+#=============================================================================
+include_directories(
+    include
+)
+add_subdirectory(src)
+
+
+#=============================================================================
 # Setup unit tests
 #=============================================================================
 enable_testing()
@@ -117,7 +126,7 @@ macro(add_test_executable TEST_NAME TEST_SOURCES)
     add_executable(${TEST_NAME}
         ${TEST_SOURCES}
     )
-    target_link_libraries(${TEST_NAME} gtest gtest_main)
+    target_link_libraries(${TEST_NAME} gtest gtest_main libLUCID)
     add_test(
         NAME ${TEST_NAME}
         COMMAND ${TEST_NAME}
@@ -125,4 +134,4 @@ macro(add_test_executable TEST_NAME TEST_SOURCES)
     set_target_properties(${TEST_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/test)
 endmacro()
 
-add_test_executable(FileReadTest test/FileReadTest.cpp)
+add_test_executable(LUCIDFileTest test/LUCIDFileTest.cpp)

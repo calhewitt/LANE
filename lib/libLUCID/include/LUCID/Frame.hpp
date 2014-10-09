@@ -27,75 +27,57 @@ class Frame final {
 public:
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Constructor
-    Frame() = default;
+    Frame() noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Destructor
-    ~Frame() = default;
+    ~Frame() noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Copy constructor
     /// \param other Object to be copy constructed from
-    Frame(const Frame& other) = default;
+    Frame(const Frame& other) noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Move constructor
     /// \param other Object to be move constructed from
-    Frame(Frame&& other) = default;
+    Frame(Frame&& other) noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Copy assignment operator
     /// \param other Object to be copy assigned from
-    Frame& operator=(const Frame& other) = default;
+    Frame& operator=(const Frame& other) noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Move assignment operator
     /// \param other Object to be move assigned from
-    Frame& operator=(Frame&& other) = default;
+    Frame& operator=(Frame&& other) noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Equality operator
     /// \param other Object to be compared against
-    bool operator==(const Frame& other) const {
-        if (this != &other) {
-            return (
-                timeStamp_ == other.timeStamp_ &&
-                timeStampSub_ == other.timeStampSub_&&
-                pixels_ == other.pixels_
-            );
-        }
-
-        return true;
-    }
+    bool operator==(const Frame& other) const noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Inequality operator
     /// \param other Object to be compared against
-    bool operator!=(const Frame& other) const {
-        return !(*this == other);
-    }
+    bool operator!=(const Frame& other) const noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Sets the channel ID of the frame
     /// \param other Object to be compared against
-    void setChannelID(const std::uint32_t channel) {
-        channel_ = channel;
-    }
+    void setChannelID(const std::uint32_t channel) noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Sets the time stamp of the frame
     /// \param timeStamp The time stamp to set the frame's time stamp to
-    void setTimeStamp(const std::uint32_t timeStamp) {
-        timeStamp_ = timeStamp;
-    }
+    void setTimeStamp(const std::uint32_t timeStamp) noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Sets the time stamp sub second time of the frame
     /// \param timeStampSub The sub second time stamp to set the frame's sub
     /// time stamp to
-    void setTimeStampSub(const std::uint32_t timeStampSub) {
-        timeStampSub_ = timeStampSub;
-    }
+    void setTimeStampSub(const std::uint32_t timeStampSub) noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Sets a pixel
@@ -106,30 +88,22 @@ public:
         const std::uint32_t x,
         const std::uint32_t y,
         const std::uint32_t c
-    ) {
-        pixels_[x * 256 + y] = Pixel(x, y, c);
-    }
+    ) noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Gets the channel ID of the frame
     /// \return The channel ID associated with this frame
-    std::uint32_t getChannelID() const {
-        return channel_;
-    }
+    std::uint32_t getChannelID() const noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Gets the time stamp of the frame
     /// \return The time stamp associated with the frame
-    std::uint32_t getTimeStamp() const {
-        return timeStamp_;
-    }
+    std::uint32_t getTimeStamp() const noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Gets the time stamp sub second time of the frame
     /// \return The time stamp sub second time associated with the frame
-    std::uint32_t getTimeStampSub() const {
-        return timeStampSub_;
-    }
+    std::uint32_t getTimeStampSub() const noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Gets a pixel
@@ -139,16 +113,19 @@ public:
     Pixel getPixel(
         const std::uint32_t x,
         const std::uint32_t y
-    ) const {
-        return pixels_.at(x * 256 + y);
-    }
+    ) const noexcept;
+    
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Gets a constant reference to all the pixels
+    /// \return A constant reference to all the pixels
+    const std::map<std::uint32_t, Pixel>& getPixels() const noexcept;
 
     ///////////////////////////////////////////////////////////////////////////////
     /// \brief Overloaded ostream operator for the Frame class
     /// \param os The output stream
     /// \param frame The Frame to stream out
     /// \return A reference to the ostream in use
-    friend std::ostream& operator<<(std::ostream& os, const Frame& frame);
+    friend std::ostream& operator<<(std::ostream& os, const Frame& frame) noexcept;
 
 private:
     std::uint32_t channel_;
@@ -157,18 +134,6 @@ private:
     std::map<std::uint32_t, Pixel> pixels_;
 };
 
-std::ostream& operator<<(std::ostream& os, const Frame& frame) {
-    os << "Channel: " << frame.channel_ << "\n"
-        << "Time Stamp: " << frame.timeStamp_ << "\n"
-        << "Sub-second Time Stamp: " << frame.timeStampSub_ << "\n"
-        << "Number of hit pixels: " << frame.pixels_.size() << "\n";
-    for (const auto& p : frame.pixels_) {
-        os << p.second << "\n";
-    }
-    return os;
-}
-
 } // lucid
 
 #endif // LUCID_FRAME_HPP
-

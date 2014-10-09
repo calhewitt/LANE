@@ -1,13 +1,15 @@
-project(TestPlugin)
+project(testPlugin)
 
 set(TESTPLUGIN_SOURCES
     Main.cpp
     Sample.hpp
 )
 
-add_executable(TestPlugin ${TESTPLUGIN_SOURCES})
+add_executable(testPlugin ${TESTPLUGIN_SOURCES})
 
-set_target_properties(TestPlugin
+target_link_libraries(testPlugin libLUCID)
+
+set_target_properties(testPlugin
     PROPERTIES RUNTIME_OUTPUT_DIRECTORY
     ${CMAKE_BINARY_DIR}/bin
 )
