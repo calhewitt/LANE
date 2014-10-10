@@ -12,8 +12,8 @@
 /// or read the 'LICENSE.md' file distributed with this code
 
 #include "gtest/gtest.h"
-#include <iostream>
 #include <string>
+#include <vector>
 #include "LUCID/LUCIDFile.hpp"
 
 const unsigned int numberOfFiles = 2;
@@ -23,18 +23,46 @@ const std::string dataFiles[numberOfFiles] = {
     "TestFile2"
 };
 
-TEST(LUCIDFile, ReadTest) {
-    ASSERT_NO_THROW({
-        for (unsigned int i = 0; i < numberOfFiles; ++i) {
-            auto file = lucid::LUCIDFile(dataPath + dataFiles[i]);
-        }
-    });
+class LUCIDFileTest : public ::testing::Test {
+protected:
+    static void SetUpTestCase() {
+        ASSERT_NO_THROW({
+            for (unsigned int i = 0; i < numberOfFiles; ++i) {
+                files_.push_back(lucid::LUCIDFile());
+                files_[i].read(dataPath + dataFiles[i]);
+            }
+        }) << "The LUCIDFile reading test threw an exception.";
+    }
+
+    virtual void SetUp() {
+    }
+    virtual void TearDown() {
+    }
+
+    static std::vector<lucid::LUCIDFile> files_;
+};
+
+std::vector<lucid::LUCIDFile> LUCIDFileTest::files_ = std::vector<lucid::LUCIDFile>();
+
+TEST_F(LUCIDFileTest, EqualityTest) {
+    EXPECT_EQ(files_[0] == files_[1], false)
+        << "Equality test failed.";
+    EXPECT_EQ(files_[0] != files_[1], true)
+        << "Inequality test failed.";
 }
 
-TEST(LUCIDFile, EqualityTest) {
-    auto file1 = lucid::LUCIDFile(dataPath + dataFiles[0]);
-    auto file2 = lucid::LUCIDFile(dataPath + dataFiles[1]);
-    
-    EXPECT_EQ(file1 == file2, false);
-    EXPECT_EQ(file1 != file2, true);
+TEST_F(LUCIDFileTest, CopyTest) {
+    auto copiedFile(files_[0]);
+    EXPECT_EQ(copiedFile == files_[0], true)
+        << "Equality test for copy constructor failed.";
+    EXPECT_EQ(copiedFile != files_[0], false)
+        << "Inequality test for copy constructor failed.";
+}
+
+TEST_F(LUCIDFileTest, AssignTest) {
+    auto assignedFile = files_[0];
+    EXPECT_EQ(assignedFile == files_[0], true)
+        << "Equality test for assignment operator failed.";
+    EXPECT_EQ(assignedFile != files_[0], false)
+        << "Inequality test for assignment operator failed.";
 }

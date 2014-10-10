@@ -13,29 +13,56 @@
 
 #include "gtest/gtest.h"
 #include <string>
+#include <map>
 #include <iostream>
 #include "Utils/Filesystem.hpp"
 
 const unsigned int numberOfFiles = 2;
 const std::string dataPath = "../../../testdata/";
 
-TEST(Filesystem, GetFilesTest) {
+TEST(FilesystemTest, GetFilesTest) {
     auto fileList = utils::getDirectoryContents(dataPath);
     EXPECT_EQ(numberOfFiles, fileList.size());
 }
 
-TEST(Filesystem, GetExtensionTest) {
-    auto fileList = utils::getDirectoryContents(dataPath);
-    auto extension1 = utils::getExtension(fileList[0]);
-    auto extension2 = utils::getExtension(fileList[1]);
-    EXPECT_STREQ("", extension1.c_str());
-    EXPECT_STREQ("", extension2.c_str());
+TEST(FilesystemTest, GetExtensionTest) {
+    std::map<std::string, std::string> tests = {
+        { "test", "" },
+        { "test.txt", "txt" },
+        { "./test.txt", "txt" },
+        { "../test.txt", "txt" },
+        { "/dir/test.txt", "txt" },
+        { "/dir/test", "" },
+        { "/dir/test.txt", "txt" },
+        { "./dir/test.txt", "txt" },
+        { "/dir/../test.txt", "txt" }
+    };
+    
+    for (const auto& test : tests) {
+        std::string result = utils::getExtension(test.first);
+        EXPECT_STREQ(test.second.c_str(), result.c_str())
+            << "Input: '" << test.first << "' gives result: '"
+            << result << "'. Expected: '" << test.second << "'";
+    }
 }
 
-TEST(Filesystem, GetFileNameTest) {
-    auto fileList = utils::getDirectoryContents(dataPath);
-    auto fileName1 = utils::getFileName(fileList[0]);
-    auto fileName2 = utils::getFileName(fileList[1]);
-    EXPECT_STREQ("TestFile1", fileName1.c_str());
-    EXPECT_STREQ("TestFile2", fileName2.c_str());
+TEST(FilesystemTest, GetFileNameTest) {
+    std::map<std::string, std::string> tests = {
+        { "test", "test" },
+        { "test.txt", "test.txt" },
+        { "./test.txt", "test.txt" },
+        { "../test.txt", "test.txt" },
+        { "/dir/test.txt", "test.txt" },
+        { "/dir/test", "test" },
+        { "/dir/test.txt", "test.txt" },
+        { "./dir/test.txt", "test.txt" },
+        { "/dir/../test.txt", "test.txt" }
+    };
+    
+    for (const auto& test : tests) {
+        std::string result = utils::getFileName(test.first);
+        EXPECT_STREQ(test.second.c_str(), result.c_str())
+            << "Input: '" << test.first << "' gives result: '"
+            << result << "'. Expected: '" << test.second << "'";
+    }
 }

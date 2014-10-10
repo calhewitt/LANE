@@ -1,4 +1,4 @@
-# TestPlugin
+# testPlugin
 A generic plugin skeleton.
 
 
@@ -9,21 +9,7 @@ To build this code you will need
 * A C++11 compiler
 
 
-## Building
-First, you will need an installation of [CMake][].
-Once this is done, you can `cd` to the root of
-the project.
-You can now build and run the project.
-The following commands may differ for different compilers/build-systems:
-
-```shell
-make all
-```
-
-
 ## Project organization
-The project is organized in a couple of subdirectories.
-
 * The [src](src) directory contains the source files of the main part
 of the project.
 

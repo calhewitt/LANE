@@ -117,13 +117,18 @@ add_subdirectory(src)
 #=============================================================================
 # Setup unit tests
 #=============================================================================
+include(CTest)
 enable_testing()
 include_directories(
     ../external/gtest/include
     include
 )
+
+add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND})
+add_custom_target(tests)
+
 macro(add_test_executable TEST_NAME TEST_SOURCES)
-    add_executable(${TEST_NAME}
+    add_executable(${TEST_NAME} EXCLUDE_FROM_ALL
         ${TEST_SOURCES}
     )
     target_link_libraries(${TEST_NAME} gtest gtest_main libLUCID)
@@ -132,7 +137,13 @@ macro(add_test_executable TEST_NAME TEST_SOURCES)
         COMMAND ${TEST_NAME}
     )
     set_target_properties(${TEST_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/test)
+    
+    add_dependencies(check ${TEST_NAME})
+    add_dependencies(tests ${TEST_NAME})
 endmacro()
 
 add_test_executable(LUCIDFileTest test/LUCIDFileTest.cpp)
 add_test_executable(FilesystemTest test/FilesystemTest.cpp)
+add_test_executable(FrameTest test/FrameTest.cpp)
+add_test_executable(PixelTest test/PixelTest.cpp)
+add_test_executable(EndianTest test/EndianTest.cpp)

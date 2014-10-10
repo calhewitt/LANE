@@ -3,7 +3,7 @@
 #BUILD_TYPE=Debug
 BUILD_TYPE=Release
 
-.PHONY: clean all doc test gen-cmake clean-cmake
+.PHONY: clean all doc check tests gen-cmake clean-cmake
 
 ${VERBOSE}.SILENT:
 
@@ -19,8 +19,11 @@ all: gen-cmake
 doc: gen-cmake
 	make -C build $@
 
-test: all
-	cd build/lib/libLUCID && ctest -V .
+tests: gen-cmake
+	make -C build $@
+
+check: gen-cmake
+	make -C build $@
 
 clean-cmake:
 	rm -rf build

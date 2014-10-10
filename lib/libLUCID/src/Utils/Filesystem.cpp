@@ -61,7 +61,7 @@ std::string getExtension(const std::string& path) noexcept {
     for (unsigned int i = size - 1; i > 0; --i) {
         // Check if it's not the first character to avoid
         // confusion with the current directory symbol
-        if (i != 0 && fileName[i] == '.') {
+        if (i != 0 && fileName[i] == '.' && i != size - 1) {
             extension = fileName.substr(i + 1, size - i);
             break;
         }
