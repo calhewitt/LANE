@@ -105,6 +105,7 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Overloaded ostream operator for the LUCIDFile class
     /// \param os The output stream
+    /// \param file The LUCID data file to stream out
     /// \return A reference to the ostream in use
     friend std::ostream& operator<<(std::ostream& os, const LUCIDFile& file) noexcept;
 

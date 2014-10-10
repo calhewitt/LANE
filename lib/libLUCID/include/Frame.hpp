@@ -65,7 +65,7 @@ public:
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Sets the channel ID of the frame
-    /// \param other Object to be compared against
+    /// \param channel The channel ID to use
     void setChannelID(const std::uint32_t channel) noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
