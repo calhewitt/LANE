@@ -2,6 +2,7 @@
 # Setup project
 #=============================================================================
 cmake_minimum_required(VERSION 2.8.8)
+project(testPlugin)
 
 
 #=============================================================================
@@ -100,6 +101,18 @@ add_definitions(
 
 
 #=============================================================================
-# Setup subdirectories
+# Build plugin
 #=============================================================================
-add_subdirectory(src)
+set(TESTPLUGIN_SOURCES
+    src/Main.cpp
+    src/Sample.hpp
+)
+
+add_executable(testPlugin ${TESTPLUGIN_SOURCES})
+
+target_link_libraries(testPlugin libLUCID)
+
+set_target_properties(testPlugin
+    PROPERTIES RUNTIME_OUTPUT_DIRECTORY
+    ${CMAKE_BINARY_DIR}/bin
+)

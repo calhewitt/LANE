@@ -19,6 +19,7 @@
 #include <vector>
 #include <array>
 #include <string>
+#include <map>
 #include <cstdint>
 #include "../Frame.hpp"
 #include "../Utils/Endian.hpp"

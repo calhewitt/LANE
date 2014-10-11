@@ -26,7 +26,7 @@ class LoggerSink {
 public:
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Virtual destructor
-    virtual ~LoggerSink() = default;
+    virtual ~LoggerSink();
     
     ///////////////////////////////////////////////////////////////////////////
     /// \brief The pure virtual member function for writing a logging string
@@ -42,18 +42,16 @@ class ConsoleSink final : public LoggerSink {
 public:
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Constructor
-    ConsoleSink() = default;
+    ConsoleSink();
     
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Destructor
-    ~ConsoleSink() = default;
+    ~ConsoleSink();
     
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Logs a string to the console output
     /// \param message The string to log
-    virtual void write(const std::string& message) {
-        std::cout << message;
-    }
+    virtual void write(const std::string& message);
 };
 
 
@@ -64,16 +62,11 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Constructor. Creates and stores a handle to a file for logging
     /// \param fileName The name of the file to log to
-    FileSink(const std::string& fileName = "log.txt") noexcept {
-        logFile_.open(
-            fileName,
-            std::ios::binary | std::ios::out | std::ios::app
-        );
-    }
+    FileSink(const std::string& fileName = "log.txt") noexcept;
     
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Destructor
-    ~FileSink() = default;
+    ~FileSink();
     
     FileSink(const FileSink& other) = delete;
     
@@ -86,9 +79,7 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Logs a string to the file output
     /// \param message The string to log
-    virtual void write(const std::string& message) {
-        logFile_ << message;
-    }
+    virtual void write(const std::string& message);
 
 private:
     std::ofstream logFile_;

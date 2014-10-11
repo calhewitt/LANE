@@ -30,6 +30,13 @@ python LANEman.py
 ```
 
 
+## Running libLUCID Tests
+Use the following to build and then run libLUCID tests:
+```shell
+make check
+```
+
+
 ## Project organization
 The main directory contains some information and the plugin manager script, 
 [LANEman](LANEman.py)
@@ -51,7 +58,7 @@ generation.
 ## How to add plugins (TODO)
 Copy [plugins/testPlugin](plugins/testPlugin) and change the name to the plugin 
 name in the CMakeLists.txt, update the README.md, add the code files to 
-the src/CMakeLists.txt, update LICENSE.md, and finally write the code in src.
+the CMakeLists.txt, update LICENSE.md, and finally write the code in src.
 
 Python plugins can be added by copying the 
 [plugins/testPluginPython](plugins/testPluginPython) directory and modifying 

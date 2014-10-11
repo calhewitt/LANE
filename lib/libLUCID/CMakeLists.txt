@@ -2,6 +2,7 @@
 # Setup project
 #=============================================================================
 cmake_minimum_required(VERSION 2.8.8)
+project(libLUCID)
 
 
 #=============================================================================
@@ -111,7 +112,29 @@ add_definitions(
 include_directories(
     include
 )
-add_subdirectory(src)
+
+if (WIN32)
+    set(FILESYSTEM_SOURCES
+         src/Utils/FilesystemWindows.cpp
+    )
+elseif(UNIX OR APPLE)
+    set(FILESYSTEM_SOURCES
+         src/Utils/FilesystemLinux.cpp
+    )
+else()
+    message(FATAL_ERROR "libLUCID doesn't support this platform")
+endif(WIN32)
+
+set(LIBLUCID_SOURCES
+    src/Frame.cpp include/Frame.hpp
+    src/LUCID/LUCIDFile.cpp include/LUCID/LUCIDFile.hpp
+    src/Pixel.cpp include/Pixel.hpp
+    src/Utils/Logger.cpp include/Utils/Logger.hpp
+    src/Utils/LoggerSink.cpp include/Utils/LoggerSink.hpp
+    src/Utils/Filesystem.cpp ${FILESYSTEM_SOURCES} include/Utils/Filesystem.hpp 
+)
+
+add_library(libLUCID ${LIBLUCID_SOURCES})
 
 
 #=============================================================================

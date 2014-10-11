@@ -14,6 +14,7 @@
 #include <ostream>
 #include <cstdint>
 #include "Frame.hpp"
+#include "Pixel.hpp"
 
 namespace lucid {
 

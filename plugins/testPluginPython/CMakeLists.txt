@@ -1,7 +1,15 @@
+project(testPluginPython)
+
 set(TESTPLUGINPYTHON_SOURCES
     testPluginPython.py
 )
 
-file(COPY ${TESTPLUGINPYTHON_SOURCES}
-    DESTINATION ${CMAKE_BINARY_DIR}/bin
-)
+add_custom_target(${PROJECT_NAME} ALL)
+
+foreach(source ${TESTPLUGINPYTHON_SOURCES})
+    add_custom_command(TARGET ${PROJECT_NAME}
+        POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E 
+            copy ${CMAKE_CURRENT_SOURCE_DIR}/${source} ${CMAKE_BINARY_DIR}/bin/${source}
+    )
+endforeach()

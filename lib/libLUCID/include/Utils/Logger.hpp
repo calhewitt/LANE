@@ -14,18 +14,12 @@
 #ifndef UTILS_LOGGER_HPP
 #define UTILS_LOGGER_HPP
 
-// TODO: Add positional format string support over the top of the log method
-
 #include <vector>
 #include <mutex>
 #include <thread>
-#include <algorithm>
 #include <memory>
 #include <string>
-#include <sstream>
-#include <chrono>
-#include <ctime>
-#include "LoggerSink.hpp"
+#include "Utils/LoggerSink.hpp"
 #include "Misc.hpp"
 
 
@@ -44,22 +38,7 @@ enum class SeverityLevel {
 /// \brief The level of severity of the log message
 /// \param level A logging severity level
 /// \returns A text string of the input SeverityLevel
-std::string severityToString(const SeverityLevel level) noexcept {
-    switch (level) {
-    case SeverityLevel::Warning:
-        return "Warning";
-        break;
-    case SeverityLevel::Error:
-        return "Error";
-        break;
-    case SeverityLevel::Debug: 
-        return "Debug";
-        break;
-    default:
-        return "Unknown";
-        break;
-    }
-}
+std::string severityToString(const SeverityLevel level) noexcept;
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -68,35 +47,25 @@ class Logger final {
 public:
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Constructor
-    Logger() = default;
+    Logger();
     
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Destructor
-    ~Logger() = default;
+    ~Logger();
     
     Logger(const Logger& other) = delete;
     
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Move constructor
     /// \param other Object to be move constructed from
-    Logger(Logger&& other) {
-        std::lock_guard<std::mutex> lock(sinksMutex_);
-        std::swap(sinks_, other.sinks_);
-    }
+    Logger(Logger&& other);
     
     Logger& operator=(const Logger& other) = delete;
     
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Move assignment operator
     /// \param other Object to be move assigned from
-    Logger& operator=(Logger&& other) {
-        if (this != &other) {
-            std::lock_guard<std::mutex> lock(sinksMutex_);
-            std::swap(sinks_, other.sinks_);
-        }
-        
-        return *this;
-    }
+    Logger& operator=(Logger&& other);
     
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Constructs and adds a logging sink to the logging system
@@ -109,10 +78,7 @@ public:
     
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Removes and destructs all added sinks from the logging system
-    void removeAllSinks() noexcept {
-        std::lock_guard<std::mutex> lock(sinksMutex_);
-        sinks_.clear();
-    }
+    void removeAllSinks() noexcept;
     
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Adds a timestamp, formats the log message and hands that over to
@@ -121,31 +87,7 @@ public:
     /// NDEBUG is defined.
     /// \param level The severity level of the log message
     /// \param message The text to use in the log message
-    void log(const SeverityLevel level, const std::string& message) {
-#ifdef NDEBUG
-        if (level == SeverityLevel::Debug) {
-            return;
-        }
-#endif
-        std::stringstream finalMessage;
-        
-        // Go through some hoops to get a timestamp
-        auto now = std::chrono::system_clock::now();
-        std::stringstream dateTime;
-        auto timeT = std::chrono::system_clock::to_time_t(now);
-        dateTime << std::ctime(&timeT);
-        std::string dateString = dateTime.str().substr(0, dateTime.str().length() - 1);
-        
-        // Construct the final message to log
-        finalMessage << severityToString(level) << " -- " << dateString << " | " << message << std::endl;
-        
-        std::lock_guard<std::mutex> lock(sinksMutex_);
-        
-        // Write the message to every registered logging sink
-        for (const auto& sink : sinks_) {
-            sink->write(finalMessage.str());
-        }
-    }
+    void log(const SeverityLevel level, const std::string& message);
 
 private:
     std::vector<std::unique_ptr<LoggerSink>> sinks_;
