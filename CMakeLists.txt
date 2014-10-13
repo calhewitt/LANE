@@ -1,4 +1,5 @@
 find_package(Doxygen)
 add_subdirectory(doc)
 add_subdirectory(lib)
+add_subdirectory(tools)
 add_subdirectory(plugins)

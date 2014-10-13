@@ -119,7 +119,7 @@ bool LUCIDFile::operator==(const LUCIDFile& other) const noexcept {
                 channels_ == other.channels_
             );
         }
-        
+
         return false;
     }
 

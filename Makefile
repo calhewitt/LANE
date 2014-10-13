@@ -3,7 +3,7 @@
 #BUILD_TYPE=Debug
 BUILD_TYPE=Release
 
-.PHONY: clean all doc check tests gen-cmake clean-cmake
+.PHONY: clean all doc check tools tests gen-cmake clean-cmake
 
 ${VERBOSE}.SILENT:
 
@@ -23,6 +23,9 @@ tests: gen-cmake
 	make -C build $@
 
 check: gen-cmake
+	make -C build $@
+
+tools: all
 	make -C build $@
 
 clean-cmake:
