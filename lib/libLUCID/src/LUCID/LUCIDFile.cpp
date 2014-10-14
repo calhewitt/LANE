@@ -274,7 +274,7 @@ void LUCIDFile::read(const std::string& fileName) noexcept {
             bool isFindingData = true;
             while (isFindingData) {
                 // Check if this is the last word, and stop reading after this iteration if so
-                if (index + 2 == fileSize - 1) {
+                if (index + 2 >= fileSize - 1) {
                     isFindingData = false;
                     isFindingChannelData = false;
                     isFindingFrames = false;
@@ -319,28 +319,16 @@ void LUCIDFile::read(const std::string& fileName) noexcept {
                 }
 
                 index += 2;
-                if (index > fileSize) {
-                    isFindingData = false;
-                }
             }
 
             // Add frame to channel map
             channels_[channel].push_back(currentFrame);
-
-            if (index > fileSize) {
-                isFindingChannelData = false;
-            }
-        }
-
-        // Rinse and repeat
-        if (index > fileSize) {
-            isFindingFrames = false;
         }
     }
 }
 
 std::vector<Frame> LUCIDFile::getFrames(const std::uint32_t channelID) const noexcept {
-    assert(channelID >= 0 && channelID <= 4);
+    assert(channelID <= 4);
     return channels_.find(channelID)->second;
 }
 

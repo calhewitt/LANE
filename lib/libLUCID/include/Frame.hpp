@@ -114,7 +114,15 @@ public:
         const std::uint32_t x,
         const std::uint32_t y
     ) const noexcept;
-    
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Gets a pixel
+    /// \param key The key value of the pixel (x * 256 + y)
+    /// \return The pixel object containing the pixel data
+    Pixel getPixel(
+        const std::uint32_t key
+    ) const noexcept;
+
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Gets a constant reference to all the pixels
     /// \return A constant reference to all the pixels

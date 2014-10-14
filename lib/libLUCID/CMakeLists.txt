@@ -129,6 +129,8 @@ set(LIBLUCID_SOURCES
     src/Frame.cpp include/Frame.hpp
     src/LUCID/LUCIDFile.cpp include/LUCID/LUCIDFile.hpp
     src/Pixel.cpp include/Pixel.hpp
+    src/Blob.cpp include/Blob.hpp
+    src/BlobFinder.cpp include/BlobFinder.hpp
     src/Utils/Logger.cpp include/Utils/Logger.hpp
     src/Utils/LoggerSink.cpp include/Utils/LoggerSink.hpp
     src/Utils/Filesystem.cpp ${FILESYSTEM_SOURCES} include/Utils/Filesystem.hpp 
@@ -165,8 +167,9 @@ macro(add_test_executable TEST_NAME TEST_SOURCES)
     add_dependencies(tests ${TEST_NAME})
 endmacro()
 
-add_test_executable(LUCIDFileTest test/LUCIDFileTest.cpp)
-add_test_executable(FilesystemTest test/FilesystemTest.cpp)
-add_test_executable(FrameTest test/FrameTest.cpp)
-add_test_executable(PixelTest test/PixelTest.cpp)
 add_test_executable(EndianTest test/EndianTest.cpp)
+add_test_executable(PixelTest test/PixelTest.cpp)
+add_test_executable(FrameTest test/FrameTest.cpp)
+add_test_executable(LUCIDFileTest test/LUCIDFileTest.cpp)
+add_test_executable(BlobTest test/BlobTest.cpp)
+add_test_executable(FilesystemTest test/FilesystemTest.cpp)

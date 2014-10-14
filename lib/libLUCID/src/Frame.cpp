@@ -43,7 +43,7 @@ bool Frame::operator==(const Frame& other) const noexcept {
                 pixels_ == other.pixels_
             );
         }
-        
+
         return false;
     }
 
@@ -91,6 +91,16 @@ Pixel Frame::getPixel(
     const std::uint32_t y
 ) const noexcept {
     auto result = pixels_.find(x * 256 + y);
+    if (result == pixels_.end()) {
+        return Pixel(0, 0, 0);
+    }
+    return result->second;
+}
+
+Pixel Frame::getPixel(
+    const std::uint32_t key
+) const noexcept {
+    auto result = pixels_.find(key);
     if (result == pixels_.end()) {
         return Pixel(0, 0, 0);
     }
