@@ -138,20 +138,7 @@ void splitFile(const std::string& filePath, const unsigned int numberOfFrames) {
                     }
                     input.unget();
                 }
-
-                if (index >= fileRemaining - 1) {
-                    isFindingData = false;
-                }
             }
-
-            if (index >= fileRemaining - 1) {
-                isFindingChannelData = false;
-            }
-        }
-
-        // Rinse and repeat
-        if (index >= fileRemaining - 1) {
-            isFindingFrames = false;
         }
 
         // Increment the frame count and check to see if the block of data needs to be written
