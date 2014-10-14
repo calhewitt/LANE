@@ -47,6 +47,7 @@
 #include <array>
 #include <string>
 #include <fstream>
+#include <stdexcept>
 #include <cstdint>
 #include <cassert>
 #include "LUCID/LUCIDFile.hpp"
