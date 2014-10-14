@@ -181,7 +181,7 @@ int main(int argc, char* argv[]) {
     unsigned int frameCount = 4000;
 
     if (argc < 2 || argc > 3) {
-        std::cout << "USAGE: " << argv[1] << " inputPath [numberOfFramesPerFile]\n"
+        std::cout << "USAGE: " << argv[0] << " inputPath [numberOfFramesPerFile]\n"
             << "Where [] implies the parameter is optional. Number of frames per file defaults to "
             << frameCount << " frames" << "\n";
         return 0;
