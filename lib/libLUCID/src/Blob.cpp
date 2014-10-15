@@ -70,11 +70,23 @@ Blob::cend() const noexcept {
 }
 
 void Blob::addPixel(const Pixel& pixel) noexcept {
-    pixelKeys_.push_back(pixel.getX() * 256 + pixel.getY());
+    pixelKeys_.emplace_back(pixel.getX() * 256 + pixel.getY());
 }
 
 void Blob::addPixelKey(const std::uint32_t key) noexcept {
-    pixelKeys_.push_back(key);
+    pixelKeys_.emplace_back(key);
+}
+
+void Blob::addPixels(const std::vector<Pixel>& pixels) noexcept {
+    for (const auto& p : pixels) {
+        pixelKeys_.emplace_back(p.getX() * 256 + p.getY());
+    }
+}
+
+void Blob::addPixelKeys(const std::vector<std::uint32_t>& keys) noexcept {
+    for (const auto& k : keys) {
+        pixelKeys_.emplace_back(k);
+    }
 }
 
 std::ostream& operator<<(std::ostream& os, const Blob& blob) noexcept {

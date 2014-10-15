@@ -25,8 +25,13 @@ namespace lucid {
 /// \brief Analyses a given frame to find blobs of pixels.
 /// Uses a simple neighbouring algorithm to group pixels.
 /// \param frame The frame to analyse for blobs
+/// \param threshold The count value above which to consider for blobbing.
+/// Useful for filtering out noise from blobbing. Defaults to 1.
 /// \return A vector/list of found blobs
-std::vector<Blob> findBlobs(const Frame& frame) noexcept;
+std::vector<Blob> findBlobs(
+    const Frame& frame,
+    const unsigned int threshold = 1
+) noexcept;
 
 } // lucid
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # Plugins will go into ./build/bin when compiled as of the moment
 # Consider adding proper plugin dependency handling
 

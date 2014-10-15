@@ -63,45 +63,55 @@ public:
     /// \param other Object to be compared against
     bool operator!=(const Blob& other) const noexcept;
 
-    ///////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
     /// \brief Gets an iterator pointing to the first pixel key associated with
     /// the blob.
     /// \return A beginning iterator to the list of pixel keys associated with the
     /// blob.
     std::vector<std::uint32_t>::iterator begin() noexcept;
 
-    ///////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
     /// \brief Gets an iterator pointing to the last pixel key associated with
     /// the blob.
     /// \return An ending iterator to the list of pixel keys associated with the
     /// blob.
     std::vector<std::uint32_t>::iterator end() noexcept;
 
-    ///////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
     /// \brief Gets a const iterator pointing to the first pixel key associated
     /// with the blob.
     /// \return A const beginning iterator to the list of pixel keys associated
     /// with the blob.
     std::vector<std::uint32_t>::const_iterator cbegin() const noexcept;
 
-    ///////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
     /// \brief Gets a const iterator pointing to the first pixel key associated
     /// with the blob.
     /// \return A const beginning iterator to the list of pixel keys associated
     /// withe the blob.
     std::vector<std::uint32_t>::const_iterator cend() const noexcept;
 
-    ///////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
     /// \brief Adds the key value of the pixel to the blob
-    /// \param pixel The pixel to add the blob.
+    /// \param pixel The pixel to add to the blob.
     void addPixel(const Pixel& pixel) noexcept;
 
-    ///////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
     /// \brief Adds the key value of the pixel to the blob
-    /// \param key The pixel key to add the blob.
+    /// \param key The pixel key to add to the blob.
     void addPixelKey(const std::uint32_t key) noexcept;
+    
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Adds the key value of the pixel to the blob
+    /// \param keys The pixels to add to the blob.
+    void addPixels(const std::vector<Pixel>& pixels) noexcept;
+    
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Adds the key value of the pixel to the blob
+    /// \param keys The pixel keys to add to the blob.
+    void addPixelKeys(const std::vector<std::uint32_t>& keys) noexcept;
 
-    ///////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
     /// \brief Overloaded ostream operator for the Blob class
     /// \param os The output stream
     /// \param frame The Blob to stream out

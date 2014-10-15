@@ -128,7 +128,7 @@ public:
     /// \return A constant reference to all the pixels
     const std::map<std::uint32_t, Pixel>& getPixels() const noexcept;
 
-    ///////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
     /// \brief Overloaded ostream operator for the Frame class
     /// \param os The output stream
     /// \param frame The Frame to stream out
