@@ -2,6 +2,8 @@
 
 include_directories(../lib/libLUCID/include)
 
+add_custom_target(plugins)
+
 macro(subdirlist result curdir)
   file(GLOB children RELATIVE ${curdir} ${curdir}/*)
   set(dirlist "")

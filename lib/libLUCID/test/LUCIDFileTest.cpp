@@ -19,8 +19,8 @@
 const unsigned int numberOfFiles = 2;
 const std::string dataPath = "../../../testdata/";
 const std::string dataFiles[numberOfFiles] = {
-    "TestFile1",
-    "TestFile2"
+    "TestFile1.ldat",
+    "TestFile2.ldat"
 };
 
 class LUCIDFileTest : public ::testing::Test {

@@ -17,7 +17,7 @@
 #include <ostream>
 #include <vector>
 #include <cstdint>
-#include "Blob.hpp"
+#include "Pixel.hpp"
 
 namespace lucid {
 
@@ -82,14 +82,14 @@ public:
     /// with the blob.
     /// \return A const beginning iterator to the list of pixel keys associated
     /// with the blob.
-    std::vector<std::uint32_t>::const_iterator cbegin() const noexcept;
+    std::vector<std::uint32_t>::const_iterator begin() const noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Gets a const iterator pointing to the first pixel key associated
     /// with the blob.
     /// \return A const beginning iterator to the list of pixel keys associated
     /// withe the blob.
-    std::vector<std::uint32_t>::const_iterator cend() const noexcept;
+    std::vector<std::uint32_t>::const_iterator end() const noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Adds the key value of the pixel to the blob

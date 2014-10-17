@@ -2,7 +2,7 @@
 # Setup project
 #=============================================================================
 cmake_minimum_required(VERSION 2.8.8)
-project(testPlugin)
+project(BasicClusterAnalysis)
 
 
 #=============================================================================
@@ -105,10 +105,10 @@ add_definitions(
 #=============================================================================
 set(PLUGIN_SOURCES
     src/Main.cpp
-    src/Sample.hpp
+    src/BasicClusterAnalysis.cpp src/BasicClusterAnalysis.hpp
 )
 
-add_executable(${PROJECT_NAME} EXCLUDE_FROM_ALL ${PLUGIN_SOURCES})
+add_executable(${PROJECT_NAME} ${PLUGIN_SOURCES})
 
 target_link_libraries(${PROJECT_NAME} libLUCID)
 

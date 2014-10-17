@@ -60,13 +60,13 @@ Blob::end() noexcept {
 }
 
 std::vector<std::uint32_t>::const_iterator
-Blob::cbegin() const noexcept {
-    return pixelKeys_.cbegin();
+Blob::begin() const noexcept {
+    return pixelKeys_.begin();
 }
 
 std::vector<std::uint32_t>::const_iterator
-Blob::cend() const noexcept {
-    return pixelKeys_.cend();
+Blob::end() const noexcept {
+    return pixelKeys_.end();
 }
 
 void Blob::addPixel(const Pixel& pixel) noexcept {

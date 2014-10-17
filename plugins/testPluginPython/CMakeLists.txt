@@ -1,10 +1,10 @@
 project(testPluginPython)
 
-set(TESTPLUGINPYTHON_SOURCES
+set(PLUGIN_SOURCES
     testPluginPython.py
 )
 
-add_custom_target(${PROJECT_NAME} ALL)
+add_custom_target(${PROJECT_NAME})
 
 foreach(source ${TESTPLUGINPYTHON_SOURCES})
     add_custom_command(TARGET ${PROJECT_NAME}
@@ -13,3 +13,5 @@ foreach(source ${TESTPLUGINPYTHON_SOURCES})
             copy ${CMAKE_CURRENT_SOURCE_DIR}/${source} ${CMAKE_BINARY_DIR}/bin/${source}
     )
 endforeach()
+
+add_dependencies(plugins ${PROJECT_NAME})

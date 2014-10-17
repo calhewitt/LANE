@@ -50,6 +50,25 @@ std::string getPath(const std::string& fullPath) noexcept;
 /// \return The extension string.
 std::string getExtension(const std::string& path) noexcept;
 
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Removes the extension string of a filename/path. Returns an empty
+/// string if there is no extension.
+/// \param path The path string that you want to remove the extension from.
+/// \return The path/filename without the extension.
+std::string removeExtension(const std::string& path) noexcept;
+
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Gets the file paths with the give nextension in a given directory
+/// \param extension The extension to check for
+/// \param directory The directory to search for the files
+/// \return A list of path names for files with the given extension in the
+/// directory
+std::vector<std::string> getFilesWithExtension(
+    const std::string& extension,
+    const std::string& directory = "./"
+) noexcept;
+
 } // utils
 
 #endif // UTILS_FILESYSTEM_HPP

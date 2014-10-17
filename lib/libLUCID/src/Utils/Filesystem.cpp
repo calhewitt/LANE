@@ -70,4 +70,37 @@ std::string getExtension(const std::string& path) noexcept {
     return extension;
 }
 
+std::string removeExtension(const std::string& path) noexcept {
+    // Set the result as the path for the case where no extension is found
+    std::string withoutExtension = path;
+    
+    auto size = path.size();
+    for (unsigned int i = size - 1; i > 0; --i) {
+        // Check if it's not the first character to avoid
+        // confusion with the current directory symbol
+        if (i != 0 && path[i] == '.' && i != size - 1) {
+            withoutExtension = path.substr(0, i);
+            break;
+        }
+    }
+    
+    return withoutExtension;
+}
+
+std::vector<std::string> getFilesWithExtension(
+    const std::string& extension,
+    const std::string& directory
+) noexcept {
+    auto files = getDirectoryContents(directory);
+    std::vector<std::string> filesWithExtension;
+    
+    for (const auto& name : files) {
+        if (getExtension(name) == extension) {
+            filesWithExtension.emplace_back(directory + "/" + name);
+        }
+    }
+    
+    return filesWithExtension;
+}
+
 } // utils

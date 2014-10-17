@@ -3,13 +3,26 @@
 # Consider adding proper plugin dependency handling
 
 """The plugin manager for LUCID data analysis"""
-import os, sys, ConfigParser, operator, time, datetime
+import os, sys, ConfigParser, operator, time, datetime, errno
 
+# Configurable constants
+binariesPath = './build/bin/'
 pluginPath = os.path.abspath('plugins')
-inputPath = '"' + os.path.abspath('data') + '"'
-outputPath = '"' + os.path.abspath('results') + '"'
+resultsPath = os.path.abspath('./results')
+
+# Internal constants
+inputPath = '"' + os.path.abspath('./testdata') + '"'
+outputPath = '"' + resultsPath + '"'
 pluginParameters = inputPath + " " + outputPath
 
+def mkdir_p(path):
+    """Makes a directory - basically provides mkdir -p shell-like functionality"""
+    try:
+        os.makedirs(path)
+    except OSError as exc:
+        if exc.errno == errno.EEXIST and os.path.isdir(path):
+            pass
+        else: raise
 
 class Plugin:
     """A plugin object, containing plugin metadata"""
@@ -49,19 +62,23 @@ from the config file"""
         pluginList.append(plugin)
     return sortPlugins(pluginList)
 
-
-if __name__ == "__main__":
-    os.system("make all")
+def runPlugins():
+    """Builds and runs the plugins"""
+    os.system("make plugins")
+    mkdir_p(resultsPath)
     plugins = getPlugins()
     for p in plugins:
         print datetime.datetime.fromtimestamp(time.time()).strftime(
                 "%Y-%m-%d %H:%M:%S")
         print "Running: " + p.name
         if p.language.lower() == "cpp" or p.language.lower() == "c":
-            os.system("build/bin/" + p.name + " " + pluginParameters)
+            os.system(binariesPath + p.name + " " + pluginParameters)
         elif p.language.lower() == "py" or p.language.lower() == "python":
-            os.system("python build/bin/" + p.name + ".py" + " " + pluginParameters)
+            os.system("python2 " + binariesPath + p.name + ".py" + " " + pluginParameters)
         else:
             print "Invalid language option set for '" + p.name + "' in config"
             sys.exit(1)
 
+
+if __name__ == "__main__":
+    runPlugins()

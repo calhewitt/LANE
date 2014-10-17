@@ -46,6 +46,27 @@ TEST(FilesystemTest, GetExtensionTest) {
     }
 }
 
+TEST(FilesystemTest, RemoveExtensionTest) {
+    std::map<std::string, std::string> tests = {
+        { "test", "test" },
+        { "test.txt", "test" },
+        { "./test.txt", "./test" },
+        { "../test.txt", "../test" },
+        { "/dir/test.txt", "/dir/test" },
+        { "/dir/test", "/dir/test" },
+        { "/dir/test.txt", "/dir/test" },
+        { "./dir/test.txt", "./dir/test" },
+        { "/dir/../test.txt", "/dir/../test" }
+    };
+    
+    for (const auto& test : tests) {
+        std::string result = utils::removeExtension(test.first);
+        EXPECT_STREQ(test.second.c_str(), result.c_str())
+            << "Input: '" << test.first << "' gives result: '"
+            << result << "'. Expected: '" << test.second << "'";
+    }
+}
+
 TEST(FilesystemTest, GetFileNameTest) {
     std::map<std::string, std::string> tests = {
         { "test", "test" },
