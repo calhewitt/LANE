@@ -20,7 +20,10 @@
 #include "Pixel.hpp"
 #include "BasicClusterAnalysis.hpp"
 
-// TODO: Add support for getting min x/y and max x/y form clusters
+// DONE: Add support for getting min x/y and max x/y form clusters
+// Actually we only need to save if the cluster is touching the edge
+// and also the value (254 + minx - maxx) * ("    "y - " "y) which is the
+// area in pixels where the cluster wouldn't have touched the edge of the frame
 
 const double pi = 3.14159265359;
 
@@ -29,11 +32,12 @@ namespace {
 // Rotates the pixel's position using the azimuth angle
 lucid::Pixel rotatePixel(const lucid::Pixel& pixel, const float azimuthAngle) noexcept {
     lucid::Pixel rotatedPixel;
-    
-    rotatedPixel.setX(pixel.getX()); // TODO Implement rotations
-    rotatedPixel.setY(pixel.getY());
+    float s = sin(azimuthAngle);
+    float c = cos(azimuthAngle);
+    rotatedPixel.setX(c*pixel.getX() - s*pixel.getY()); //Implemented rotations
+    rotatedPixel.setY(c*pixel.getY() + s*pixel.getX());
     rotatedPixel.setC(pixel.getC());
-    
+    rotatedPixel.setE(pixel.getE());
     return rotatedPixel;
 }
 
@@ -42,24 +46,22 @@ lucid::Pixel rotatePixel(const lucid::Pixel& pixel, const float azimuthAngle) no
 Cluster::Cluster() noexcept
 : volume_(0),
   height_(0),
+  biasVoltage_(0),
+  detectorThickness_(300),
   azimuthAngle_(-pi),
   polarAngle_(-1),
   majorLength_(-1),
   minorWidth_(-1),
   projectedTrackLength_(-1),
-  trackLength_(0) {
+  trackLength_(0),
+  xmin_(255),
+  xmax_(0),
+  ymin_(255),
+  ymax_(0) {
 }
 
 Cluster::~Cluster() noexcept {
     clear();
-    volume_ = 0;
-    height_ = 0;
-    azimuthAngle_ = -pi;
-    polarAngle_ = -1;
-    majorLength_ = -1;
-    minorWidth_ = -1;
-    projectedTrackLength_ = -1;
-    trackLength_ = 0;
 }
 
 Cluster::Cluster(const Cluster& other) noexcept = default;
@@ -84,7 +86,11 @@ bool Cluster::operator==(const Cluster& other) const noexcept {
             majorLength_ == other.majorLength_ &&
             minorWidth_ == other.minorWidth_ &&
             projectedTrackLength_ == other.projectedTrackLength_ &&
-            trackLength_ == other.trackLength_
+            trackLength_ == other.trackLength_ &&
+            xmin_ == other.xmin_ &&
+            ymin_ == other.ymin_ &&
+            xmax_ == other.xmax_ &&
+            ymax_ == other.ymax_
         );
     }
 
@@ -97,14 +103,56 @@ bool Cluster::operator!=(const Cluster& other) const noexcept {
 
 void Cluster::clear() noexcept {
     pixels_.clear();
+    volume_ = 0;
+    height_ = 0;
+    azimuthAngle_ = -pi;
+    polarAngle_ = -1;
+    majorLength_ = -1;
+    minorWidth_ = -1;
+    projectedTrackLength_ = -1;
+    trackLength_ = 0;
+    xmin_ = 255;
+    ymin_ = 255;
+    xmax_ = 255;
+    ymax_ = 255;
 }
 
 void Cluster::addPixel(const lucid::Pixel& pixel) noexcept {
     pixels_.emplace_back(pixel);
-    volume_ += pixel.getC();
-    if (pixel.getC() > height_) {
-        height_ = pixel.getC();
+   
+    // Update all the cluster properties
+    volume_ += pixel.getE();
+    
+    if (pixel.getX() < xmin_) {
+        xmin_ = pixel.getX();
     }
+    
+    if (pixel.getX() > xmax_) {
+        xmax_ = pixel.getX();
+    }
+    
+    if (pixel.getY() < ymin_) {
+        ymin_ = pixel.getY();
+    }
+    
+    if (pixel.getY() > ymax_) {
+        ymax_ = pixel.getY();
+    }
+
+    if (pixel.getE() > height_) {
+        height_ = pixel.getE();
+    }
+}
+
+bool Cluster::touchingEdge() const noexcept {
+    return (xmin_ == 0 || ymin_ == 0 || xmax_ == 255 || ymax_ == 255);
+}
+
+unsigned int Cluster::getHittingArea() const noexcept {
+    if ((xmin_ == 0 && xmax_ == 255) || (ymin_ == 0 && ymax_ == 255)) {
+        return 0; 
+    }
+    return (254 + xmin_ - xmax_) * (254 + ymin_ - ymax_);
 }
 
 const std::vector<lucid::Pixel>& Cluster::getPixels() const noexcept {
@@ -115,8 +163,17 @@ unsigned int Cluster::getSize() const noexcept {
     return pixels_.size();
 }
 
-float Cluster::getVolume() const noexcept {
+float Cluster::getVolume() noexcept {
+    if (volume_ > 0) {
+        return volume_;
+    }
+    
+    for(const auto& p : pixels_) {
+        volume_ += p.getE();
+    }
+    
     return volume_;
+
 }
 
 float Cluster::getHeight() const noexcept {
@@ -153,7 +210,7 @@ float Cluster::getAzimuthAngle() noexcept {
             float w; // energy of each pixel
              x = iter->getX();
              y = iter->getY();
-             w = iter->getC();
+             w = iter->getE();
              wx += x * w;
              wy += y * w;
              wxx += x * x * w;
@@ -165,14 +222,15 @@ float Cluster::getAzimuthAngle() noexcept {
     float delta;
     delta = fw * wxy - wy * wx;
 
-    if (std::abs(delta) <= 0) {
+    if (std::abs(delta) <= 0.0001) {
         azimuthAngle_ = 0;
     } else {
-		//Equation for line which minimizes the square of the distance to the line
-		//Can be 90 degrees out as the maths produces a quadratic with two roots. Works out that m1 = -1/m2 so they are 90degrees apart
-		//The program gives one root and then when calculating polar it does if minWidth > majLen then change azimuth by pi/20
-		//It then does another histogram for majLen using c ** 2 for each pixel and looks at the mean for this
-		//It compares the mean value for x weighted by c**2 to the mean value weighted by c
+		// Equation for line which minimizes the square of the distance to the line
+		// Can be 90 degrees out as the maths produces a quadratic with two roots. Works out that m1 = -1/m2 so they are 90degrees apart
+		// The program gives one root and then when calculating polar it does if minWidth > majLen then change azimuth by pi/20
+		// It then does another histogram for majLen using c ** 2 for each pixel and looks at the mean for this
+		// It compares the mean value for x weighted by c**2 to the mean value weighted by c
+        // TODO azimuth seems to too often result in NaN. Possibly sqrt a neg. number
 		float a = fw * wxx - wx * wx;
 		float b = 2 * (wxy * fw - wx * wy);
 		float c = fw * wyy - wy * wy;
@@ -204,11 +262,11 @@ float Cluster::getProjectedTrackLength() noexcept {
 	//need to rotate the coordinate
 	std::list<double> rotatedData;//list of triple<x,y,v>
 	for (auto iter = std::begin(pixels_); iter != std::end(pixels_); ++iter) {
-		if (iter->getC() > threshold) {
+		if (iter->getE() > threshold) {
             auto newPixel = rotatePixel(*iter, -azimuth);
             rotatedData.emplace_back(newPixel.getX());
             rotatedData.emplace_back(newPixel.getY());
-            rotatedData.emplace_back(newPixel.getC());
+            rotatedData.emplace_back(newPixel.getE());
 		}
 	}
 	for (auto iter = std::begin(rotatedData); iter != std::end(rotatedData); ++iter) {
@@ -270,16 +328,20 @@ float Cluster::getProjectedTrackLength() noexcept {
 		azimuthAngle_ += pi/2;
     }
     float alpha = minorWidth_ / (2 * majorLength_ - minorWidth_);
-    float coeff = 55;
+    float coeff = 55; //This converts the track length from pixels to micrometres.
+    //The pixels are 55 micrometres
+
+    //This adjusts for the biasVoltage
     float correction = biasVoltage_ / 50.0;
     if (correction > 2) {
         correction = 2;
     }
+    /*
     if (detectorThickness_ == 500) {
-        correction += 5;
+        correction += 5; //From these values I think we can safely assume detector Thickness is in micrometres
     } else if (detectorThickness_ == 1000) {
         correction += 10;
-    }
+    }*/
     coeff += correction;
     projectedTrackLength_ = coeff * std::abs(majorLength_ - alpha * minorWidth_);
     return projectedTrackLength_;
@@ -289,7 +351,10 @@ float Cluster::getTrackLength() noexcept {
     if(trackLength_ > 0) {
         return trackLength_;
     }
-    trackLength_ = std::sqrt(getProjectedTrackLength() * getProjectedTrackLength() + detectorThickness_ * detectorThickness_);
+    trackLength_ = std::sqrt(
+        getProjectedTrackLength() * getProjectedTrackLength() + 
+        detectorThickness_ * detectorThickness_
+    );
     return trackLength_;
 }
 
@@ -302,7 +367,9 @@ float Cluster::getPolarAngle() noexcept {
 }
 
 float Cluster::getLETinSi() noexcept {
-    return getVolume() / getTrackLength();
+    return getVolume() / getTrackLength(); //Tracklength is in micrometres.
+    // Will need to find out what units the calibration constants are in to
+    // accurately estimate this
 }
 
 float Cluster::getFuzzyTrackLength(
@@ -317,7 +384,8 @@ float Cluster::getFuzzyTrackLength(
     }
     arv /= his.size();
     arv *= coeff;
-    //assign the membership function for each bin, add up bins to get fuzzy track_length
+    // Assign the membership function for each bin
+    // and add up bins to get fuzzy track_length
     for (iter = std::begin(his); iter != std::end(his); ++iter) {
         if (iter->second > arv) {
             ++result;

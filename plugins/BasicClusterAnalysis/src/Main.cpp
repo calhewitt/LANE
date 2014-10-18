@@ -34,7 +34,8 @@ int main(int argc, char *argv[]) {
         cout << "USAGE: " << argv[0] << " input-directory output-directory\n";
         return 1;
     }
-    
+    //TODO Load a, b, cand t calibration matrices here.
+
     string inputPath = argv[1];
     string outputPath = argv[2];
     
@@ -58,20 +59,35 @@ int main(int argc, char *argv[]) {
             unsigned int frameNumber = 1;
             for (const auto& f : file.getFrames(channel)) {
                 for (const auto& b : findBlobs(f)) {
-                    Cluster c;
-                    // TODO: Do we need to set the detector thickness and volume?
-                    // TODO: Figure out the units for the thickness etc.
+                    Cluster cl;
                     // Iterate over the keys in the blob
+                    // TODO Set the appropriate bias voltage at some point
                     for (const auto k : b) {
-                        c.addPixel(f.getPixel(k));
+                        Pixel p = f.getPixel(k);
+                        // If it isn't calibrated (or I haven't implemented loading the values) 
+                        // then use "typical" values
+                        unsigned int x = p.getC();
+                        // Typical (ish) values from the calibration
+                        float a = 2, b = 80, c = 250, t = -0.1; 
+                        // TODO load actual values of a, b, c and t
+                        if (x == 0) {
+                            p.setE(0);
+                        } else {
+                            p.setE(a * x + b + c / (x + t));
+                            cl.addPixel(p);
+                        }
                     }
                     
                     // Output the data in a simple way for now
                     outf << "Frame " << frameNumber << "\n";
-                    outf << "ShutterTime " << f.getTimeStamp() << "." << f.getTimeStampSub() << "\n";
-                    outf << "Azimuth " << c.getAzimuthAngle() << "\n";
-                    outf << "Polar " << c.getPolarAngle() << "\n";
-                    outf << "LET " << c.getLETinSi() << "\n\n\n";
+                    outf << "TimeStamp " << f.getTimeStamp() << "." << f.getTimeStampSub() << "\n";
+                    outf << "Azimuth " << cl.getAzimuthAngle() << "\n";
+                    outf << "Polar " << cl.getPolarAngle() << "\n";
+                    outf << "Volume " << cl.getVolume() << "\n";
+                    outf << "Height " << cl.getHeight() << "\n";
+                    outf << "HittingArea " << cl.getHittingArea() << "\n";
+                    outf << "TouchingEdge " << cl.touchingEdge() << "\n";
+                    outf << "LET " << cl.getLETinSi() << "\n\n\n";
                 }
                 
                 ++frameNumber;

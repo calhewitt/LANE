@@ -20,9 +20,10 @@ namespace lucid {
 Pixel::Pixel(
     const std::uint32_t x,
     const std::uint32_t y,
-    const std::uint32_t c
+    const std::uint32_t c,
+    const float e
 ) noexcept
-: x_(x), y_(y), c_(c) {
+: x_(x), y_(y), c_(c), e_(e) {
 }
 
 Pixel::~Pixel() noexcept = default;
@@ -40,7 +41,8 @@ bool Pixel::operator==(const Pixel& other) const noexcept {
         return (
             x_ == other.x_ &&
             y_ == other.y_ &&
-            c_ == other.c_
+            c_ == other.c_ &&
+            e_ == other.e_
         );
     }
 
@@ -63,6 +65,10 @@ void Pixel::setC(const std::uint32_t c) noexcept {
     c_ = c;
 }
 
+void Pixel::setE(const float e) noexcept {
+	e_ = e;
+}
+
 std::uint32_t Pixel::getX() const noexcept {
     return x_;
 }
@@ -75,10 +81,16 @@ std::uint32_t Pixel::getC() const noexcept {
     return c_;
 }
 
+float Pixel::getE() const noexcept {
+    return e_;
+}
+
+
 std::ostream& operator<<(std::ostream& os, const Pixel& pixel) noexcept {
     os << "X: " << pixel.x_ << "\n"
         << "Y: " << pixel.y_ << "\n"
-        << "C: " << pixel.c_ << "\n";
+        << "C: " << pixel.c_ << "\n"
+        << "E: " << pixel.e_ << "\n";
     return os;
 }
 

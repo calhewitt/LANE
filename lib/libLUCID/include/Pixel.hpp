@@ -27,11 +27,13 @@ public:
     /// \brief Constructor
     /// \param x The x coordinate
     /// \param y The y coordinate
-    /// \param c The energy count
+    /// \param c The TOT count
+    /// \param e The energy deposited in the pixel
     Pixel(
         const std::uint32_t x = 0,
         const std::uint32_t y = 0,
-        const std::uint32_t c = 0
+        const std::uint32_t c = 0,
+        const float e = 0.0
     ) noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
@@ -99,6 +101,16 @@ public:
     std::uint32_t getC() const noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
+    /// \brief Gets the energy deposited in that pixel
+    /// \return The energy deposited in that pixel
+    float getE() const noexcept;
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Sets the energy deposited in that pixel
+    /// \param e The energy deposited in that pixel
+    void setE(const float e) noexcept;
+    
+    ///////////////////////////////////////////////////////////////////////////
     /// \brief Overloaded ostream operator for the Frame class
     /// \param os The output stream
     /// \param pixel The Pixel to stream out
@@ -107,6 +119,7 @@ public:
 
 private:
     std::uint32_t x_, y_, c_;
+    float  e_;
 };
 
 } // lucid

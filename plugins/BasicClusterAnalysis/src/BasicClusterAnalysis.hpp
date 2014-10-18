@@ -84,13 +84,13 @@ public:
     unsigned int getSize() const noexcept;
     
     ///////////////////////////////////////////////////////////////////////////
-    /// \brief ***
-    /// \return The ***
-    float getVolume() const noexcept;
+    /// \brief Retrieves the cluster volume
+    /// \return The total energy deposited in the cluster (volume)
+    float getVolume() noexcept;
     
     ///////////////////////////////////////////////////////////////////////////
-    /// \brief ***
-    /// \return The ***
+    /// \brief Retrieves the cluster height
+    /// \return The energy deposited in the most energetic pixel (height)
     float getHeight() const noexcept;
     
     ///////////////////////////////////////////////////////////////////////////
@@ -132,6 +132,17 @@ public:
     /// \brief Retrieves the LET in Si
     /// \return The LET in Si
     float getLETinSi() noexcept;
+    
+    //////////////////////////////////////////////////////////////////////////
+    /// \brief Calculates the area in pixels which the particle could have hit
+    /// without it touching the edge of the frame
+    /// \return Area in pixels
+    unsigned int getHittingArea() const noexcept;
+
+    //////////////////////////////////////////////////////////////////////////
+    /// \brief Calculates the area in pixels which the particle could have hit
+    /// \return Boolean representing wether or not it is touching the edge
+    bool touchingEdge() const noexcept;
 
 private:
     // Caclulates the fuzzy track length of the cluster on the x-axis
@@ -156,6 +167,10 @@ private:
     float minorWidth_;
     float projectedTrackLength_;
     float trackLength_;
+    unsigned int xmin_;
+    unsigned int xmax_;
+    unsigned int ymin_;
+    unsigned int ymax_;
 };
 
 
