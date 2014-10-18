@@ -6,7 +6,7 @@ set(PLUGIN_SOURCES
 
 add_custom_target(${PROJECT_NAME})
 
-foreach(source ${TESTPLUGINPYTHON_SOURCES})
+foreach(source ${PLUGIN_SOURCES})
     add_custom_command(TARGET ${PROJECT_NAME}
         POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E 
