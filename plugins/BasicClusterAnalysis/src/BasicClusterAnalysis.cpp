@@ -30,10 +30,10 @@ const double pi = 3.14159265359;
 namespace {
 
 // Rotates the pixel's position using the azimuth angle
-lucid::Pixel rotatePixel(const lucid::Pixel& pixel, const float azimuthAngle) noexcept {
+lucid::Pixel rotatePixel(const lucid::Pixel& pixel, const double azimuthAngle) noexcept {
     lucid::Pixel rotatedPixel;
-    float s = sin(azimuthAngle);
-    float c = cos(azimuthAngle);
+    double s = sin(azimuthAngle);
+    double c = cos(azimuthAngle);
     rotatedPixel.setX(c*pixel.getX() - s*pixel.getY()); //Implemented rotations
     rotatedPixel.setY(c*pixel.getY() + s*pixel.getX());
     rotatedPixel.setC(pixel.getC());
@@ -163,7 +163,7 @@ unsigned int Cluster::getSize() const noexcept {
     return pixels_.size();
 }
 
-float Cluster::getVolume() noexcept {
+double Cluster::getVolume() noexcept {
     if (volume_ > 0) {
         return volume_;
     }
@@ -176,7 +176,7 @@ float Cluster::getVolume() noexcept {
 
 }
 
-float Cluster::getHeight() const noexcept {
+double Cluster::getHeight() const noexcept {
     return height_;
 }
 
@@ -188,7 +188,7 @@ void Cluster::setDetectorThickness(const int detectorThickness) noexcept {
     detectorThickness_ = detectorThickness;
 }
 
-float Cluster::getAzimuthAngle() noexcept {
+double Cluster::getAzimuthAngle() noexcept {
     if (azimuthAngle_ > -pi) {
         return azimuthAngle_;
     }
@@ -196,10 +196,10 @@ float Cluster::getAzimuthAngle() noexcept {
         return 0;
     }
     
-    float threshold = height_ / 10;
-    float wx, wy, wxx, wyy; // sum of weighted x, y, x*x, y*y
-    float wxy; // sum of weighted x*y
-    float fw; // sum of weight
+    double threshold = height_ / 10;
+    double wx, wy, wxx, wyy; // sum of weighted x, y, x*x, y*y
+    double wxy; // sum of weighted x*y
+    double fw; // sum of weight
     unsigned int x, y; // coordinate x, y at each pixel
     
     wx = wy = wxx = wxy = wyy = 0;
@@ -207,19 +207,19 @@ float Cluster::getAzimuthAngle() noexcept {
 
     for (auto iter = std::begin(pixels_); iter != std::end(pixels_); ++iter) {
         if (iter->getC() > threshold) {
-            float w; // energy of each pixel
-             x = iter->getX();
-             y = iter->getY();
-             w = iter->getE();
-             wx += x * w;
-             wy += y * w;
-             wxx += x * x * w;
-             wxy += x * y * w;
-             fw += w;
-			 wyy += w * y * y;
+            double w; // energy of each pixel
+            x = iter->getX() - xmin_;
+            y = iter->getY() - ymin_;
+            w = iter->getE();
+            wx += x * w;
+            wy += y * w;
+            wxx += x * x * w;
+            wxy += x * y * w;
+            fw += w;
+            wyy += w * y * y;
         }
     }
-    float delta;
+    double delta;
     delta = fw * wxy - wy * wx;
 
     if (std::abs(delta) <= 0.0001) {
@@ -231,15 +231,19 @@ float Cluster::getAzimuthAngle() noexcept {
 		// It then does another histogram for majLen using c ** 2 for each pixel and looks at the mean for this
 		// It compares the mean value for x weighted by c**2 to the mean value weighted by c
         // TODO azimuth seems to too often result in NaN. Possibly sqrt a neg. number
-		float a = fw * wxx - wx * wx;
-		float b = 2 * (wxy * fw - wx * wy);
-		float c = fw * wyy - wy * wy;
-        azimuthAngle_ = std::atan((c - a + std::sqrt((a-c)*(a-c) - b * b))/b);
+		double a = fw * wxx - wx * wx;
+		double b = 2 * (wxy * fw - wx * wy);
+		double c = fw * wyy - wy * wy;
+        if (std::abs(b) >=  std::abs(a-c)) {
+            azimuthAngle_ = 0;
+        } else {
+            azimuthAngle_ = std::atan((c - a + std::sqrt((a-c)*(a-c) - b * b))/b);
+        }
 	}
     return azimuthAngle_;
 }
 
-float Cluster::getProjectedTrackLength() noexcept {
+double Cluster::getProjectedTrackLength() noexcept {
     if (projectedTrackLength_ >= 0) {
         return projectedTrackLength_;
     }
@@ -251,9 +255,9 @@ float Cluster::getProjectedTrackLength() noexcept {
         return projectedTrackLength_;
     }
 
-    float threshold = height_ / 20;
+    double threshold = height_ / 20;
 
-    float azimuth = getAzimuthAngle();
+    double azimuth = getAzimuthAngle();
     std::map<int, double> majorHis, minorHis;
     std::map<int, double>::iterator p;
 	std::map<int, double> majorHiscc, minorHiscc;
@@ -322,17 +326,17 @@ float Cluster::getProjectedTrackLength() noexcept {
     majorLength_ = getFuzzyTrackLength(majorHis, 0.75);
     minorWidth_ = getFuzzyTrackLength(minorHis, 0.75);
     if (majorLength_ < minorWidth_) {
-		float temp = majorLength_;
+		double temp = majorLength_;
         majorLength_ = minorWidth_;
 		minorWidth_ = temp;
 		azimuthAngle_ += pi/2;
     }
-    float alpha = minorWidth_ / (2 * majorLength_ - minorWidth_);
-    float coeff = 55; //This converts the track length from pixels to micrometres.
+    double alpha = minorWidth_ / (2 * majorLength_ - minorWidth_);
+    double coeff = 55; //This converts the track length from pixels to micrometres.
     //The pixels are 55 micrometres
 
     //This adjusts for the biasVoltage
-    float correction = biasVoltage_ / 50.0;
+    double correction = biasVoltage_ / 50.0;
     if (correction > 2) {
         correction = 2;
     }
@@ -347,7 +351,7 @@ float Cluster::getProjectedTrackLength() noexcept {
     return projectedTrackLength_;
 }
 
-float Cluster::getTrackLength() noexcept {
+double Cluster::getTrackLength() noexcept {
     if(trackLength_ > 0) {
         return trackLength_;
     }
@@ -358,7 +362,7 @@ float Cluster::getTrackLength() noexcept {
     return trackLength_;
 }
 
-float Cluster::getPolarAngle() noexcept {
+double Cluster::getPolarAngle() noexcept {
     if (polarAngle_ >= 0) {
         return polarAngle_;
     }
@@ -366,26 +370,26 @@ float Cluster::getPolarAngle() noexcept {
     return polarAngle_;
 }
 
-float Cluster::getLETinSi() noexcept {
+double Cluster::getLETinSi() noexcept {
     return getVolume() / getTrackLength(); //Tracklength is in micrometres.
     // Will need to find out what units the calibration constants are in to
     // accurately estimate this
 }
 
-float Cluster::getFuzzyTrackLength(
+double Cluster::getFuzzyTrackLength(
     std::map<int, double>& his,
-    const float coeff
+    const double coeff
 ) noexcept {
     std::map<int, double>::iterator iter = std::begin(his);
     double arv = 0.0;
-    float result = 0.0;
+    double result = 0.0;
     for (; iter != std::end(his); ++iter) {
         arv += iter->second;
     }
     arv /= his.size();
     arv *= coeff;
     // Assign the membership function for each bin
-    // and add up bins to get fuzzy track_length
+    // and add up bins to get fuzzy track length
     for (iter = std::begin(his); iter != std::end(his); ++iter) {
         if (iter->second > arv) {
             ++result;

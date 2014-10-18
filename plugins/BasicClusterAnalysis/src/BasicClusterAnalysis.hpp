@@ -86,12 +86,12 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Retrieves the cluster volume
     /// \return The total energy deposited in the cluster (volume)
-    float getVolume() noexcept;
+    double getVolume() noexcept;
     
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Retrieves the cluster height
     /// \return The energy deposited in the most energetic pixel (height)
-    float getHeight() const noexcept;
+    double getHeight() const noexcept;
     
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Sets the bias voltage of the chip
@@ -108,30 +108,30 @@ public:
     /// projected vector and the x-coordinate vector on the projected plane
     /// of detector.
     /// \return The azimuth angle
-    float getAzimuthAngle() noexcept;
+    double getAzimuthAngle() noexcept;
     
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Calculates the projected track length of a particle based on
     /// its footprint at the projected plane of detector
     /// \return The projected track length
-    float getProjectedTrackLength() noexcept;
+    double getProjectedTrackLength() noexcept;
     
     ///////////////////////////////////////////////////////////////////////////
     /// \brief The track length of particle from the point it enters to the 
     /// point it exits (assumes penetrating particle)
     /// \return The track length
-    float getTrackLength() noexcept;
+    double getTrackLength() noexcept;
     
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Calculates the angle in radians with respect to the vertical
     /// direction
     /// \return The polar angle
-    float getPolarAngle() noexcept;
+    double getPolarAngle() noexcept;
     
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Retrieves the LET in Si
     /// \return The LET in Si
-    float getLETinSi() noexcept;
+    double getLETinSi() noexcept;
     
     //////////////////////////////////////////////////////////////////////////
     /// \brief Calculates the area in pixels which the particle could have hit
@@ -147,26 +147,26 @@ public:
 private:
     // Caclulates the fuzzy track length of the cluster on the x-axis
     // (or y-axis) from its profile and a cut point (coeff)
-    float getFuzzyTrackLength(
+    double getFuzzyTrackLength(
         std::map<int, double>& energyHis,
-        const float coeff
+        const double coeff
     ) noexcept;
 
     // The storage for cluster pixels
     std::vector<lucid::Pixel> pixels_;
     
     // cluster parameters
-    float volume_;
-    float LET_;
-    float height_;
+    double volume_;
+    double LET_;
+    double height_;
     float biasVoltage_;
     int detectorThickness_;
-    float azimuthAngle_;
-    float polarAngle_;
-    float majorLength_;
-    float minorWidth_;
-    float projectedTrackLength_;
-    float trackLength_;
+    double azimuthAngle_;
+    double polarAngle_;
+    double majorLength_;
+    double minorWidth_;
+    double projectedTrackLength_;
+    double trackLength_;
     unsigned int xmin_;
     unsigned int xmax_;
     unsigned int ymin_;
