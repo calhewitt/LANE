@@ -43,7 +43,7 @@ lucid::Pixel rotatePixel(const lucid::Pixel& pixel, const float azimuthAngle) no
 
 }
 
-Cluster::Cluster() noexcept
+Cluster::Cluster()
 : volume_(0),
   height_(0),
   biasVoltage_(0),
@@ -64,13 +64,13 @@ Cluster::~Cluster() noexcept {
     clear();
 }
 
-Cluster::Cluster(const Cluster& other) noexcept = default;
+Cluster::Cluster(const Cluster& other) = default;
 
-Cluster::Cluster(Cluster&& other) noexcept = default;
+Cluster::Cluster(Cluster&& other) = default;
 
-Cluster& Cluster::operator=(const Cluster& other) noexcept = default;
+Cluster& Cluster::operator=(const Cluster& other) = default;
 
-Cluster& Cluster::operator=(Cluster&& other) noexcept = default;
+Cluster& Cluster::operator=(Cluster&& other) = default;
 
 bool Cluster::operator==(const Cluster& other) const noexcept {
     if (this != &other) {

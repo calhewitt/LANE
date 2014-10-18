@@ -28,7 +28,7 @@ class Cluster final {
 public:
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Constructor
-    Cluster() noexcept;
+    Cluster();
     
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Destructor
@@ -36,32 +36,32 @@ public:
     
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Copy constructor
-    /// \param x The x value
-    Cluster(const Cluster& other) noexcept;
+    /// \param other The other Cluster object to copy construct from
+    Cluster(const Cluster& other);
     
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Move constructor
-    /// \param x The x value
-    Cluster(Cluster&& other) noexcept;
+    /// \param other The other Cluster object to move construct from
+    Cluster(Cluster&& other);
     
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Assignment operator
-    /// \param x The x value
-    Cluster& operator=(const Cluster& other) noexcept;
+    /// \param other The other Cluster object to assign from
+    Cluster& operator=(const Cluster& other);
     
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Move assignment operator
-    /// \param x The x value
-    Cluster& operator=(Cluster&& other) noexcept;
+    /// \param other The other Cluster object to move assign from
+    Cluster& operator=(Cluster&& other);
     
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Equality operator
-    /// \param x The x value
+    /// \param other The other Cluster object to equate against
     bool operator==(const Cluster& other) const noexcept;
     
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Inequality operator
-    /// \param x The x value
+    /// \param other The other Cluster object to equate against
     bool operator!=(const Cluster& other) const noexcept;
     
     ///////////////////////////////////////////////////////////////////////////

@@ -53,7 +53,7 @@ TEST(BlobTest, AddPixelTest) {
     auto blob = lucid::Blob();
     blob.addPixel(lucid::Pixel(1, 1, 1));
     unsigned int result = *(std::begin(blob));
-    EXPECT_EQ(1 * 256 + 1, result)
+    EXPECT_EQ((unsigned int)(1 * 256 + 1), result)
         << "Input: '1, 1, 1' gives result: '"
         << result << "'. Expected: '257'";
 }
@@ -62,7 +62,7 @@ TEST(BlobTest, AddPixelKeyTest) {
     auto blob = lucid::Blob();
     blob.addPixelKey(30);
     unsigned int result = *(std::begin(blob));
-    EXPECT_EQ(30, result)
+    EXPECT_EQ((unsigned int)30, result)
         << "Input: '30' gives result: '"
         << result << "'. Expected: '30'";
 }

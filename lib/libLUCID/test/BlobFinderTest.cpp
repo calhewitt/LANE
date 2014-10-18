@@ -34,7 +34,7 @@ TEST(BlobFinderTest, FindBlobsTest) {
     
     // Test 1
     unsigned int result = lucid::findBlobs(testFrame).size();
-    EXPECT_EQ(1, result) 
+    EXPECT_EQ((unsigned int)1, result) 
         << "Input: 'all ones' gives result: '"
         << result << "'. Expected: '1'";
 
@@ -45,7 +45,7 @@ TEST(BlobFinderTest, FindBlobsTest) {
         testFrame.setPixel(9, i, 1);
     }
     result = lucid::findBlobs(testFrame).size();
-    EXPECT_EQ(2, result) 
+    EXPECT_EQ((unsigned int)2, result) 
         << "Input: 'two lines of values' gives result: '"
         << result << "'. Expected: '2'";
         
@@ -54,7 +54,7 @@ TEST(BlobFinderTest, FindBlobsTest) {
         testFrame.setPixel(i, 3, 1);
     }
     result = lucid::findBlobs(testFrame).size();
-    EXPECT_EQ(1, result) 
+    EXPECT_EQ((unsigned int)1, result) 
         << "Input: 'two lines of values with one line crossing' gives result: '"
         << result << "'. Expected: '1'";
 }
