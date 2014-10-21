@@ -37,6 +37,13 @@ make check
 ```
 
 
+## Building LANE tools
+Use the following to build the LANE tool suite:
+```shell
+make tools
+```
+
+
 ## Project organization
 The main directory contains some information and the plugin manager script, 
 [LANEman](LANEman.py)
@@ -45,6 +52,7 @@ The project is also organized into a couple of subdirectories.
 * The [plugins](plugins) directory contains the source code and binaries of 
 the analysis plugins, as well as the configuration files for the plugin 
 manager.
+* The [tools](tools) directory contains the LANE-based tools/software.
 * The [lib](lib) directory contains the libraries used in the software.
 * The [lib/external](lib/external) directory contains the third-party 
 libraries used in this software.
@@ -76,18 +84,18 @@ Please see [LICENSE.md](LICENSE.md).
 ## External Libraries:
 
 [GoogleTest][] - Under New BSD license
-
+[Inih][] - Under New BSD license
 
 
 ## TODO
 
-* Write some plugins.
+* Replace inih with my own python ConfigFileParser style ini handling library
+that allows both adding new sections/key values and reading them.
 * Possibly change to using mmap/buffering for IO in libLUCID to enable reading 
 in files of size greater than ~16GB.
 * Add support for XYV compression to libLUCID.
 * Add support for some more of the settings in the data files' header to 
 libLUCID.
-* Add some convenience functions to libLUCID.
 * Add telemetry data support to libLUCID.
 
 
@@ -96,3 +104,4 @@ libLUCID.
 [CMake]: http://www.cmake.org
 [GoogleTest]: https://code.google.com/p/googletest/
 [Python2]: https://www.python.org/
+[Inih]: https://code.google.com/p/inih/

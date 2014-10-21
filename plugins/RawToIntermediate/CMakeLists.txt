@@ -2,13 +2,7 @@
 # Setup project
 #=============================================================================
 cmake_minimum_required(VERSION 2.8.8)
-project(libLUCID C CXX)
-
-
-#=============================================================================
-# Search for packages.
-#=============================================================================
-find_package(Doxygen)
+project(RawToIntermediate)
 
 
 #=============================================================================
@@ -107,72 +101,19 @@ add_definitions(
 
 
 #=============================================================================
-# Build library
+# Build plugin
 #=============================================================================
-include_directories(
-    include
+set(PLUGIN_SOURCES
+    src/Main.cpp
 )
 
-if (WIN32)
-    set(FILESYSTEM_SOURCES
-         src/Utils/FilesystemWindows.cpp
-    )
-elseif(UNIX OR APPLE)
-    set(FILESYSTEM_SOURCES
-         src/Utils/FilesystemLinux.cpp
-    )
-else()
-    message(FATAL_ERROR "libLUCID doesn't support this platform")
-endif(WIN32)
+add_executable(${PROJECT_NAME} ${PLUGIN_SOURCES})
 
-set(LIBLUCID_SOURCES
-    src/Frame.cpp include/Frame.hpp
-    include/RawInputFile.hpp
-    src/LANEFile.cpp include/LANEFile.hpp
-    src/LUCID/LUCIDFile.cpp include/LUCID/LUCIDFile.hpp
-    src/Pixel.cpp include/Pixel.hpp
-    src/Blob.cpp include/Blob.hpp
-    src/BlobFinder.cpp include/BlobFinder.hpp
-    src/Utils/Logger.cpp include/Utils/Logger.hpp
-    src/Utils/LoggerSink.cpp include/Utils/LoggerSink.hpp
-    src/Utils/Filesystem.cpp include/Utils/Filesystem.hpp ${FILESYSTEM_SOURCES} 
+target_link_libraries(${PROJECT_NAME} libLUCID)
+
+set_target_properties(${PROJECT_NAME}
+    PROPERTIES RUNTIME_OUTPUT_DIRECTORY
+    ${CMAKE_BINARY_DIR}/bin
 )
 
-add_library(libLUCID ${LIBLUCID_SOURCES})
-
-
-#=============================================================================
-# Setup unit tests
-#=============================================================================
-include(CTest)
-enable_testing()
-include_directories(
-    ../external/gtest/include
-    include
-)
-
-add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND})
-add_custom_target(tests)
-
-macro(add_test_executable TEST_NAME TEST_SOURCES)
-    add_executable(${TEST_NAME} EXCLUDE_FROM_ALL
-        ${TEST_SOURCES}
-    )
-    target_link_libraries(${TEST_NAME} gtest gtest_main libLUCID)
-    add_test(
-        NAME ${TEST_NAME}
-        COMMAND ${TEST_NAME}
-    )
-    set_target_properties(${TEST_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/test)
-    
-    add_dependencies(check ${TEST_NAME})
-    add_dependencies(tests ${TEST_NAME})
-endmacro()
-
-add_test_executable(EndianTest test/EndianTest.cpp)
-add_test_executable(PixelTest test/PixelTest.cpp)
-add_test_executable(FrameTest test/FrameTest.cpp)
-add_test_executable(LUCIDFileTest test/LUCIDFileTest.cpp)
-add_test_executable(BlobTest test/BlobTest.cpp)
-add_test_executable(BlobFinderTest test/BlobFinderTest.cpp)
-add_test_executable(FilesystemTest test/FilesystemTest.cpp)
+add_dependencies(plugins ${PROJECT_NAME})

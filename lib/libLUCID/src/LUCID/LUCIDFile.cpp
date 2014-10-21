@@ -74,25 +74,25 @@ std::string toString(const CompressionMode mode) noexcept {
 }
 
 LUCIDFile::LUCIDFile() noexcept
-: startTime(0),
-fileID(0),
-shutterRate(0),
-isCompressed(false),
-isLinearLUT(false),
-compressionMode(CompressionMode::Unknown),
+: startTime_(0),
+fileID_(0),
+shutterRate_(0),
+isCompressed_(false),
+isLinearLUT_(false),
+compressionMode_(CompressionMode::Unknown),
 channels_() {
-    chipActive.fill(false);
+    chipActive_.fill(false);
 }
 
 LUCIDFile::LUCIDFile(const std::string& fileName) noexcept
-: startTime(0),
-fileID(0),
-shutterRate(0),
-isCompressed(false),
-isLinearLUT(false),
-compressionMode(CompressionMode::Unknown),
+: startTime_(0),
+fileID_(0),
+shutterRate_(0),
+isCompressed_(false),
+isLinearLUT_(false),
+compressionMode_(CompressionMode::Unknown),
 channels_() {
-    chipActive.fill(false);
+    chipActive_.fill(false);
     read(fileName);
 }
 
@@ -110,13 +110,13 @@ bool LUCIDFile::operator==(const LUCIDFile& other) const noexcept {
     if (this != &other) {
         if(channels_.size() == other.channels_.size()) {
             return (
-                chipActive == other.chipActive &&
-                startTime == other.startTime &&
-                fileID == other.fileID &&
-                shutterRate == other.shutterRate &&
-                isCompressed == other.isCompressed &&
-                isLinearLUT == other.isLinearLUT &&
-                compressionMode == other.compressionMode &&
+                chipActive_ == other.chipActive_ &&
+                startTime_ == other.startTime_ &&
+                fileID_ == other.fileID_ &&
+                shutterRate_ == other.shutterRate_ &&
+                isCompressed_ == other.isCompressed_ &&
+                isLinearLUT_ == other.isLinearLUT_ &&
+                compressionMode_ == other.compressionMode_ &&
                 channels_ == other.channels_
             );
         }
@@ -132,11 +132,13 @@ bool LUCIDFile::operator!=(const LUCIDFile& other) const noexcept {
 }
 
 void LUCIDFile::read(const std::string& fileName) noexcept {
+    clear();
+
     std::ifstream input(fileName, std::ios::binary | std::ios::ate);
     if (!input.is_open()) {
         throw std::runtime_error("Unable to open file: " + fileName);
     }
-
+    
     // Get file size
     const std::uint64_t fileSize = input.tellg();
     input.seekg(0, std::ios::beg);
@@ -145,6 +147,8 @@ void LUCIDFile::read(const std::string& fileName) noexcept {
     std::vector<std::uint8_t> data;
     data.reserve(fileSize);
     input.read(reinterpret_cast<char*>(&data[0]), fileSize);
+    
+    input.close();
 
     // LUCID is big endian
     const bool isLittleEndian = utils::isLittleEndian();
@@ -171,7 +175,7 @@ void LUCIDFile::read(const std::string& fileName) noexcept {
     // I do not know which way round the bit field is
     // so whether TPX0 is bit 3 or bit 7 is unknown as of yet
     for (unsigned int i = 0; i < 5; ++i) {
-        chipActive[i] = (data[2] >> i) ? true : false;
+        chipActive_[i] = (data[2] >> i) ? true : false;
     }
 
     // Compression
@@ -180,36 +184,36 @@ void LUCIDFile::read(const std::string& fileName) noexcept {
     // 1 - XYV
     switch ((data[6] >> 2) & 0x01) {
     case 0:
-        compressionMode = CompressionMode::RLE;
+        compressionMode_ = CompressionMode::RLE;
         break;
     case 1:
-        compressionMode = CompressionMode::XYV;
+        compressionMode_ = CompressionMode::XYV;
         break;
     }
     // Type of LUT used
     // 0 - PRN
     // 1 - Linear
-    isLinearLUT = ((data[6] >> 1) & 0x01) ? true : false;
+    isLinearLUT_ = ((data[6] >> 1) & 0x01) ? true : false;
     // Data compression enabled?
     // 0 - Off
     // 1 - On
-    isCompressed = (data[6] & 0x01) ? true : false;
-    if (!isCompressed) {
-        compressionMode = CompressionMode::None;
+    isCompressed_ = (data[6] & 0x01) ? true : false;
+    if (!isCompressed_) {
+        compressionMode_ = CompressionMode::None;
     }
 
     // Shutter Rate
-    shutterRate = static_cast<std::uint32_t>(data[7]);
+    shutterRate_ = static_cast<std::uint32_t>(data[7]);
 
     // Start Time
-    startTime = *(reinterpret_cast<std::uint32_t*>(&data[8]));
+    startTime_ = *(reinterpret_cast<std::uint32_t*>(&data[8]));
 
     // File ID
-    fileID = *(reinterpret_cast<std::uint32_t*>(&data[12]));
+    fileID_ = *(reinterpret_cast<std::uint32_t*>(&data[12]));
 
     if (isLittleEndian) {
-        startTime = utils::swapEndian(startTime);
-        fileID = utils::swapEndian(fileID);
+        startTime_ = utils::swapEndian(startTime_);
+        fileID_ = utils::swapEndian(fileID_);
     }
 
     // Read in frames
@@ -323,7 +327,7 @@ void LUCIDFile::read(const std::string& fileName) noexcept {
             }
 
             // Add frame to channel map
-            channels_[channel].push_back(currentFrame);
+            channels_[channel].emplace_back(currentFrame);
         }
     }
 }
@@ -333,23 +337,46 @@ std::vector<Frame> LUCIDFile::getFrames(const std::uint32_t channelID) const noe
     return channels_.find(channelID)->second;
 }
 
+std::map<std::uint32_t, std::vector<Frame>> LUCIDFile::getChannelToFramesMap() const noexcept {
+    return channels_;
+}
+
+std::uint32_t LUCIDFile::getStartTime() const noexcept {
+    return startTime_;
+}
+
+std::uint32_t LUCIDFile::getFileID() const noexcept {
+    return fileID_;
+}
+
+void LUCIDFile::clear() noexcept {
+    chipActive_.fill(false);
+    startTime_ = 0;
+    fileID_ = 0;
+    shutterRate_ = 0;
+    isCompressed_ = false;
+    isLinearLUT_ = false;
+    compressionMode_ = CompressionMode::Unknown;
+    channels_.clear();
+}
+
 std::ostream& operator<<(std::ostream& os, const LUCIDFile& file) noexcept {
     os << "-HEADER-\n"
-        << "File ID: " << file.fileID << "\n"
-        << "Start Time: " << file.startTime << "\n";
+        << "File ID: " << file.fileID_ << "\n"
+        << "Start Time: " << file.startTime_ << "\n";
     os << "Active Chips:\n";
     for (unsigned int i = 0; i <= 4; ++i) {
         os << "Chip " << i << " - "
-            << (file.chipActive[i] ? "Active" : "Inactive") << "\n";
+            << (file.chipActive_[i] ? "Active" : "Inactive") << "\n";
     }
     os << "Shutter Rate: "
-            << file.shutterRate << "\n"
+            << file.shutterRate_ << "\n"
         << "Is Compressed?: "
-            << (file.isCompressed ? "True" : "False") << "\n"
+            << (file.isCompressed_ ? "True" : "False") << "\n"
         << "Compression Mode: "
-            << toString(file.compressionMode) << "\n"
+            << toString(file.compressionMode_) << "\n"
         << "Uses Linear LUT?: "
-            << (file.isLinearLUT ? "True" : "False") << "\n";
+            << (file.isLinearLUT_ ? "True" : "False") << "\n";
     for (const auto& channel : file.channels_) {
         for (const auto& frame : channel.second) {
             os << frame;
