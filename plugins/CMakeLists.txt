@@ -2,7 +2,6 @@
 
 include_directories(
     ../lib/libLUCID/include
-    ../lib/external/inih/cpp
 )
 
 add_custom_target(plugins)

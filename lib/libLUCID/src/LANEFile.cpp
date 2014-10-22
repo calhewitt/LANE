@@ -22,7 +22,6 @@
 #include "Frame.hpp"
 #include "Pixel.hpp"
 #include "Utils/Misc.hpp"
-#include <iostream>
 
 namespace {
 
@@ -84,15 +83,13 @@ bool LANEFile::operator!=(const LANEFile& other) const noexcept {
 // Currently in the following format:
 // ID
 // STARTTIME
-//      CHANNELID
-//          FRAMETIMESTAMP
-//              X
-//              Y
-//              C
-//          EOF
-//      EOC
-//      CHANNELID 
-// ...
+// CHANNELID
+// FRAMETIMESTAMP
+// X,Y,C
+// EOF
+// EOC
+// CHANNELID 
+// ...etc
 void LANEFile::read(const std::string& fileName) {
     clear();
     std::ifstream input(
@@ -106,13 +103,13 @@ void LANEFile::read(const std::string& fileName) {
     std::string buffer = "";
     std::vector<std::string> splitElems;
     
+    std::getline(input, buffer);
+    split(buffer, ',', splitElems);
     // Get the file ID
-    std::getline(input, buffer);
-    fileID_ = std::stoi(buffer);
-    
+    fileID_ = std::stoi(splitElems[0]);
     // Get the start time
-    std::getline(input, buffer);
-    startTime_ = std::stoi(buffer);
+    startTime_ = std::stoi(splitElems[1]);
+    splitElems.clear();
     
     while (std::getline(input, buffer)) {
         // Get channel ID
@@ -138,12 +135,12 @@ void LANEFile::read(const std::string& fileName) {
                 if (input.eof() || buffer == "EOF") {
                     break;
                 }
-                lucid::Pixel pixel;
-                std::uint32_t x = std::stoi(buffer);
-                std::getline(input, buffer);
-                std::uint32_t y = std::stoi(buffer);
-                std::getline(input, buffer);
-                std::uint32_t c = std::stoi(buffer);
+                
+                split(buffer, ',', splitElems);
+                std::uint32_t x = std::stoi(splitElems[0]);
+                std::uint32_t y = std::stoi(splitElems[1]);
+                std::uint32_t c = std::stoi(splitElems[2]);
+                splitElems.clear();
                 
                 currentFrame.setPixel(x, y, c);
             }
@@ -167,15 +164,15 @@ void LANEFile::write(const std::string& fileName) {
     }
     
     // Write out the data to a file
-    output << fileID_ << "\n" << startTime_ << "\n";
+    output << fileID_ << "," << startTime_ << "\n";
     for (const auto& channel : channels_) {
         output << channel.first << "\n";
         for (const auto& frame : channel.second) {
             output << frame.getTimeStamp() << "." << frame.getTimeStampSub() << "\n";
             for (const auto& pixel : frame.getPixels()) {
-                output << pixel.second.getX() << "\n";
-                output << pixel.second.getY() << "\n";
-                output << pixel.second.getC() << "\n";
+                output << pixel.second.getX() << ","
+                    << pixel.second.getY() << ","
+                    << pixel.second.getC() << "\n";
             }
             output << "EOF\n"; // End of frame demarcation
         }

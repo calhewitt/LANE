@@ -84,13 +84,10 @@ Please see [LICENSE.md](LICENSE.md).
 ## External Libraries:
 
 [GoogleTest][] - Under New BSD license
-[Inih][] - Under New BSD license
 
 
 ## TODO
 
-* Replace inih with my own python ConfigFileParser style ini handling library
-that allows both adding new sections/key values and reading them.
 * Possibly change to using mmap/buffering for IO in libLUCID to enable reading 
 in files of size greater than ~16GB.
 * Add support for XYV compression to libLUCID.
@@ -104,4 +101,3 @@ libLUCID.
 [CMake]: http://www.cmake.org
 [GoogleTest]: https://code.google.com/p/googletest/
 [Python2]: https://www.python.org/
-[Inih]: https://code.google.com/p/inih/
