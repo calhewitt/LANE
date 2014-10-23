@@ -28,9 +28,9 @@
 
 int main(int argc, char *argv[]) {
     using namespace std;
-    using namespace lucid;
     using namespace lane;
-    using namespace utils;
+    using namespace lane::lucid;
+    using namespace lane::utils;
     
     if (argc != 3) {
         cout << "USAGE: " << argv[0] << " input-directory output-directory\n";

@@ -108,7 +108,7 @@ set(PLUGIN_SOURCES
     src/BasicClusterAnalysis.cpp src/BasicClusterAnalysis.hpp
 )
 
-add_executable(${PROJECT_NAME} ${PLUGIN_SOURCES})
+add_executable(${PROJECT_NAME} EXCLUDE_FROM_ALL ${PLUGIN_SOURCES})
 
 target_link_libraries(${PROJECT_NAME} libLUCID)
 

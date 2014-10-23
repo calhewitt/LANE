@@ -11,8 +11,8 @@
 /// http://opensource.org/licenses/BSD-2-Clause
 /// or read the 'LICENSE.md' file distributed with this code
 
-#ifndef LUCID_LANEFILE_HPP
-#define LUCID_LANEFILE_HPP
+#ifndef LANE_LANEFILE_HPP
+#define LANE_LANEFILE_HPP
 
 #include <string>
 #include <map>
@@ -86,7 +86,7 @@ public:
     /// \param frame A frame to add to the internal storage
     /// \param channelID The channelID to associate to the frame
     void addFrame(
-        const lucid::Frame& frame,
+        const Frame& frame,
         std::uint32_t channelID = 0
     ) noexcept;
     
@@ -94,7 +94,7 @@ public:
     /// \brief Gets the frames associated with a channel
     /// \param channelID The ID of the channel to grab from
     /// \return A vector of frames
-    std::vector<lucid::Frame> getFrames(
+    std::vector<Frame> getFrames(
         const std::uint32_t channelID
     ) const noexcept;
     
@@ -131,11 +131,11 @@ public:
 private:
     void clear() noexcept;
 
-    std::map<std::uint32_t, std::vector<lucid::Frame>> channels_;
+    std::map<std::uint32_t, std::vector<Frame>> channels_;
     std::uint32_t startTime_;
     std::uint32_t fileID_;
 };
 
 } // lane
 
-#endif // LUCID_LANEFILE_HPP
+#endif // LANE_LANEFILE_HPP

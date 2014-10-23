@@ -16,9 +16,9 @@
 #include "Blob.hpp"
 
 TEST(BlobTest, EqualityTest) {
-    auto blob1 = lucid::Blob();
+    auto blob1 = lane::Blob();
     blob1.addPixelKey(12);
-    auto blob2 = lucid::Blob();
+    auto blob2 = lane::Blob();
     blob2.addPixelKey(15);
 
     EXPECT_EQ(blob1 == blob2, false)
@@ -28,7 +28,7 @@ TEST(BlobTest, EqualityTest) {
 }
 
 TEST(BlobTest, CopyTest) {
-    auto blob = lucid::Blob();
+    auto blob = lane::Blob();
     blob.addPixelKey(10);
     auto copiedBlob(blob);
 
@@ -39,7 +39,7 @@ TEST(BlobTest, CopyTest) {
 }
 
 TEST(BlobTest, AssignTest) {
-    auto blob = lucid::Blob();
+    auto blob = lane::Blob();
     blob.addPixelKey(10);
     auto assignedBlob = blob;
 
@@ -50,8 +50,8 @@ TEST(BlobTest, AssignTest) {
 }
 
 TEST(BlobTest, AddPixelTest) {
-    auto blob = lucid::Blob();
-    blob.addPixel(lucid::Pixel(1, 1, 1));
+    auto blob = lane::Blob();
+    blob.addPixel(lane::Pixel(1, 1, 1));
     unsigned int result = *(std::begin(blob));
     EXPECT_EQ((unsigned int)(1 * 256 + 1), result)
         << "Input: '1, 1, 1' gives result: '"
@@ -59,7 +59,7 @@ TEST(BlobTest, AddPixelTest) {
 }
 
 TEST(BlobTest, AddPixelKeyTest) {
-    auto blob = lucid::Blob();
+    auto blob = lane::Blob();
     blob.addPixelKey(30);
     unsigned int result = *(std::begin(blob));
     EXPECT_EQ((unsigned int)30, result)

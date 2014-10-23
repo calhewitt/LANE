@@ -19,12 +19,12 @@
 
 
 TEST(FrameTest, EqualityTest) {
-    auto frame1 = lucid::Frame();
+    auto frame1 = lane::Frame();
     frame1.setTimeStamp(1);
     frame1.setTimeStampSub(1);
     frame1.setPixel(1, 1, 1);
     frame1.setChannelID(1);
-    auto frame2 = lucid::Frame();
+    auto frame2 = lane::Frame();
     frame2.setTimeStamp(0);
     frame2.setTimeStampSub(0);
     frame2.setPixel(0, 0, 0);
@@ -37,7 +37,7 @@ TEST(FrameTest, EqualityTest) {
 }
 
 TEST(FrameTest, CopyTest) {
-    auto frame = lucid::Frame();
+    auto frame = lane::Frame();
     frame.setTimeStamp(1);
     frame.setTimeStampSub(1);
     frame.setPixel(1, 1, 1);
@@ -51,7 +51,7 @@ TEST(FrameTest, CopyTest) {
 }
 
 TEST(FrameTest, AssignTest) {
-    auto frame = lucid::Frame();
+    auto frame = lane::Frame();
     frame.setTimeStamp(1);
     frame.setTimeStampSub(1);
     frame.setPixel(1, 1, 1);
@@ -69,7 +69,7 @@ TEST(FrameTest, ChannelIDTest) {
         { 1, 1 }
     };
 
-    auto frame = lucid::Frame();
+    auto frame = lane::Frame();
     
     for (const auto& test : tests) {
         frame.setChannelID(test.first);
@@ -85,7 +85,7 @@ TEST(FrameTest, TimeStampTest) {
         { 1, 1 }
     };
 
-    auto frame = lucid::Frame();
+    auto frame = lane::Frame();
     
     for (const auto& test : tests) {
         frame.setTimeStamp(test.first);
@@ -101,7 +101,7 @@ TEST(FrameTest, TimeStampSubTest) {
         { 1, 1 }
     };
 
-    auto frame = lucid::Frame();
+    auto frame = lane::Frame();
     
     for (const auto& test : tests) {
         frame.setTimeStampSub(test.first);
@@ -119,7 +119,7 @@ TEST(FrameTest, PixelTest) {
         }
     };
 
-    auto frame = lucid::Frame();
+    auto frame = lane::Frame();
     
     for (const auto& test : tests) {
         frame.setPixel(test.first[0], test.first[1], test.first[2]);

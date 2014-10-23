@@ -18,7 +18,7 @@
 
 namespace {
     
-void clearFrame(lucid::Frame& frame, unsigned int c = 0) noexcept {
+void clearFrame(lane::Frame& frame, unsigned int c = 0) noexcept {
     for (unsigned int i = 0; i < 256; ++i) {
         for (unsigned int j = 0; j < 256; ++j) {
             frame.setPixel(i, j, c);
@@ -29,11 +29,11 @@ void clearFrame(lucid::Frame& frame, unsigned int c = 0) noexcept {
 }
 
 TEST(BlobFinderTest, FindBlobsTest) {
-    lucid::Frame testFrame;
+    lane::Frame testFrame;
     clearFrame(testFrame, 1);
     
     // Test 1
-    unsigned int result = lucid::findBlobs(testFrame).size();
+    unsigned int result = lane::findBlobs(testFrame).size();
     EXPECT_EQ((unsigned int)1, result) 
         << "Input: 'all ones' gives result: '"
         << result << "'. Expected: '1'";
@@ -44,7 +44,7 @@ TEST(BlobFinderTest, FindBlobsTest) {
         testFrame.setPixel(3, i, 1);
         testFrame.setPixel(9, i, 1);
     }
-    result = lucid::findBlobs(testFrame).size();
+    result = lane::findBlobs(testFrame).size();
     EXPECT_EQ((unsigned int)2, result) 
         << "Input: 'two lines of values' gives result: '"
         << result << "'. Expected: '2'";
@@ -53,7 +53,7 @@ TEST(BlobFinderTest, FindBlobsTest) {
     for (unsigned int i = 0; i < 256; ++i) {
         testFrame.setPixel(i, 3, 1);
     }
-    result = lucid::findBlobs(testFrame).size();
+    result = lane::findBlobs(testFrame).size();
     EXPECT_EQ((unsigned int)1, result) 
         << "Input: 'two lines of values with one line crossing' gives result: '"
         << result << "'. Expected: '1'";

@@ -17,7 +17,7 @@
 #include "Pixel.hpp"
 #include "Blob.hpp"
 
-namespace lucid {
+namespace lane {
 
 Blob::Blob() = default;
 
@@ -97,4 +97,4 @@ std::ostream& operator<<(std::ostream& os, const Blob& blob) noexcept {
     return os;
 }
 
-} // lucid
+} // lane

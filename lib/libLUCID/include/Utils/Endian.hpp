@@ -11,11 +11,12 @@
 /// http://opensource.org/licenses/BSD-2-Clause
 /// or read the 'LICENSE.md' file distributed with this code
 
-#ifndef UTILS_ENDIAN_HPP
-#define UTILS_ENDIAN_HPP
+#ifndef LANE_UTILS_ENDIAN_HPP
+#define LANE_UTILS_ENDIAN_HPP
 
 #include <cstdint>
 
+namespace lane {
 namespace utils {
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -99,5 +100,6 @@ inline std::int64_t swapEndian(const std::int64_t value) noexcept {
 }
 
 } // utils
+} // lane
 
-#endif // UTILS_ENDIAN_HPP
+#endif // LANE_UTILS_ENDIAN_HPP

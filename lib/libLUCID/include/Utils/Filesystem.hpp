@@ -11,12 +11,13 @@
 /// http://opensource.org/licenses/BSD-2-Clause
 /// or read the 'LICENSE.md' file distributed with this code
 
-#ifndef UTILS_FILESYSTEM_HPP
-#define UTILS_FILESYSTEM_HPP
+#ifndef LANE_UTILS_FILESYSTEM_HPP
+#define LANE_UTILS_FILESYSTEM_HPP
 
 #include <vector>
 #include <string>
 
+namespace lane {
 namespace utils {
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -69,6 +70,20 @@ std::vector<std::string> getFilesWithExtension(
     const std::string& directory = "./"
 ) noexcept;
 
-} // utils
 
-#endif // UTILS_FILESYSTEM_HPP
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Gets the file paths with the give nextension in a list of file
+/// path strings
+/// \param extension The extension to check for
+/// \param files The list of file path strings to check through
+/// \return A list of path names for files with the given extension in the
+/// directory
+std::vector<std::string> getFilesWithExtension(
+    const std::string& extension,
+    const std::vector<std::string>& files
+) noexcept;
+
+} // utils
+} // lane
+
+#endif // LANE_UTILS_FILESYSTEM_HPP

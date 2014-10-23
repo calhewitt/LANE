@@ -12,8 +12,8 @@
 /// http://opensource.org/licenses/BSD-2-Clause
 /// or read the 'LICENSE.md' file distributed with this code
 
-#ifndef LUCID_RAWINPUTFILE_HPP
-#define LUCID_RAWINPUTFILE_HPP
+#ifndef LANE_RAWINPUTFILE_HPP
+#define LANE_RAWINPUTFILE_HPP
 
 #include <string>
 #include <map>
@@ -21,7 +21,7 @@
 #include <cstdint>
 #include "Frame.hpp"
 
-namespace lucid {
+namespace lane {
 
 ///////////////////////////////////////////////////////////////////////////////
 /// \brief Pure virtual base class for handling raw data files
@@ -59,6 +59,6 @@ public:
     virtual std::uint32_t getFileID() const noexcept = 0;
 };
 
-} // lucid
+} // lane
 
-#endif // LUCID_RAWINPUTFILE_HPP
+#endif // LANE_RAWINPUTFILE_HPP

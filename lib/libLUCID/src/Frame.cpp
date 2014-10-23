@@ -16,7 +16,7 @@
 #include "Frame.hpp"
 #include "Pixel.hpp"
 
-namespace lucid {
+namespace lane {
 
 Frame::Frame() noexcept
 : channel_(0),
@@ -122,4 +122,4 @@ std::ostream& operator<<(std::ostream& os, const Frame& frame) noexcept {
     return os;
 }
 
-} // lucid
+} // lane

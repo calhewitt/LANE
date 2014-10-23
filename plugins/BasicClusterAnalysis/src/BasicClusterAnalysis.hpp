@@ -71,12 +71,12 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Adds a pixel to the cluster
     /// \param pixel The pixel object to add to the cluster
-    void addPixel(const lucid::Pixel& pixel) noexcept;
+    void addPixel(const lane::Pixel& pixel) noexcept;
     
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Retrieves a vector of the pixels currently in the cluster
     /// \return A vector of pixels in the cluster
-    const std::vector<lucid::Pixel>& getPixels() const noexcept;
+    const std::vector<lane::Pixel>& getPixels() const noexcept;
     
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Retrieves the size of the cluster in pixels
@@ -153,7 +153,7 @@ private:
     ) noexcept;
 
     // The storage for cluster pixels
-    std::vector<lucid::Pixel> pixels_;
+    std::vector<lane::Pixel> pixels_;
     
     // cluster parameters
     double volume_;

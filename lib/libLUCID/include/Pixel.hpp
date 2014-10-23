@@ -11,13 +11,13 @@
 /// http://opensource.org/licenses/BSD-2-Clause
 /// or read the 'LICENSE.md' file distributed with this code
 
-#ifndef LUCID_PIXEL_HPP
-#define LUCID_PIXEL_HPP
+#ifndef LANE_PIXEL_HPP
+#define LANE_PIXEL_HPP
 
 #include <ostream>
 #include <cstdint>
 
-namespace lucid {
+namespace lane {
 
 ///////////////////////////////////////////////////////////////////////////////
 /// \brief Class for storing detector pixels
@@ -122,6 +122,6 @@ private:
     float  e_;
 };
 
-} // lucid
+} // lane
 
-#endif // LUCID_FRAME_HPP
+#endif // LANE_FRAME_HPP

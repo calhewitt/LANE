@@ -26,7 +26,7 @@
 #include "Utils/LoggerSink.hpp"
 #include "Utils/Misc.hpp"
 
-
+namespace lane {
 namespace utils {
 
 std::string severityToString(const SeverityLevel level) noexcept {
@@ -96,3 +96,4 @@ void Logger::log(const SeverityLevel level, const std::string& message) {
 }
 
 } // utils
+} // lane

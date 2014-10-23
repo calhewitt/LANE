@@ -55,6 +55,7 @@
 #include "Utils/Endian.hpp"
 #include "Utils/Misc.hpp"
 
+namespace lane {
 namespace lucid {
 
 std::string toString(const CompressionMode mode) noexcept {
@@ -386,3 +387,4 @@ std::ostream& operator<<(std::ostream& os, const LUCIDFile& file) noexcept {
 }
 
 } // lucid
+} // lane

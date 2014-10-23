@@ -28,7 +28,7 @@ protected:
     static void SetUpTestCase() {
         ASSERT_NO_THROW({
             for (unsigned int i = 0; i < numberOfFiles; ++i) {
-                files_.push_back(lucid::LUCIDFile());
+                files_.push_back(lane::lucid::LUCIDFile());
                 files_[i].read(dataPath + dataFiles[i]);
             }
         }) << "The LUCIDFile reading test threw an exception.";
@@ -39,10 +39,11 @@ protected:
     virtual void TearDown() {
     }
 
-    static std::vector<lucid::LUCIDFile> files_;
+    static std::vector<lane::lucid::LUCIDFile> files_;
 };
 
-std::vector<lucid::LUCIDFile> LUCIDFileTest::files_ = std::vector<lucid::LUCIDFile>();
+std::vector<lane::lucid::LUCIDFile>
+LUCIDFileTest::files_ = std::vector<lane::lucid::LUCIDFile>();
 
 TEST_F(LUCIDFileTest, EqualityTest) {
     EXPECT_EQ(files_[0] == files_[1], false)

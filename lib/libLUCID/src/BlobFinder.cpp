@@ -17,7 +17,7 @@
 #include "Blob.hpp"
 #include "BlobFinder.hpp"
 
-namespace lucid {
+namespace lane {
 
 namespace {
 
@@ -120,4 +120,4 @@ std::vector<Blob> findBlobs(
     return blobList;
 }
 
-} // lucid
+} // lane

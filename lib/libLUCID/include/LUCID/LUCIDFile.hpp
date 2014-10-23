@@ -12,8 +12,8 @@
 /// http://opensource.org/licenses/BSD-2-Clause
 /// or read the 'LICENSE.md' file distributed with this code
 
-#ifndef LUCID_LUCIDFILE_HPP
-#define LUCID_LUCIDFILE_HPP
+#ifndef LANE_LUCID_LUCIDFILE_HPP
+#define LANE_LUCID_LUCIDFILE_HPP
 
 #include <ostream>
 #include <vector>
@@ -26,6 +26,7 @@
 #include "../Utils/Endian.hpp"
 #include "../Utils/Misc.hpp"
 
+namespace lane {
 namespace lucid {
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -140,5 +141,6 @@ private:
 };
 
 } // lucid
+} // lane
 
-#endif // LUCID_LUCIDFILE_HPP
+#endif // LANE_LUCID_LUCIDFILE_HPP

@@ -15,7 +15,7 @@
 #include <cstdint>
 #include "Pixel.hpp"
 
-namespace lucid {
+namespace lane {
 
 Pixel::Pixel(
     const std::uint32_t x,
@@ -94,4 +94,4 @@ std::ostream& operator<<(std::ostream& os, const Pixel& pixel) noexcept {
     return os;
 }
 
-} // lucid
+} // lane

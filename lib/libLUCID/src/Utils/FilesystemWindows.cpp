@@ -17,6 +17,7 @@
 #include <tchar.h>
 #include "Utils/Filesystem.hpp"
 
+namespace lane {
 namespace utils {
 
 std::vector<std::string> getDirectoryContents(
@@ -46,3 +47,4 @@ std::vector<std::string> getDirectoryContents(
 }
 
 } // utils
+} // lane

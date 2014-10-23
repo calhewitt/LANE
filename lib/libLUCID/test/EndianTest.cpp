@@ -23,7 +23,7 @@ TEST(EndianTest, EndianSwappingU16Test) {
     };
 
     for (const auto& test : tests) {
-        auto result = utils::swapEndian(test.first);
+        auto result = lane::utils::swapEndian(test.first);
         EXPECT_EQ(test.second, result);
     }
 }
@@ -34,7 +34,7 @@ TEST(EndianTest, EndianSwappingU32Test) {
     };
 
     for (const auto& test : tests) {
-        auto result = utils::swapEndian(test.first);
+        auto result = lane::utils::swapEndian(test.first);
         EXPECT_EQ(test.second, result);
     }
 }
@@ -45,7 +45,7 @@ TEST(EndianTest, EndianSwappingU64Test) {
     };
 
     for (const auto& test : tests) {
-        auto result = utils::swapEndian(test.first);
+        auto result = lane::utils::swapEndian(test.first);
         EXPECT_EQ(test.second, result);
     }
 }
@@ -57,7 +57,7 @@ TEST(EndianTest, EndianSwapping16Test) {
     };
 
     for (const auto& test : tests) {
-        auto result = utils::swapEndian(test.first);
+        auto result = lane::utils::swapEndian(test.first);
         EXPECT_EQ(test.second, result);
     }
 }
@@ -68,7 +68,7 @@ TEST(EndianTest, EndianSwapping32Test) {
     };
 
     for (const auto& test : tests) {
-        auto result = utils::swapEndian(test.first);
+        auto result = lane::utils::swapEndian(test.first);
         EXPECT_EQ(test.second, result);
     }
 }
@@ -79,7 +79,7 @@ TEST(EndianTest, EndianSwapping64Test) {
     };
 
     for (const auto& test : tests) {
-        auto result = utils::swapEndian(test.first);
+        auto result = lane::utils::swapEndian(test.first);
         EXPECT_EQ(test.second, result);
     }
 }

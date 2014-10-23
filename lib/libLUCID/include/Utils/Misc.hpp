@@ -11,14 +11,14 @@
 /// http://opensource.org/licenses/BSD-2-Clause
 /// or read the 'LICENSE.md' file distributed with this code
 
-#ifndef UTILS_MISC_HPP
-#define UTILS_MISC_HPP
+#ifndef LANE_UTILS_MISC_HPP
+#define LANE_UTILS_MISC_HPP
 
 #include <memory>
 #include <type_traits>
 #include <utility>
 
-
+namespace lane {
 namespace utils {
 
 /// Uses S.T.L's make_unique code
@@ -48,5 +48,6 @@ std::unique_ptr<T> make_unique(Args&&... args) {
 }
 
 } // utils
+} // lane
 
-#endif // UTILS_MISC_HPP
+#endif // LANE_UTILS_MISC_HPP

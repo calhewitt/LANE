@@ -11,15 +11,15 @@
 /// http://opensource.org/licenses/BSD-2-Clause
 /// or read the 'LICENSE.md' file distributed with this code
 
-#ifndef LUCID_BLOBFINDER_HPP
-#define LUCID_BLOBFINDER_HPP
+#ifndef LANE_BLOBFINDER_HPP
+#define LANE_BLOBFINDER_HPP
 
 #include <vector>
 #include <cstdint>
 #include "Frame.hpp"
 #include "Blob.hpp"
 
-namespace lucid {
+namespace lane {
 
 ///////////////////////////////////////////////////////////////////////////////
 /// \brief Analyses a given frame to find blobs of pixels.
@@ -33,6 +33,6 @@ std::vector<Blob> findBlobs(
     const unsigned int threshold = 1
 ) noexcept;
 
-} // lucid
+} // lane
 
-#endif // LUCID_BLOBFINDER_HPP
+#endif // LANE_BLOBFINDER_HPP

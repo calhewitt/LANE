@@ -11,15 +11,15 @@
 /// http://opensource.org/licenses/BSD-2-Clause
 /// or read the 'LICENSE.md' file distributed with this code
 
-#ifndef LUCID_BLOB_HPP
-#define LUCID_BLOB_HPP
+#ifndef LANE_BLOB_HPP
+#define LANE_BLOB_HPP
 
 #include <ostream>
 #include <vector>
 #include <cstdint>
 #include "Pixel.hpp"
 
-namespace lucid {
+namespace lane {
 
 ///////////////////////////////////////////////////////////////////////////////
 /// \brief Class for storing pixel blobs
@@ -122,7 +122,7 @@ private:
     std::vector<std::uint32_t> pixelKeys_;
 };
 
-} // lucid
+} // lane
 
-#endif // LUCID_BLOB_HPP
+#endif // LANE_BLOB_HPP
 

@@ -30,8 +30,8 @@ const double pi = 3.14159265359;
 namespace {
 
 // Rotates the pixel's position using the azimuth angle
-lucid::Pixel rotatePixel(const lucid::Pixel& pixel, const double azimuthAngle) noexcept {
-    lucid::Pixel rotatedPixel;
+lane::Pixel rotatePixel(const lane::Pixel& pixel, const double azimuthAngle) noexcept {
+    lane::Pixel rotatedPixel;
     double s = sin(azimuthAngle);
     double c = cos(azimuthAngle);
     rotatedPixel.setX(c*pixel.getX() - s*pixel.getY()); //Implemented rotations
@@ -117,7 +117,7 @@ void Cluster::clear() noexcept {
     ymax_ = 255;
 }
 
-void Cluster::addPixel(const lucid::Pixel& pixel) noexcept {
+void Cluster::addPixel(const lane::Pixel& pixel) noexcept {
     pixels_.emplace_back(pixel);
    
     // Update all the cluster properties
@@ -155,7 +155,7 @@ unsigned int Cluster::getHittingArea() const noexcept {
     return (254 + xmin_ - xmax_) * (254 + ymin_ - ymax_);
 }
 
-const std::vector<lucid::Pixel>& Cluster::getPixels() const noexcept {
+const std::vector<lane::Pixel>& Cluster::getPixels() const noexcept {
     return pixels_;
 }
 

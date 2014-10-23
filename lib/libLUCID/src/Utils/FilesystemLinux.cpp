@@ -23,6 +23,7 @@
 #include <limits.h>
 #include "Utils/Filesystem.hpp"
 
+namespace lane {
 namespace utils {
 
 // Supports posix systems
@@ -50,3 +51,4 @@ std::vector<std::string> getDirectoryContents(
 }
 
 } // utils
+} // lane

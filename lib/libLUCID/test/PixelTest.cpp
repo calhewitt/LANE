@@ -17,8 +17,8 @@
 
 
 TEST(PixelTest, EqualityTest) {
-    auto pixel1 = lucid::Pixel(1, 1, 1);
-    auto pixel2 = lucid::Pixel(0, 0, 0);
+    auto pixel1 = lane::Pixel(1, 1, 1);
+    auto pixel2 = lane::Pixel(0, 0, 0);
     
     EXPECT_EQ(pixel1 == pixel2, false)
         << "Equality test failed.";
@@ -27,7 +27,7 @@ TEST(PixelTest, EqualityTest) {
 }
 
 TEST(PixelTest, CopyTest) {
-    auto pixel = lucid::Pixel(1, 1, 1);
+    auto pixel = lane::Pixel(1, 1, 1);
     auto copiedPixel(pixel);
     
     EXPECT_EQ(copiedPixel == pixel, true)
@@ -37,7 +37,7 @@ TEST(PixelTest, CopyTest) {
 }
 
 TEST(PixelTest, AssignTest) {
-    auto pixel = lucid::Pixel(1, 1, 1);
+    auto pixel = lane::Pixel(1, 1, 1);
     auto assignedPixel = pixel;
     
     EXPECT_EQ(assignedPixel == pixel, true)
@@ -51,7 +51,7 @@ TEST(PixelTest, XTest) {
         { 1, 1 },
     };
 
-    auto pixel = lucid::Pixel();
+    auto pixel = lane::Pixel();
     
     for (const auto& test : tests) {
         pixel.setX(test.first);
@@ -67,7 +67,7 @@ TEST(PixelTest, YTest) {
         { 1, 1 },
     };
 
-    auto pixel = lucid::Pixel();
+    auto pixel = lane::Pixel();
     
     for (const auto& test : tests) {
         pixel.setY(test.first);
@@ -83,11 +83,27 @@ TEST(PixelTest, CTest) {
         { 1, 1 },
     };
 
-    auto pixel = lucid::Pixel();
+    auto pixel = lane::Pixel();
     
     for (const auto& test : tests) {
         pixel.setC(test.first);
         unsigned int result = pixel.getC();
+        EXPECT_EQ(test.second, result)
+            << "Input: '" << test.first << "' gives result: '"
+            << result << "'. Expected: '" << test.second << "'";
+    }
+}
+
+TEST(PixelTest, ETest) {
+    std::map<unsigned int, unsigned int> tests = {
+        { 1, 1 },
+    };
+
+    auto pixel = lane::Pixel();
+    
+    for (const auto& test : tests) {
+        pixel.setE(test.first);
+        unsigned int result = pixel.getE();
         EXPECT_EQ(test.second, result)
             << "Input: '" << test.first << "' gives result: '"
             << result << "'. Expected: '" << test.second << "'";

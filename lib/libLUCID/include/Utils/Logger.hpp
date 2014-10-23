@@ -11,8 +11,8 @@
 /// http://opensource.org/licenses/BSD-2-Clause
 /// or read the 'LICENSE.md' file distributed with this code
 
-#ifndef UTILS_LOGGER_HPP
-#define UTILS_LOGGER_HPP
+#ifndef LANE_UTILS_LOGGER_HPP
+#define LANE_UTILS_LOGGER_HPP
 
 #include <vector>
 #include <mutex>
@@ -22,7 +22,7 @@
 #include "Utils/LoggerSink.hpp"
 #include "Misc.hpp"
 
-
+namespace lane {
 namespace utils {
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -95,5 +95,6 @@ private:
 };
 
 } // utils
+} // lane
 
-#endif // UTILS_LOGGER_HPP
+#endif // LANE_UTILS_LOGGER_HPP

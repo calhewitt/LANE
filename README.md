@@ -88,12 +88,10 @@ Please see [LICENSE.md](LICENSE.md).
 
 ## TODO
 
-* Possibly change to using mmap/buffering for IO in libLUCID to enable reading 
-in files of size greater than ~16GB.
 * Add support for XYV compression to libLUCID.
 * Add support for some more of the settings in the data files' header to 
 libLUCID.
-* Add telemetry data support to libLUCID.
+* Add telemetry data/metadata support to libLUCID.
 
 
 <!-- Links -->

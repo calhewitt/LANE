@@ -11,13 +11,13 @@
 /// http://opensource.org/licenses/BSD-2-Clause
 /// or read the 'LICENSE.md' file distributed with this code
 
-#ifndef UTILS_LOGGERSINK_HPP
-#define UTILS_LOGGERSINK_HPP
+#ifndef LANE_UTILS_LOGGERSINK_HPP
+#define LANE_UTILS_LOGGERSINK_HPP
 
 #include <string>
 #include <fstream>
 
-
+namespace lane {
 namespace utils {
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -86,5 +86,6 @@ private:
 };
 
 } // utils
+} // lane
 
-#endif // UTILS_LOGGERSINK_HPP
+#endif // LANE_UTILS_LOGGERSINK_HPP

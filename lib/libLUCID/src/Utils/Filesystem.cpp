@@ -15,6 +15,7 @@
 #include <string>
 #include "Utils/Filesystem.hpp"
 
+namespace lane {
 namespace utils {
 
 std::string getFileName(const std::string& path) noexcept {
@@ -103,4 +104,20 @@ std::vector<std::string> getFilesWithExtension(
     return filesWithExtension;
 }
 
+std::vector<std::string> getFilesWithExtension(
+    const std::string& extension,
+    const std::vector<std::string>& files
+) noexcept {
+    std::vector<std::string> filesWithExtension;
+    
+    for (const auto& name : files) {
+        if (getExtension(name) == extension) {
+            filesWithExtension.emplace_back(name);
+        }
+    }
+    
+    return filesWithExtension;
+}
+
 } // utils
+} // lane

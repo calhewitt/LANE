@@ -16,7 +16,7 @@
 #include <fstream>
 #include "Utils/LoggerSink.hpp"
 
-
+namespace lane {
 namespace utils {
 
 // LoggerSink implementations
@@ -48,3 +48,4 @@ void FileSink::write(const std::string& message) {
 }
 
 } // utils
+} // lane

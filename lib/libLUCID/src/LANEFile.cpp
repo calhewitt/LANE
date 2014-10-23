@@ -81,8 +81,7 @@ bool LANEFile::operator!=(const LANEFile& other) const noexcept {
 
 
 // Currently in the following format:
-// ID
-// STARTTIME
+// ID,STARTTIME
 // CHANNELID
 // FRAMETIMESTAMP
 // X,Y,C
@@ -121,7 +120,7 @@ void LANEFile::read(const std::string& fileName) {
             if (input.eof() || buffer == "EOC") {
                 break;
             }
-            lucid::Frame currentFrame;
+            Frame currentFrame;
             currentFrame.setChannelID(currentChannelID);
             
             // Get frame timestamp
@@ -181,13 +180,13 @@ void LANEFile::write(const std::string& fileName) {
 }
 
 void LANEFile::addFrame(
-    const lucid::Frame& frame,
+    const Frame& frame,
     const std::uint32_t channelID
 ) noexcept {
     channels_[channelID].emplace_back(frame);
 }
 
-std::vector<lucid::Frame> LANEFile::getFrames(
+std::vector<Frame> LANEFile::getFrames(
     const std::uint32_t channelID
 ) const noexcept {
     return channels_.find(channelID)->second;

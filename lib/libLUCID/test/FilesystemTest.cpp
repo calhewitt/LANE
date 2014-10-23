@@ -21,7 +21,7 @@ const unsigned int numberOfFiles = 2;
 const std::string dataPath = "../../../testdata/";
 
 TEST(FilesystemTest, GetFilesTest) {
-    auto fileList = utils::getDirectoryContents(dataPath);
+    auto fileList = lane::utils::getFilesWithExtension("ldat", lane::utils::getDirectoryContents(dataPath));
     EXPECT_EQ(numberOfFiles, fileList.size());
 }
 
@@ -35,11 +35,12 @@ TEST(FilesystemTest, GetExtensionTest) {
         { "/dir/test", "" },
         { "/dir/test.txt", "txt" },
         { "./dir/test.txt", "txt" },
-        { "/dir/../test.txt", "txt" }
+        { "/dir/../test.txt", "txt" },
+        { "/dir/../test.txt.dsc", "dsc" }
     };
     
     for (const auto& test : tests) {
-        std::string result = utils::getExtension(test.first);
+        std::string result = lane::utils::getExtension(test.first);
         EXPECT_STREQ(test.second.c_str(), result.c_str())
             << "Input: '" << test.first << "' gives result: '"
             << result << "'. Expected: '" << test.second << "'";
@@ -56,11 +57,12 @@ TEST(FilesystemTest, RemoveExtensionTest) {
         { "/dir/test", "/dir/test" },
         { "/dir/test.txt", "/dir/test" },
         { "./dir/test.txt", "./dir/test" },
-        { "/dir/../test.txt", "/dir/../test" }
+        { "/dir/../test.txt", "/dir/../test" },
+        { "/dir/../test.txt.dsc", "/dir/../test.txt" }
     };
     
     for (const auto& test : tests) {
-        std::string result = utils::removeExtension(test.first);
+        std::string result = lane::utils::removeExtension(test.first);
         EXPECT_STREQ(test.second.c_str(), result.c_str())
             << "Input: '" << test.first << "' gives result: '"
             << result << "'. Expected: '" << test.second << "'";
@@ -77,11 +79,12 @@ TEST(FilesystemTest, GetFileNameTest) {
         { "/dir/test", "test" },
         { "/dir/test.txt", "test.txt" },
         { "./dir/test.txt", "test.txt" },
-        { "/dir/../test.txt", "test.txt" }
+        { "/dir/../test.txt", "test.txt" },
+        { "/dir/../test.txt.dsc", "test.txt.dsc" }
     };
     
     for (const auto& test : tests) {
-        std::string result = utils::getFileName(test.first);
+        std::string result = lane::utils::getFileName(test.first);
         EXPECT_STREQ(test.second.c_str(), result.c_str())
             << "Input: '" << test.first << "' gives result: '"
             << result << "'. Expected: '" << test.second << "'";
