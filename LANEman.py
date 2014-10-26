@@ -11,8 +11,8 @@ pluginPath = os.path.abspath('plugins')
 resultsPath = os.path.abspath('./results')
 
 # Internal constants
-inputPath = '"' + os.path.abspath('./testdata') + '"'
-outputPath = '"' + resultsPath + '"'
+inputPath = '"' + os.path.abspath('./testdata') + '/"'
+outputPath = '"' + resultsPath + '/"'
 pluginParameters = inputPath + " " + outputPath
 
 def mkdir_p(path):
@@ -74,7 +74,7 @@ def runPlugins():
         if p.language.lower() == "cpp" or p.language.lower() == "c":
             os.system(binariesPath + p.name + " " + pluginParameters)
         elif p.language.lower() == "py" or p.language.lower() == "python":
-            os.system("python2 " + binariesPath + p.name + ".py" + " " + pluginParameters)
+            os.system("python2 \"" + binariesPath + "/" + p.name + "/" + p.name + ".py\"" + " " + pluginParameters)
         else:
             print "Invalid language option set for '" + p.name + "' in config"
             sys.exit(1)

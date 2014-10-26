@@ -140,9 +140,19 @@ public:
     unsigned int getHittingArea() const noexcept;
 
     //////////////////////////////////////////////////////////////////////////
-    /// \brief Calculates the area in pixels which the particle could have hit
+    /// \brief Returns a boolean representing wether or not it is touching the edge of the frame
     /// \return Boolean representing wether or not it is touching the edge
     bool touchingEdge() const noexcept;
+    
+    //////////////////////////////////////////////////////////////////////////
+    /// \brief Calculates X Bar
+    /// \return The X Bar
+    float  getXBar() noexcept;
+    
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Calculates Y Bar
+    /// \return The Y Bar
+    float getYBar() noexcept;
 
 private:
     // Caclulates the fuzzy track length of the cluster on the x-axis
@@ -171,7 +181,8 @@ private:
     unsigned int xmax_;
     unsigned int ymin_;
     unsigned int ymax_;
+    float xbar_;
+    float ybar_;
 };
-
 
 #endif // BASICCLUSTERANALYSIS_HPP

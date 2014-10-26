@@ -90,7 +90,10 @@ int main(int argc, char *argv[]) {
                         outf << "Height " << cl.getHeight() << "\n";
                         outf << "HittingArea " << cl.getHittingArea() << "\n";
                         outf << "TouchingEdge " << cl.touchingEdge() << "\n";
-                        outf << "LET " << cl.getLETinSi() << "\n\n\n";
+                        outf << "LET " << cl.getLETinSi() << "\n";
+                        outf << "Size " << cl.getSize() << "\n";
+                        outf << "X " << cl.getXBar() << "\n";
+                        outf << "Y " << cl.getYBar() << "\n\n\n";
                     }
                     
                     ++frameNumber;
@@ -100,10 +103,10 @@ int main(int argc, char *argv[]) {
         }
     } catch (const std::runtime_error& e) {
         cout << "\nAn error occurred.\n" << e.what() << "\n";
-    } catch (const std::invalid_argument& e) {
+    } catch (const std::exception& e) {
         cout << "\nAn error occurred.\n" << e.what() << "\n";
     } catch (...) {
         cout << "\nUnknown error occurred...\n";
     }
-	return 0;
+    return 0;
 }

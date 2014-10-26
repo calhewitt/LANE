@@ -1,5 +1,5 @@
-# testPluginPython
-A generic plugin skeleton.
+# Pairing
+Pairs clusters/blobs passing through multiple channels
 
 
 ## Prerequisites and installation

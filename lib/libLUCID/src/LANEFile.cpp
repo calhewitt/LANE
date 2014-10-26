@@ -43,7 +43,7 @@ std::vector<std::string>& split(
 
 namespace lane {
 
-LANEFile::LANEFile() noexcept = default;
+LANEFile::LANEFile() = default;
 
 LANEFile::LANEFile(const std::string& fileName) {
     read(fileName);

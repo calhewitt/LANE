@@ -1,4 +1,4 @@
-Copyright (c) 2014, Hector Stalker
+Copyright (c) 2014, Sam Kittle
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without

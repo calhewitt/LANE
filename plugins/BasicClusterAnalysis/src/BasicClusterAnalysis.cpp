@@ -57,7 +57,9 @@ Cluster::Cluster()
   xmin_(255),
   xmax_(0),
   ymin_(255),
-  ymax_(0) {
+  ymax_(0),
+  xbar_(-1),
+  ybar_(-1)  {
 }
 
 Cluster::~Cluster() noexcept {
@@ -115,6 +117,8 @@ void Cluster::clear() noexcept {
     ymin_ = 255;
     xmax_ = 255;
     ymax_ = 255;
+    xbar_ = -1;
+    ybar_ = -1;
 }
 
 void Cluster::addPixel(const lane::Pixel& pixel) noexcept {
@@ -161,6 +165,28 @@ const std::vector<lane::Pixel>& Cluster::getPixels() const noexcept {
 
 unsigned int Cluster::getSize() const noexcept {
     return pixels_.size();
+}
+
+float Cluster::getXBar() noexcept {
+    if (xbar_ >= 0)
+    return xbar_;
+    float wx = 0;
+    for (auto iter = std::begin(pixels_); iter != std::end(pixels_); ++iter) 
+    wx += iter->getX() * iter->getE();
+    
+    xbar_ =  wx/volume_;
+    return xbar_;
+}
+
+float Cluster::getYBar() noexcept {
+    if (ybar_ >= 0)
+        return ybar_;
+    float wy = 0;
+    for (auto iter = std::begin(pixels_); iter != std::end(pixels_); ++iter) 
+        wy += iter->getY() * iter->getE();
+    
+    ybar_ =  wy/volume_;
+    return ybar_;
 }
 
 double Cluster::getVolume() noexcept {
@@ -225,21 +251,22 @@ double Cluster::getAzimuthAngle() noexcept {
     if (std::abs(delta) <= 0.0001) {
         azimuthAngle_ = 0;
     } else {
-		// Equation for line which minimizes the square of the distance to the line
-		// Can be 90 degrees out as the maths produces a quadratic with two roots. Works out that m1 = -1/m2 so they are 90degrees apart
-		// The program gives one root and then when calculating polar it does if minWidth > majLen then change azimuth by pi/20
-		// It then does another histogram for majLen using c ** 2 for each pixel and looks at the mean for this
-		// It compares the mean value for x weighted by c**2 to the mean value weighted by c
+        // Equation for line which minimizes the square of the distance to the line
+        // Can be 90 degrees out as the maths produces a quadratic with two roots. Works out that m1 = -1/m2 so they are 90degrees apart
+        // The program gives one root and then when calculating polar it does if minWidth > majLen then change azimuth by pi/20
+        // It then does another histogram for majLen using c ** 2 for each pixel and looks at the mean for this
+        // It compares the mean value for x weighted by c**2 to the mean value weighted by c
         // TODO azimuth seems to too often result in NaN. Possibly sqrt a neg. number
-		double a = fw * wxx - wx * wx;
-		double b = 2 * (wxy * fw - wx * wy);
-		double c = fw * wyy - wy * wy;
+        double a = fw * wxx - wx * wx;
+        double b = 2 * (wxy * fw - wx * wy);
+        double c = fw * wyy - wy * wy;
         if (std::abs(b) >=  std::abs(a-c)) {
             azimuthAngle_ = 0;
         } else {
             azimuthAngle_ = std::atan((c - a + std::sqrt((a-c)*(a-c) - b * b))/b);
         }
-	}
+    }
+    getProjectedTrackLength(); //in getProjectedTrackLength the azimuth angle is found exactly
     return azimuthAngle_;
 }
 
@@ -260,63 +287,63 @@ double Cluster::getProjectedTrackLength() noexcept {
     double azimuth = getAzimuthAngle();
     std::map<int, double> majorHis, minorHis;
     std::map<int, double>::iterator p;
-	std::map<int, double> majorHiscc, minorHiscc;
+    std::map<int, double> majorHiscc, minorHiscc;
     //the projected track is assumed to be parallel to X-axis if 0< |azimuthAngle| < 10 degree and parallel to Y-axis if 80 < |azimuthAngle| < 90 degree
 
-	//need to rotate the coordinate
-	std::list<double> rotatedData;//list of triple<x,y,v>
-	for (auto iter = std::begin(pixels_); iter != std::end(pixels_); ++iter) {
-		if (iter->getE() > threshold) {
+    //need to rotate the coordinate
+    std::list<double> rotatedData;//list of triple<x,y,v>
+    for (auto iter = std::begin(pixels_); iter != std::end(pixels_); ++iter) {
+        if (iter->getE() > threshold) {
             auto newPixel = rotatePixel(*iter, -azimuth);
             rotatedData.emplace_back(newPixel.getX());
             rotatedData.emplace_back(newPixel.getY());
             rotatedData.emplace_back(newPixel.getE());
-		}
-	}
-	for (auto iter = std::begin(rotatedData); iter != std::end(rotatedData); ++iter) {
-		int majorBin = (int)(*iter); ++iter;
-		int minorBin = (int)(*iter); ++iter;
-		double v = *iter;
-		//accumulate energy on rotated X to set up a major Histogram
-		p = majorHis.find(majorBin);
-		if (p == std::end(majorHis)) {
-			majorHis[majorBin] = v;
-        } else {
-			p->second += v;
         }
-
-		//accumulate energy on rotated Y to set up a minor Histogram
-		p = minorHis.find(minorBin);
-		if (p == std::end(minorHis)) {
-			minorHis[minorBin] = v;
-        } else {
-			p->second += v;
-        }
-	}
-	
+    }
     for (auto iter = std::begin(rotatedData); iter != std::end(rotatedData); ++iter) {
-		int majorBin = (int)(*iter); ++iter;
-		int minorBin = (int)(*iter); ++iter;
-		double v = *iter;
-		//accumulate energy on rotated X to set up a major Histogram
-		p = majorHiscc.find(majorBin);
-		if (p == std::end(majorHis)) {
-			majorHiscc[majorBin] = v*v;
+        int majorBin = (int)(*iter); ++iter;
+        int minorBin = (int)(*iter); ++iter;
+        double v = *iter;
+        //accumulate energy on rotated X to set up a major Histogram
+        p = majorHis.find(majorBin);
+        if (p == std::end(majorHis)) {
+            majorHis[majorBin] = v;
         } else {
-			p->second += v*v;
+            p->second += v;
         }
 
-		//accumulate energy on rotated Y to set up a minor Histogram
-		p = minorHiscc.find(minorBin);
-		if (p == std::end(minorHiscc)) {
-			minorHiscc[minorBin] = v*v;
+        //accumulate energy on rotated Y to set up a minor Histogram
+        p = minorHis.find(minorBin);
+        if (p == std::end(minorHis)) {
+            minorHis[minorBin] = v;
         } else {
-			p->second += v*v;
+            p->second += v;
         }
-	}
+    }
+    
+    for (auto iter = std::begin(rotatedData); iter != std::end(rotatedData); ++iter) {
+        int majorBin = (int)(*iter); ++iter;
+        int minorBin = (int)(*iter); ++iter;
+        double v = *iter;
+        //accumulate energy on rotated X to set up a major Histogram
+        p = majorHiscc.find(majorBin);
+        if (p == std::end(majorHis)) {
+            majorHiscc[majorBin] = v*v;
+        } else {
+            p->second += v*v;
+        }
+
+        //accumulate energy on rotated Y to set up a minor Histogram
+        p = minorHiscc.find(minorBin);
+        if (p == std::end(minorHiscc)) {
+            minorHiscc[minorBin] = v*v;
+        } else {
+            p->second += v*v;
+        }
+    }
 
     if (majorHis.size() <= 2 && minorHis.size() <= 2) {
-		//To small to work anything out from it
+        //To small to work anything out from it
         majorLength_ = 0;
         minorWidth_ = 0;
         projectedTrackLength_ = 0;
@@ -326,10 +353,10 @@ double Cluster::getProjectedTrackLength() noexcept {
     majorLength_ = getFuzzyTrackLength(majorHis, 0.75);
     minorWidth_ = getFuzzyTrackLength(minorHis, 0.75);
     if (majorLength_ < minorWidth_) {
-		double temp = majorLength_;
+        double temp = majorLength_;
         majorLength_ = minorWidth_;
-		minorWidth_ = temp;
-		azimuthAngle_ += pi/2;
+        minorWidth_ = temp;
+        azimuthAngle_ += pi/2;
     }
     double alpha = minorWidth_ / (2 * majorLength_ - minorWidth_);
     double coeff = 55; //This converts the track length from pixels to micrometres.
