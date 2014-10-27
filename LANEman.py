@@ -63,6 +63,13 @@ from the config file"""
         pluginList.append(plugin)
     return sortPlugins(pluginList)
 
+def listdir_fullpath(d):
+    finalList = []
+    for f in os.listdir(d):
+        if os.path.isdir(os.path.join(d, f)):
+            finalList.append(os.path.join(d, f))
+    return finalList
+
 def runPlugins():
     """Builds and runs the plugins"""
     os.system("make plugins")
@@ -73,7 +80,8 @@ def runPlugins():
                 "%Y-%m-%d %H:%M:%S")
         print "Running: " + p.name
 
-        for d in os.listdir(dataPath) + [dataPath]:
+        for d in listdir_fullpath(dataPath) + [dataPath]:
+            print d
             pluginParameters = "\"" + d + "/\"" + " " + outputPath
             if p.language.lower() == "cpp" or p.language.lower() == "c":
                 os.system(binariesPath + p.name + " " + pluginParameters)
