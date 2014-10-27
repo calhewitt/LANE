@@ -9,11 +9,12 @@ import os, sys, ConfigParser, operator, time, datetime, errno
 binariesPath = './build/bin/'
 pluginPath = os.path.abspath('plugins')
 resultsPath = os.path.abspath('./results')
+dataPath = os.path.abspath('./testdata')
 
 # Internal constants
-inputPath = '"' + os.path.abspath('./testdata') + '/"'
+#inputPath = '"' + dataPath + '/"'
 outputPath = '"' + resultsPath + '/"'
-pluginParameters = inputPath + " " + outputPath
+#pluginParameters = inputPath + " " + outputPath
 
 def mkdir_p(path):
     """Makes a directory - basically provides mkdir -p shell-like functionality"""
@@ -71,13 +72,16 @@ def runPlugins():
         print datetime.datetime.fromtimestamp(time.time()).strftime(
                 "%Y-%m-%d %H:%M:%S")
         print "Running: " + p.name
-        if p.language.lower() == "cpp" or p.language.lower() == "c":
-            os.system(binariesPath + p.name + " " + pluginParameters)
-        elif p.language.lower() == "py" or p.language.lower() == "python":
-            os.system("python2 \"" + binariesPath + "/" + p.name + "/" + p.name + ".py\"" + " " + pluginParameters)
-        else:
-            print "Invalid language option set for '" + p.name + "' in config"
-            sys.exit(1)
+
+        for d in os.listdir(dataPath) + [dataPath]:
+            pluginParameters = "\"" + d + "/\"" + " " + outputPath
+            if p.language.lower() == "cpp" or p.language.lower() == "c":
+                os.system(binariesPath + p.name + " " + pluginParameters)
+            elif p.language.lower() == "py" or p.language.lower() == "python":
+                os.system("python2 \"" + binariesPath + "/" + p.name + "/" + p.name + ".py\"" + " " + pluginParameters)
+            else:
+                print "Invalid language option set for '" + p.name + "' in config"
+                sys.exit(1)
 
 
 if __name__ == "__main__":
