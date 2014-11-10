@@ -9,12 +9,10 @@ import os, sys, ConfigParser, operator, time, datetime, errno
 binariesPath = './build/bin/'
 pluginPath = os.path.abspath('plugins')
 resultsPath = os.path.abspath('./results')
-dataPath = os.path.abspath('./testdata')
+dataPath = os.path.abspath('./data')
 
 # Internal constants
-#inputPath = '"' + dataPath + '/"'
 outputPath = '"' + resultsPath + '/"'
-#pluginParameters = inputPath + " " + outputPath
 
 def mkdir_p(path):
     """Makes a directory - basically provides mkdir -p shell-like functionality"""

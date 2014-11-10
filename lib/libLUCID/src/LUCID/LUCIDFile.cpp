@@ -176,7 +176,7 @@ void LUCIDFile::read(const std::string& fileName) noexcept {
     // I do not know which way round the bit field is
     // so whether TPX0 is bit 3 or bit 7 is unknown as of yet
     for (unsigned int i = 0; i < 5; ++i) {
-        chipActive_[i] = (data[2] >> i) ? true : false;
+        chipActive_[i] = (data[2] >> i) & 0x01 ? true : false;
     }
 
     // Compression
