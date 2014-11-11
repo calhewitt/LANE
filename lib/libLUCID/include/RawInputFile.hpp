@@ -35,7 +35,7 @@ public:
     /// \brief Opens and parses the input file with the given file name into
     /// the object.
     /// \param fileName The path/name of the file to open
-    virtual void read(const std::string& fileName) noexcept = 0;
+    virtual void read(const std::string& fileName) = 0;
     
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Gets the frames associated with a channel

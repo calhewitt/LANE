@@ -132,7 +132,7 @@ bool LUCIDFile::operator!=(const LUCIDFile& other) const noexcept {
     return !(*this == other);
 }
 
-void LUCIDFile::read(const std::string& fileName) noexcept {
+void LUCIDFile::read(const std::string& fileName) {
     clear();
 
     std::ifstream input(fileName, std::ios::binary | std::ios::ate);

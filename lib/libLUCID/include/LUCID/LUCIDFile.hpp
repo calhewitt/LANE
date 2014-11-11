@@ -97,7 +97,8 @@ public:
     /// \brief Opens and parses the LUCID file with the given file name into
     /// the object.
     /// \param fileName The path/name of the file to open
-    virtual void read(const std::string& fileName) noexcept;
+    /// \throws std::runtime_error when it fails to parse
+    virtual void read(const std::string& fileName);
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Gets the frames associated with a channel
