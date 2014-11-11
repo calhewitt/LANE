@@ -1,6 +1,9 @@
 find_package(Doxygen)
 
-include_directories(lib/libLUCID/include)
+include_directories(lib/libLANE/include)
+
+add_custom_target(plugins ALL)
+add_custom_target(tools ALL)
 
 add_subdirectory(doc)
 add_subdirectory(lib)

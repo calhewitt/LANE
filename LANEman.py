@@ -10,21 +10,18 @@ binariesPath = os.path.abspath('./bin')
 resultsPath = os.path.abspath('./results')
 dataPath = os.path.abspath('./data')
 
-# Internal constants
 outputPath = '"' + resultsPath + '/"'
 
-def mkdir_p(path):
-    """Makes a directory - basically provides mkdir -p shell-like functionality"""
-    try:
-        os.makedirs(path)
-    except OSError as exc:
-        if exc.errno == errno.EEXIST and os.path.isdir(path):
-            pass
-        else: raise
+class Settings:
+    """A settings object, containing LANE metadata"""
+    def __init__(self, project, version):
+        self.project = project
+        self.version = version
 
 class Plugin:
     """A plugin object, containing plugin metadata"""
-    def __init__(self, name, author, license, language, stage):
+    def __init__(self, project, name, author, license, language, stage):
+        self.project = project
         self.name = name
         self.author = author
         self.license = license
@@ -49,18 +46,31 @@ def sortPlugins(plugins):
 
 def getPlugins():
     """Gets a list of Plugin objects containing all the plugin info
-from the config file"""
+from the config file and the global settings for LANE"""
     pluginConfig = ConfigParser.ConfigParser()
     pluginConfig.read("plugins.ini")
     pluginList = []
+    globalSettings = Settings("ERROR", 0.0)
     for name in pluginConfig.sections():
         data = getSectionData(pluginConfig, name)
-        plugin = Plugin(name, data["author"], data["license"],
+        if name == "GlobalSettings":
+            globalSettings = Settings(data["project"], float(data["version"]))
+        else:
+            plugin = Plugin(data["project"], name, data["author"], data["license"],
                 data["language"], data["stage"])
-        pluginList.append(plugin)
-    return sortPlugins(pluginList)
+            pluginList.append(plugin)
+    return (globalSettings, sortPlugins(pluginList))
 
-def listdir_fullpath(d):
+def mkdirP(path):
+    """Makes a directory - basically provides mkdir -p shell-like functionality"""
+    try:
+        os.makedirs(path)
+    except OSError as exc:
+        if exc.errno == errno.EEXIST and os.path.isdir(path):
+            pass
+        else: raise
+    
+def listDirFullPath(d):
     finalList = []
     for f in os.listdir(d):
         if os.path.isdir(os.path.join(d, f)):
@@ -68,25 +78,26 @@ def listdir_fullpath(d):
     return finalList
 
 def runPlugins():
-    """Builds and runs the plugins"""
-    mkdir_p(resultsPath)
-    plugins = getPlugins()
+    """Runs the plugins"""
+    mkdirP(resultsPath)
+    globalSettings, plugins = getPlugins()
     for p in plugins:
-        print datetime.datetime.fromtimestamp(time.time()).strftime(
-                "%Y-%m-%d %H:%M:%S")
-        print "Running: " + p.name
+        if (p.project.lower() == "all") or (p.project.lower() == globalSettings.project.lower()):    
+            print datetime.datetime.fromtimestamp(time.time()).strftime(
+                    "%Y-%m-%d %H:%M:%S")
+            print "Running: " + p.name
 
-        for d in listdir_fullpath(dataPath) + [dataPath]:
-            print d
-            pluginParameters = "\"" + d + "/\"" + " " + outputPath
-            if p.language.lower() == "cpp" or p.language.lower() == "c":
-                os.system(binariesPath + "/" + p.name + " " + pluginParameters)
-            elif p.language.lower() == "py" or p.language.lower() == "python":
-                os.system("python2 \"" + binariesPath + "/" + p.name + "/" + p.name + ".py\"" + " " + pluginParameters)
-            else:
-                print "Invalid language option set for '" + p.name + "' in config"
-                sys.exit(1)
-
+            for d in listDirFullPath(dataPath) + [dataPath]:
+                print d
+                pluginParameters = "\"" + d + "/\"" + " " + outputPath
+                if p.language.lower() == "cpp" or p.language.lower() == "c":
+                    os.system(binariesPath + "/" + p.name + " " + pluginParameters)
+                elif p.language.lower() == "py" or p.language.lower() == "python":
+                    os.system("python2 \"" + binariesPath + "/" + p.name + ".py\"" + " " + pluginParameters)
+                else:
+                    print "Invalid language option set for '" + p.name + "' in config"
+                    sys.exit(1)
+        print ""
 
 if __name__ == "__main__":
     runPlugins()

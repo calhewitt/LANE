@@ -1,7 +1,8 @@
-project(Pairing)
+cmake_minimum_required(VERSION 2.8.8)
+project(libLANEpy)
 
-set(PLUGIN_SOURCES
-    src/Pairing.py
+set(LIBLANEPY_SOURCES
+    src/ReadBCA.py
 )
 
 add_custom_target(${PROJECT_NAME})
@@ -15,9 +16,8 @@ function(add_plugin_target src)
     )
 endfunction()
 
-foreach(source ${PLUGIN_SOURCES})
+foreach(source ${LIBLANEPY_SOURCES})
     add_plugin_target(${source})
 endforeach()
 
-add_dependencies(${PROJECT_NAME} libLANEpy)
 add_dependencies(plugins ${PROJECT_NAME})

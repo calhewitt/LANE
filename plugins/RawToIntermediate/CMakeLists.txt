@@ -107,9 +107,9 @@ set(PLUGIN_SOURCES
     src/Main.cpp
 )
 
-add_executable(${PROJECT_NAME} EXCLUDE_FROM_ALL ${PLUGIN_SOURCES})
+add_executable(${PROJECT_NAME} ${PLUGIN_SOURCES})
 
-target_link_libraries(${PROJECT_NAME} libLUCID)
+target_link_libraries(${PROJECT_NAME} libLANE)
 
 set_target_properties(${PROJECT_NAME}
     PROPERTIES RUNTIME_OUTPUT_DIRECTORY

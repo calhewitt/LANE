@@ -107,9 +107,9 @@ set(LUSPLIT_SOURCES
     src/Main.cpp
 )
 
-add_executable(lusplit EXCLUDE_FROM_ALL ${LUSPLIT_SOURCES})
+add_executable(lusplit ${LUSPLIT_SOURCES})
 
-target_link_libraries(lusplit libLUCID)
+target_link_libraries(lusplit libLANE)
 
 set_target_properties(lusplit
     PROPERTIES RUNTIME_OUTPUT_DIRECTORY

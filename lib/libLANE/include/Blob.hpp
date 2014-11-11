@@ -103,7 +103,7 @@ public:
     
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Adds the key value of the pixel to the blob
-    /// \param keys The pixels to add to the blob.
+    /// \param pixels The pixels to add to the blob.
     void addPixels(const std::vector<Pixel>& pixels) noexcept;
     
     ///////////////////////////////////////////////////////////////////////////
@@ -114,7 +114,7 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Overloaded ostream operator for the Blob class
     /// \param os The output stream
-    /// \param frame The Blob to stream out
+    /// \param blob The Blob to stream out
     /// \return A reference to the ostream in use
     friend std::ostream& operator<<(std::ostream& os, const Blob& blob) noexcept;
 

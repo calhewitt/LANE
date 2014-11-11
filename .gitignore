@@ -1,6 +1,7 @@
 build
 data
 results
+out
 *.lane
 
 # Python Compiled files

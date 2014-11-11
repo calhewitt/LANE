@@ -1,10 +1,8 @@
 # Automatically adds any sub-directory to the build list
 
 include_directories(
-    ../lib/libLUCID/include
+    ../lib/libLANE/include
 )
-
-add_custom_target(plugins)
 
 macro(subdirlist result curdir)
   file(GLOB children RELATIVE ${curdir} ${curdir}/*)

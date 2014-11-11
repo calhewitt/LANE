@@ -29,9 +29,11 @@ if __name__ == '__main__':
         mkdir(outputPath)
         mkdir(outputPath + '/results')
         mkdir(outputPath + '/data')
+        mkdir(outputPath + '/scripts')
         copyIfExists(inputPath + '/build/bin', outputPath + '/bin', recursive = True)
         copyIfExists(inputPath + '/LANEman.py', outputPath + '/LANEman.py')
-        copyIfExists(inputPath + '/plugins/plugins.ini', outputPath + '/plugins.ini')
+        copyIfExists(inputPath + '/plugins.ini', outputPath + '/plugins.ini')
+        copyIfExists(inputPath + '/scripts', outputPath + '/scripts', recursive = True)
     except Exception as e:
         print "Error: ", e
         sys.exit(1)

@@ -2,7 +2,7 @@
 # Setup project
 #=============================================================================
 cmake_minimum_required(VERSION 2.8.8)
-project(libLUCID C CXX)
+project(libLANE C CXX)
 
 
 #=============================================================================
@@ -122,10 +122,10 @@ elseif(UNIX OR APPLE)
          src/Utils/FilesystemLinux.cpp
     )
 else()
-    message(FATAL_ERROR "libLUCID doesn't support this platform")
+    message(FATAL_ERROR "libLANE doesn't support this platform")
 endif(WIN32)
 
-set(LIBLUCID_SOURCES
+set(LIBLANE_SOURCES
     src/Frame.cpp include/Frame.hpp
     include/RawInputFile.hpp
     src/LANEFile.cpp include/LANEFile.hpp
@@ -138,7 +138,7 @@ set(LIBLUCID_SOURCES
     src/Utils/Filesystem.cpp include/Utils/Filesystem.hpp ${FILESYSTEM_SOURCES} 
 )
 
-add_library(libLUCID ${LIBLUCID_SOURCES})
+add_library(libLANE ${LIBLANE_SOURCES})
 
 
 #=============================================================================
@@ -158,7 +158,7 @@ macro(add_test_executable TEST_NAME TEST_SOURCES)
     add_executable(${TEST_NAME} EXCLUDE_FROM_ALL
         ${TEST_SOURCES}
     )
-    target_link_libraries(${TEST_NAME} gtest gtest_main libLUCID)
+    target_link_libraries(${TEST_NAME} gtest gtest_main libLANE)
     add_test(
         NAME ${TEST_NAME}
         COMMAND ${TEST_NAME}

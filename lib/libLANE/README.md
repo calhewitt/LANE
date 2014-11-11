@@ -1,5 +1,5 @@
-# libLUCID
-A library containing general utilities necessary for the LUCID project using 
+# libLANE
+A library containing general utilities necessary for the Langton physics projects using 
 C++11, Doxygen and GoogleTest.
 
 
@@ -11,30 +11,12 @@ To build this code you will need
 * (Optionally) [Doxygen][]
 
 
-## Building
-First, you will need an installation of [CMake][].
-Once this is done, you can `cd` to the root of
-the project.
-You can now build and run the project.
-The following commands may differ for different compilers/build-systems:
-
-```shell
-make all
-```
-
-
-## Tests
-Tests can be built and run using:
-
-```shell
-make test
-```
-
-
 ## Project organization
 The project is organized in a couple of subdirectories.
 
 * The [include](include) directory contains the public header files for the 
+library.
+* The [src](src) directory contains the implementation files for the 
 library.
 * The [test](test) directory contains the source files for the unit tests.
 
@@ -53,4 +35,3 @@ Please see [LICENSE.md](LICENSE.md).
 [Doxygen]: http://www.doxygen.org
 [CMake]: http://www.cmake.org
 [GoogleTest]: https://code.google.com/p/googletest/
-

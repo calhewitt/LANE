@@ -1,6 +1,6 @@
-# LANE (LUCID ANalysis Ecosystem)
-A software ecosystem for analysis of the data from the LUCID 
-(Langton's Ultimate Cosmic-ray Detector) project onboard TechDemoSAT-1 in space.
+# LANE (Langton ANalysis Ecosystem)
+A software ecosystem for analysis of the data from the Langton physics projects 
+For example, the LUCID(Langton's Ultimate Cosmic-ray Detector) project onboard TechDemoSAT-1 in space.
 
 This software package contains:
 
@@ -43,13 +43,6 @@ make check
 ```
 
 
-## Building LANE tools
-Use the following to build the LANE tool suite:
-```shell
-make tools
-```
-
-
 ## Project organization
 The main directory contains some information and the plugin manager script, 
 [LANEman](LANEman.py)
@@ -62,8 +55,8 @@ manager.
 * The [lib](lib) directory contains the libraries used in the software.
 * The [lib/external](lib/external) directory contains the third-party 
 libraries used in this software.
-* The [lib/libLUCID](lib/libLUCID) directory contains a library of code for 
-use in the plugins.
+* The [lib/libLANE](lib/libLANE) and [lib/libLANEpy](lib/libLANEpy) directory
+contains a library of code for use in the plugins.
 * The [doc](doc) directory contains the configuration files for documentation 
 generation.
 * The [testdata](testdata) directory contains some uncompressed test data.

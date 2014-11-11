@@ -1,5 +1,5 @@
 PROJECT_NAME            = "LANE"
-PROJECT_BRIEF           = "A software ecosystem for analysis of the data from the LUCID (Langton's Ultimate Cosmic-ray Detector) project onboard TechDemoSAT-1 in space."
+PROJECT_BRIEF           = "A software ecosystem for analysis of the data from the Langton physics projects (Langton's Ultimate Cosmic-ray Detector) projects."
 PROJECT_LOGO            = ../../doc/LUCID_logo.jpg
 PROJECT_NUMBER          =
 
@@ -12,7 +12,7 @@ ENABLED_SECTIONS        =
 FULL_PATH_NAMES         = YES
 STRIP_FROM_PATH         = @CMAKE_SOURCE_DIR@
 OUTPUT_DIRECTORY        = 
-INPUT                   = ../../lib/libLUCID ../../plugins/
+INPUT                   = ../../lib/libLANE ../../plugins/
 FILE_PATTERNS           = *.hpp *.cpp *.cc *.hh *.c *.h
 RECURSIVE               = YES
 IMAGE_PATH              = 

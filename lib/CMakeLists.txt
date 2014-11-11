@@ -1,2 +1,3 @@
 add_subdirectory(external)
-add_subdirectory(libLUCID)
+add_subdirectory(libLANE)
+add_subdirectory(libLANEpy)
