@@ -6,8 +6,7 @@
 import os, sys, ConfigParser, operator, time, datetime, errno
 
 # Configurable constants
-binariesPath = './build/bin/'
-pluginPath = os.path.abspath('plugins')
+binariesPath = os.path.abspath('./bin')
 resultsPath = os.path.abspath('./results')
 dataPath = os.path.abspath('./data')
 
@@ -52,7 +51,7 @@ def getPlugins():
     """Gets a list of Plugin objects containing all the plugin info
 from the config file"""
     pluginConfig = ConfigParser.ConfigParser()
-    pluginConfig.read(pluginPath + "/plugins.ini")
+    pluginConfig.read("plugins.ini")
     pluginList = []
     for name in pluginConfig.sections():
         data = getSectionData(pluginConfig, name)
@@ -70,7 +69,6 @@ def listdir_fullpath(d):
 
 def runPlugins():
     """Builds and runs the plugins"""
-    os.system("make plugins")
     mkdir_p(resultsPath)
     plugins = getPlugins()
     for p in plugins:
@@ -82,7 +80,7 @@ def runPlugins():
             print d
             pluginParameters = "\"" + d + "/\"" + " " + outputPath
             if p.language.lower() == "cpp" or p.language.lower() == "c":
-                os.system(binariesPath + p.name + " " + pluginParameters)
+                os.system(binariesPath + "/" + p.name + " " + pluginParameters)
             elif p.language.lower() == "py" or p.language.lower() == "python":
                 os.system("python2 \"" + binariesPath + "/" + p.name + "/" + p.name + ".py\"" + " " + pluginParameters)
             else:

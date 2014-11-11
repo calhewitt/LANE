@@ -26,8 +26,14 @@ You can now build and run the project.
 The following commands may differ for different compilers/build-systems:
 
 ```shell
-python LANEman.py
+make all
 ```
+
+Then run:
+```shell
+python2 ./scripts/installLANE.py ./ output-path
+```
+where output-path is the path to install the LANE main binaries to.
 
 
 ## Running libLUCID Tests
@@ -61,19 +67,8 @@ use in the plugins.
 * The [doc](doc) directory contains the configuration files for documentation 
 generation.
 * The [testdata](testdata) directory contains some uncompressed test data.
+* The [scripts](scripts) directory contains some possibly useful maintenance scripts.
 
-
-## How to add plugins (TODO)
-Copy [plugins/testPlugin](plugins/testPlugin) and change the name to the plugin 
-name in the CMakeLists.txt, update the README.md, add the code files to 
-the CMakeLists.txt, update LICENSE.md, and finally write the code in src.
-
-Python plugins can be added by copying the 
-[plugins/testPluginPython](plugins/testPluginPython) directory and modifying 
-the CMakeLists.txt to reference your plugin scripts.
-
-Remember to add the details of your plugin to
-[plugins/plugins.conf](plugins/plugins.ini).
 
 
 ## License
