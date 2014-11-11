@@ -117,9 +117,9 @@ public:
     virtual std::uint32_t getStartTime() const noexcept;
     
     ///////////////////////////////////////////////////////////////////////////
-    /// \brief Gets the file ID
-    /// \return The file ID
-    virtual std::uint32_t getFileID() const noexcept;
+    /// \brief Gets the file ID of the configuration used
+    /// \return The file ID of the configuration used
+    virtual std::string getFileID() const noexcept;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Overloaded ostream operator for the LUCIDFile class
@@ -133,7 +133,7 @@ private:
 
     std::array<bool, 5> chipActive_;
     std::uint32_t startTime_;
-    std::uint32_t fileID_;
+    std::string fileID_;
     std::uint32_t shutterRate_;
     bool isCompressed_;
     bool isLinearLUT_;

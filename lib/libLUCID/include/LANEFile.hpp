@@ -101,7 +101,7 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Sets the file ID
     /// \param fileID The file ID to set
-    void setFileID(const std::uint32_t fileID) noexcept;
+    void setFileID(const std::string& fileID) noexcept;
     
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Sets the start time
@@ -109,9 +109,9 @@ public:
     void setStartTime(const std::uint32_t startTime) noexcept;
     
     ///////////////////////////////////////////////////////////////////////////
-    /// \brief Gets the file ID
-    /// \return The file ID to associated with this file
-    std::uint32_t getFileID() const noexcept;
+    /// \brief Gets the file ID of the configuration used
+    /// \return The file ID of the configuration to associated with this file
+    std::string getFileID() const noexcept;
     
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Gets the start time
@@ -133,7 +133,7 @@ private:
 
     std::map<std::uint32_t, std::vector<Frame>> channels_;
     std::uint32_t startTime_;
-    std::uint32_t fileID_;
+    std::string fileID_;
 };
 
 } // lane

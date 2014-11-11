@@ -45,7 +45,9 @@ namespace lane {
 
 LANEFile::LANEFile() = default;
 
-LANEFile::LANEFile(const std::string& fileName) {
+LANEFile::LANEFile(const std::string& fileName)
+: startTime_(0),
+fileID_("") {
     read(fileName);
 }
 
@@ -105,7 +107,7 @@ void LANEFile::read(const std::string& fileName) {
     std::getline(input, buffer);
     split(buffer, ',', splitElems);
     // Get the file ID
-    fileID_ = std::stoi(splitElems[0]);
+    fileID_ = splitElems[0];
     // Get the start time
     startTime_ = std::stoi(splitElems[1]);
     splitElems.clear();
@@ -192,7 +194,7 @@ std::vector<Frame> LANEFile::getFrames(
     return channels_.find(channelID)->second;
 }
 
-void LANEFile::setFileID(const std::uint32_t fileID) noexcept {
+void LANEFile::setFileID(const std::string& fileID) noexcept {
     fileID_ = fileID;
 }
 
@@ -200,7 +202,7 @@ void LANEFile::setStartTime(const std::uint32_t startTime) noexcept {
     startTime_ = startTime;
 }
 
-std::uint32_t LANEFile::getFileID() const noexcept {
+std::string LANEFile::getFileID() const noexcept {
     return fileID_;
 }
 

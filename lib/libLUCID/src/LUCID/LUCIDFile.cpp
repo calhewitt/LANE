@@ -42,6 +42,7 @@
 // 10 - Payload data
 // 11 - Control data - Start of frame data characters etc.
 
+#include <iostream>
 #include <ostream>
 #include <vector>
 #include <array>
@@ -76,7 +77,7 @@ std::string toString(const CompressionMode mode) noexcept {
 
 LUCIDFile::LUCIDFile() noexcept
 : startTime_(0),
-fileID_(0),
+fileID_(""),
 shutterRate_(0),
 isCompressed_(false),
 isLinearLUT_(false),
@@ -87,7 +88,7 @@ channels_() {
 
 LUCIDFile::LUCIDFile(const std::string& fileName) noexcept
 : startTime_(0),
-fileID_(0),
+fileID_(""),
 shutterRate_(0),
 isCompressed_(false),
 isLinearLUT_(false),
@@ -210,11 +211,12 @@ void LUCIDFile::read(const std::string& fileName) {
     startTime_ = *(reinterpret_cast<std::uint32_t*>(&data[8]));
 
     // File ID
-    fileID_ = *(reinterpret_cast<std::uint32_t*>(&data[12]));
+    for (unsigned int i = 0; i < 4; ++i) {
+        fileID_ += static_cast<unsigned char>(data[12 + i]);
+    }
 
     if (isLittleEndian) {
         startTime_ = utils::swapEndian(startTime_);
-        fileID_ = utils::swapEndian(fileID_);
     }
 
     // Read in frames
@@ -346,14 +348,14 @@ std::uint32_t LUCIDFile::getStartTime() const noexcept {
     return startTime_;
 }
 
-std::uint32_t LUCIDFile::getFileID() const noexcept {
+std::string LUCIDFile::getFileID() const noexcept {
     return fileID_;
 }
 
 void LUCIDFile::clear() noexcept {
     chipActive_.fill(false);
     startTime_ = 0;
-    fileID_ = 0;
+    fileID_ = "";
     shutterRate_ = 0;
     isCompressed_ = false;
     isLinearLUT_ = false;

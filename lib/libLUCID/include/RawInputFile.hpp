@@ -56,7 +56,7 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Gets the file ID
     /// \return The file ID
-    virtual std::uint32_t getFileID() const noexcept = 0;
+    virtual std::string getFileID() const noexcept = 0;
 };
 
 } // lane
