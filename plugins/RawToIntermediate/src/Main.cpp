@@ -17,6 +17,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <algorithm>
 #include <map>
 #include <stdexcept>
 #include "Utils/Filesystem.hpp"
@@ -49,7 +50,21 @@ int main(int argc, char *argv[]) {
     for (auto& p : inputParsers) {
         cout << "Converting " << p.first << " files\n";
         auto inputs = getFilesWithExtension(p.first, inputPath);
-        // Iterate over the input files
+        
+        // Remove files from the conversion list if a .lane file exists with the same name
+        auto laneFiles = getFilesWithExtension("lane", inputPath);
+        for (const auto& laneFile : laneFiles) {
+            inputs.erase(
+                std::remove_if(
+                    inputs.begin(),
+                    inputs.end(),
+                    [&](const std::string& x) -> bool { return removeExtension(getFileName(laneFile)) == removeExtension(getFileName(x)); }
+                ),
+                inputs.end()
+            );
+        }
+        
+        // Iterate over the input files for conversion
         for (const auto& input : inputs) {
             try {
                 cout << "File - " << input << "\n";

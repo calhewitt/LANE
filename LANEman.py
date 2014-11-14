@@ -5,18 +5,18 @@
 """The plugin manager for LUCID data analysis"""
 import os, sys, ConfigParser, operator, time, datetime, errno
 
-# Configurable constants
-binariesPath = os.path.abspath('./bin')
-resultsPath = os.path.abspath('./results')
-dataPath = os.path.abspath('./data')
-
-outputPath = '"' + resultsPath + '/"'
+binariesPath = ''
+resultsPath = ''
+dataPath = ''
 
 class Settings:
     """A settings object, containing LANE metadata"""
-    def __init__(self, project, version):
+    def __init__(self, project, version, binariesPath, resultsPath, dataPath):
         self.project = project
         self.version = version
+        self.binariesPath = os.path.abspath(binariesPath)
+        self.resultsPath = os.path.abspath(resultsPath)
+        self.dataPath = os.path.abspath(dataPath)
 
 class Plugin:
     """A plugin object, containing plugin metadata"""
@@ -50,11 +50,12 @@ from the config file and the global settings for LANE"""
     pluginConfig = ConfigParser.ConfigParser()
     pluginConfig.read("plugins.ini")
     pluginList = []
-    globalSettings = Settings("ERROR", 0.0)
+    globalSettings = Settings("ERROR", 0.0, "", "", "")
     for name in pluginConfig.sections():
         data = getSectionData(pluginConfig, name)
         if name == "GlobalSettings":
-            globalSettings = Settings(data["project"], float(data["version"]))
+            globalSettings = Settings(data["project"], float(data["version"]), data["binariespath"],
+                data["resultspath"], data["datapath"])
         else:
             plugin = Plugin(data["project"], name, data["author"], data["license"],
                 data["language"], data["stage"])
@@ -70,30 +71,34 @@ def mkdirP(path):
             pass
         else: raise
     
-def listDirFullPath(d):
-    finalList = []
-    for f in os.listdir(d):
-        if os.path.isdir(os.path.join(d, f)):
-            finalList.append(os.path.join(d, f))
+def getDataFilePaths(d):
+    finalList = [d]
+    for root, dirs, files in os.walk(d):
+        for dir in dirs:
+            finalList.append(os.path.join(root, dir))
     return finalList
+
 
 def runPlugins():
     """Runs the plugins"""
-    mkdirP(resultsPath)
     globalSettings, plugins = getPlugins()
+    outputPath = '"' + globalSettings.resultsPath + '/"'
+    mkdirP(globalSettings.resultsPath)
+    mkdirP(globalSettings.dataPath)
+    mkdirP(globalSettings.binariesPath)
     for p in plugins:
         if (p.project.lower() == "all") or (p.project.lower() == globalSettings.project.lower()):    
             print datetime.datetime.fromtimestamp(time.time()).strftime(
                     "%Y-%m-%d %H:%M:%S")
             print "Running: " + p.name
 
-            for d in listDirFullPath(dataPath) + [dataPath]:
+            for d in getDataFilePaths(globalSettings.dataPath):
                 print d
                 pluginParameters = "\"" + d + "/\"" + " " + outputPath
                 if p.language.lower() == "cpp" or p.language.lower() == "c":
-                    os.system(binariesPath + "/" + p.name + " " + pluginParameters)
+                    os.system(globalSettings.binariesPath + "/" + p.name + " " + pluginParameters)
                 elif p.language.lower() == "py" or p.language.lower() == "python":
-                    os.system("python2 \"" + binariesPath + "/" + p.name + ".py\"" + " " + pluginParameters)
+                    os.system("python2 \"" + globalSettings.binariesPath + "/" + p.name + ".py\"" + " " + pluginParameters)
                 else:
                     print "Invalid language option set for '" + p.name + "' in config"
                     sys.exit(1)

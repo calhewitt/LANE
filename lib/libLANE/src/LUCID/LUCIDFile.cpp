@@ -310,13 +310,16 @@ void LUCIDFile::read(const std::string& fileName) {
                         ++x;
                     }
 
-                    if (payload > 0) {
+                    // Don't discard zero value pixels?
+                    //if (payload > 0) {
                         currentFrame.setPixel(x, y, payload);
-                    }
+                    //}
                 } else if ((data[index] >> 7) == 0x00) {
                     // Number of zeroes (0-)
                     std::uint16_t numberOfZeroes = *(reinterpret_cast<std::uint16_t*>(&data[index]));
                     for (std::uint16_t i = 0; i < numberOfZeroes; ++i) {
+                        // Don't discard zero value pixels?
+                        currentFrame.setPixel(x, y, 0);
                         if (x == 255) {
                             x = 0;
                             ++y;

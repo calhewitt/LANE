@@ -1,6 +1,5 @@
-# Basic Cluster Analysis Module
-Performs the basic cluster analysis.
-TODO: Describe the algorithm or something
+# RawToIntermediate Module
+Converts raw data files to the LANE intermediary format for further analysis.
 
 
 ## Prerequisites and installation
