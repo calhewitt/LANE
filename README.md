@@ -6,7 +6,7 @@ This software package contains:
 
 * A plugin management/automation python script.
 * A selection of analysis plugins.
-* A library of C++ code for use in analysis of LUCID data.
+* A library of C++ code for use in analysis of Langton physics data.
 
 
 ## Prerequisites and installation
@@ -26,18 +26,18 @@ You can now build and run the project.
 The following commands may differ for different compilers/build-systems:
 
 ```shell
-make all
+make tools plugins
 ```
 
 Then run:
 ```shell
-python2 ./scripts/installLANE.py ./ output-path
+python2 ./scripts/InstallLANE.py ./ output-path
 ```
 where output-path is the path to install the LANE main binaries to.
 
 
-## Running libLUCID Tests
-Use the following to build and then run libLUCID tests:
+## Running libLANE Tests
+Use the following to build and then run libLANE tests:
 ```shell
 make check
 ```
@@ -76,10 +76,10 @@ Please see [LICENSE.md](LICENSE.md).
 
 ## TODO
 
-* Add support for XYV compression to libLUCID.
+* Add support for XYV compression to libLANE.
 * Add support for some more of the settings in the data files' header to 
-libLUCID.
-* Add telemetry data/metadata support to libLUCID.
+libLANE.
+* Add telemetry data/metadata support to libLANE.
 
 
 <!-- Links -->
