@@ -16,5 +16,9 @@ install:
   - if [ "$CXX" == "g++" ]; then sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 50; fi
 
 script: 
-  - make all
+  - make tools plugins
   - make check
+  - python2 ./scripts/InstallLANE.py ./ ./dist
+  - cp ./testdata/* ./dist/data
+  - cd ./dist
+  - python2 ./LANEman.py
