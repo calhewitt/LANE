@@ -1,7 +1,7 @@
 build
 data
 results
-out
+dist
 *.lane
 
 # Python Compiled files

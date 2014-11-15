@@ -13,7 +13,7 @@ ${VERBOSE}.SILENT:
 clean: gen-cmake
 	make -C build $@
 
-all: gen-cmake
+all: plugins
 	make -C build $@
 
 doc: gen-cmake

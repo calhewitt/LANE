@@ -8,7 +8,7 @@ def mkdir(path):
 
 def copyIfExists(inputPath, outputPath, recursive = False):
     if not os.path.exists(inputPath):
-        raise IOError("Unable to copy '" + inputPath + "'")
+        return
     if recursive:
         try:
             shutil.copytree(inputPath, outputPath)
@@ -31,6 +31,7 @@ if __name__ == '__main__':
         mkdir(outputPath + '/data')
         mkdir(outputPath + '/scripts')
         copyIfExists(inputPath + '/build/bin', outputPath + '/bin', recursive = True)
+        copyIfExists(inputPath + '/bin', outputPath + '/bin', recursive = True)
         copyIfExists(inputPath + '/LANEman.py', outputPath + '/LANEman.py')
         copyIfExists(inputPath + '/plugins.ini', outputPath + '/plugins.ini')
         copyIfExists(inputPath + '/scripts', outputPath + '/scripts', recursive = True)
