@@ -1,12 +1,15 @@
 # LANE (Langton ANalysis Ecosystem)
 A software ecosystem for analysis of the data from the Langton physics projects 
-For example, the LUCID(Langton's Ultimate Cosmic-ray Detector) project onboard TechDemoSAT-1 in space.
+For example, the LUCID (Langton's Ultimate Cosmic-ray Detector) project onboard 
+TechDemoSAT-1 in space.
 
 This software package contains:
 
-* A plugin management/automation python script.
-* A selection of analysis plugins.
+* A lane management/automation python scripts.
+* A selection of analysis modules.
 * A library of C++ code for use in analysis of Langton physics data.
+
+See the [LUCID wiki][] for further information.
 
 
 ## Prerequisites and installation
@@ -15,53 +18,85 @@ To build this code you will need
 * [CMake][] build system
 * A C++11 compiler
 * [Python2][]
-* (Optionally) [Doxygen][]
 
 
 ## Building
-First, you will need an installation of [CMake][].
-Once this is done, you can `cd` to the root of
-the project.
-You can now build and run the project.
-The following commands may differ for different compilers/build-systems:
-
+* Enter the lane directory in your shell:
 ```shell
-make tools plugins
+cd lane-directory
+```
+* Run [setupBuild](setupBuild.py), passing it the path to which you would like 
+lane to be installed:
+```shell
+./setupBuild.py install-path
+```
+The [setupBuild](setupBuild.py) script can also be forced to generate build 
+files for a specific build system. See the [setupBuild](setupBuild.py) script's 
+usage information for more information:
+```shell
+./setupBuild.py --help
+```
+* Enter the desired build directory inside the lane directory and build the 
+project. For example, on a unix based system:
+```shell
+cd build/release
+make install
+```
+This will build the project and install the results in the earlier specified 
+directory.
+
+
+## Running
+Use [configLane](configLane.py) to generate a config.ini file before running 
+lane:
+```shell
+./configLane.py
 ```
 
-Then run:
+Any LUCID data you wish to be analysed should be placed inside the data 
+directory, inside the lucid folder, within a folder named like so: year-month-day, 
+inside another folder with an ID identifying the capture number of that data. For 
+example: data/lucid/2015-01-15/01.
+
+Use [runLane](runLane.py) to run the analysis modules on the data:
 ```shell
-python2 ./scripts/InstallLANE.py ./ output-path
+./runLane.py
 ```
-where output-path is the path to install the LANE main binaries to.
 
 
-## Running libLANE Tests
-Use the following to build and then run libLANE tests:
-```shell
-make check
-```
+## Useful scripts
+Inside the [scripts](scripts) directory are several useful scripts for lane 
+development and usage.
+
+* [findLucidFilesWithHeader](findLucidFilesWithHeader.py) is a script that 
+scans all files in a directory with the *.ldat extension and returns a list of 
+the ones that have valid LUCID headers at the beginning two bytes.
+
+* [rawToIntermediate](rawToIntermediate.py) is an (in development) script for 
+reading in LUCID raw data files (currently doesn't work).
+
+
+## Notes for when making additions
+It's a good idea to make your desired module code changes in a lane installation,
+and backport these changes to the source location before committing the code. 
+This means it will be possible to test run the code. In the base source location 
+prior to installation, lane is not designed to be run!
 
 
 ## Project organization
-The main directory contains some information and the plugin manager script, 
-[LANEman](LANEman.py)
+The main directory contains some information and the lane configuration script, 
+[configLane](configLane.py)
 The project is also organized into a couple of subdirectories.
 
-* The [plugins](plugins) directory contains the source code and binaries of 
-the analysis plugins, as well as the configuration files for the plugin 
-manager.
-* The [tools](tools) directory contains the LANE-based tools/software.
+* The [modules](modules) directory contains the source code of 
+the analysis modules.
 * The [lib](lib) directory contains the libraries used in the software.
-* The [lib/external](lib/external) directory contains the third-party 
-libraries used in this software.
-* The [lib/libLANE](lib/libLANE) and [lib/libLANEpy](lib/libLANEpy) directory
-contains a library of code for use in the plugins.
-* The [doc](doc) directory contains the configuration files for documentation 
-generation.
-* The [testdata](testdata) directory contains some uncompressed test data.
-* The [scripts](scripts) directory contains some possibly useful maintenance scripts.
-
+* The [lib/lane](lib/lane) directory contains C++-based libraries of code for 
+use in the analysis modules.
+* The [scripts](scripts) directory contains some possibly useful maintenance 
+scripts.
+* The [cmake](cmake) directory contains some utility scripts for the cmake C++ 
+build system.
 
 
 ## License
@@ -70,20 +105,34 @@ Please see [LICENSE.md](LICENSE.md).
 
 
 ## External Libraries:
-
-[GoogleTest][] - Under New BSD license
+None as of yet
 
 
 ## TODO
 
-* Add support for XYV compression to libLANE.
+-Urgent-
+
+* Fix the parser for lucid files to allow for reading in unjoined files of 
+arbitrary size - Modify the raw-to-intermediate conversion modules to allow for 
+this.
+
+* Figure out a sound way of creating a python library for use in modules (plane)  
+that's sanely accessible from python modules, or decide if it's worth just 
+outright writing every module in C++?
+
+
+-Less Urgent-
+
+* Add support for XYV compression to liblane.
+
 * Add support for some more of the settings in the data files' header to 
-libLANE.
-* Add telemetry data/metadata support to libLANE.
+liblane.
+
+* Add telemetry, detector configs, pixel masks and calibration files support 
+to lane.
 
 
 <!-- Links -->
-[Doxygen]: http://www.doxygen.org
 [CMake]: http://www.cmake.org
-[GoogleTest]: https://code.google.com/p/googletest/
 [Python2]: https://www.python.org/
+[LUCID wiki]: http://starserver.thelangton.org.uk/wiki/index.php/LUCID

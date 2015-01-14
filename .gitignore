@@ -3,6 +3,7 @@ data
 results
 dist
 *.lane
+config.ini
 
 # Python Compiled files
 *.pyc
