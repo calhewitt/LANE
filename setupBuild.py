@@ -41,48 +41,54 @@ if __name__ == '__main__':
             generator = "Unix Makefiles"
         elif os.name == 'nt':
             generator = "Visual Studio 14 2015"
+        else:
+            print "Unable to locate a suitable build system!"
+            printUsage()
+            sys.exit(2)
     else:
         # Incorrect number of parameters passed
         printUsage()
-        sys.exit(1)
+        sys.exit(3)
         
     # Handle help case by printing usage information
     if len(sys.argv) == 2 and sys.argv[1].lower() in ['help', '--help', '-h']:
         printUsage()
         sys.exit(0)
         
-    print "Using '" + generator + "'"
+    print "Using '" + generator + "' build system"
     
     installPath = os.path.abspath(sys.argv[1])
 
     # Create build directories and run cmake
     print "Clearing build directory..."
-    shutil.rmtree('./build', True)
+    shutil.rmtree('build', True)
     print "Creating build directory..."
-    mkdir('./build')
-    os.chdir('./build')
+    mkdir('build')
+    os.chdir('build')
 
     print "Creating build/release directory..."
-    mkdir('./release')
-    os.chdir('./release')
+    mkdir('release')
+    os.chdir('release')
     print "Configuring build files..."
-    subprocess.call(['cmake', 
+    subprocess.call(['cmake',  
+        '-G',
+        generator, 
+        '../../',
         '-Wno-dev',
         '-DCMAKE_BUILD_TYPE=Release', 
-        '-DCMAKE_INSTALL_PREFIX:PATH=' + installPath, 
-        generator, 
-        '../../'])
+        '-DCMAKE_INSTALL_PREFIX:PATH=' + installPath])
     os.chdir('..')
 
     print "Creating build/debug directory..."
-    mkdir('./debug')
-    os.chdir('./debug')
+    mkdir('debug')
+    os.chdir('debug')
     print "Configuring build files..."
     subprocess.call(['cmake', 
+        '-G',
+        generator, 
+        '../../',
         '-Wno-dev',
         '-DCMAKE_BUILD_TYPE=Debug', 
-        '-DCMAKE_INSTALL_PREFIX:PATH=' + installPath,
-        generator,
-        '../../'])
+        '-DCMAKE_INSTALL_PREFIX:PATH=' + installPath])
     
     os.chdir('../../')
