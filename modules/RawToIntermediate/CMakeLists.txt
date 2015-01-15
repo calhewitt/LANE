@@ -1,6 +1,6 @@
 ##############################################################################
 # RawToIntermediate module build configuration script
-project(RawToIntermediate)
+project(rawToIntermediate)
 
 
 

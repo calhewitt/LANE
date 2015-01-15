@@ -31,21 +31,21 @@ resultsPath: ./results
 dataPath: ./data
 modulesPath: ./modules
 
-[RawToIntermediate]
+[rawToIntermediate]
 project: all
 author: Hector Stalker
 license: BSD 2-clause
 language: cpp
 stage: 0
 
-[BasicClusterAnalysis]
+[basicClusterAnalysis]
 project: all
 author: Hector Stalker & Sam Kittle
 license: BSD 2-clause
 language: cpp
 stage: 1
 
-[Pairing]
+[pairing]
 project: lucid
 author: Sam Kittle
 license: BSD 2-clause

@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 import math, sys, os
-from ReadBCA import *
+from readBCA import *
 
 class Cluster:
     universalClusterID = -1

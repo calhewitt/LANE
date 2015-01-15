@@ -1,6 +1,6 @@
 ##############################################################################
 # basicClusterAnalysis module build configuration script
-project(BasicClusterAnalysis)
+project(basicClusterAnalysis)
 
 
 
