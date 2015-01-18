@@ -31,8 +31,8 @@ int main(int argc, char *argv[]) {
     using namespace lane;
     using namespace lane::utils;
     
-    if (argc != 3) {
-        cout << "USAGE: " << argv[0] << " input-directory output-directory\n";
+    if (argc != 6) {
+        cout << "USAGE: " << argv[0] << " input-dir output-dir masks-dir calibrations-dir configurations-dir\n";
         return 1;
     }
     //TODO Load a, b, c and t calibration matrices here.

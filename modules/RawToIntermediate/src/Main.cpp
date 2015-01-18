@@ -33,8 +33,8 @@ int main(int argc, char *argv[]) {
     using namespace lane::lucid;
     using namespace lane::utils;
     
-    if (argc != 3) {
-        cout << "USAGE: " << argv[0] << " input-directory output-directory\n";
+    if (argc != 6) {
+        cout << "USAGE: " << argv[0] << " input-dir output-dir masks-dir calibrations-dir configurations-dir\n";
         return 1;
     }
     
@@ -48,7 +48,6 @@ int main(int argc, char *argv[]) {
     
     // Get the list of input file paths
     for (auto& p : inputParsers) {
-        cout << "Converting " << p.first << " files\n";
         auto inputs = getFilesWithExtension(p.first, inputPath);
         
         // Remove files from the conversion list if a .lane file exists with the same name

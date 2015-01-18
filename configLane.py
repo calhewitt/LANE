@@ -30,6 +30,9 @@ project: lucid
 resultsPath: ./results
 dataPath: ./data
 modulesPath: ./modules
+masksPath: ./masks
+calibrationsPath: ./calibrations
+configurationsPath: ./configurations
 
 [rawToIntermediate]
 project: all
