@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
             vector<Cluster> clusters;
             
             outf.open(
-                outputPath + "/BCA_" + removeExtension(getFileName(input)) + ".txt",
+                outputPath + "/" + removeExtension(getFileName(input)) + ".bca",
                 fstream::out | fstream::binary
             );
             

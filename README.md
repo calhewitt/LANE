@@ -68,9 +68,9 @@ Use [runLane](runLane.py) to run the analysis modules on the data:
 Inside the [scripts](scripts) directory are several useful scripts for lane 
 development and usage.
 
-* [findLucidFilesWithHeader](findLucidFilesWithHeader.py) is a script that 
-scans all files in a directory with the *.ldat extension and returns a list of 
-the ones that have valid LUCID headers at the beginning two bytes.
+* [sortLucidCaptures.py](sortLucidCaptures.py) is a script that 
+scans all files in a directory with the *.ldat extension and joins up files 
+determined to be members of the same overall capture file.
 
 * [rawToIntermediate](rawToIntermediate.py) is an (in development) script for 
 reading in LUCID raw data files (currently doesn't work).

@@ -2,6 +2,29 @@
 """Sorts the lucid files for a certain date into separate captures"""
 import os, sys, glob, shutil, errno
 
+def joinFiles(files, output):
+    """Joins the given files into the given output file
+
+    :files: List of file paths to the files to join
+    :output: Path for the file to create and output the concatenated version
+
+    """
+    if len(files) < 2:
+        return
+
+    # Read in and append all file data to a new file in order givena
+    mkdirP(os.path.dirname(output))
+    out = open(output, 'wb')
+    for f in files:
+        input = open(f, 'rb')
+        while True:
+            data = input.read(1024**2)
+            if not data:
+                break
+            out.write(data)
+        input.close
+    out.close()
+
 def mkdirP(path):
     """Provides mkdir -p functionality
 
@@ -63,18 +86,18 @@ def hasLucidHeader(filePath):
     f.close()
     return isLucidFile
 
-def getTimeStamp(path):
-    """Returns the time-stamp portion of the lucid filename strings, which are:
+def getTimeStamps(path):
+    """Returns the date/time-stamp portion of the lucid filename strings, which are:
         T1_LU_SOMENUMBER_YYYYMMDD_HHMMSS
 
     :path: The file path string
-    :returns: A string containing the time-stamp
+    :returns: A tuple containing strings with the date-stamp and time-stamp
 
     """
     base = os.path.basename(path)
-    return os.path.splitext(base)[0].split('_')[4]
+    return (os.path.splitext(base)[0].split('_')[3], os.path.splitext(base)[0].split('_')[4])
 
-def sortByTimeStamp(paths):
+def sortByTimeStamps(paths):
     """Sorts the given list of file paths by their time-stamp
 
     :paths: The file paths to sort by time-stamp
@@ -84,17 +107,19 @@ def sortByTimeStamp(paths):
     sortedPaths = []
     timeStamps = []
 
-    # Extract the HHMMSS timestamps from the file paths
+    # Extract the YYYYMMDD & HHMMSS timestamps from the file paths
     for p in paths:
-        timeStamps.append(int(getTimeStamp(p)))
+        timeStamp = getTimeStamps(p)
+        timeStamps.append((int(timeStamp[0]), int(timeStamp[1])))
 
-    # Sort the timestamps in ascending order
-    timeStamps.sort()
+    # Sort the timestamps in ascending order FIX FOR TUPLE
+    timeStamps = sorted(timeStamps, key = lambda x: (int(x[0]), int(x[1])))
 
     # Sort the paths by comparing to the sorted timestamps
     for t in timeStamps:
         for p in paths:
-            if int(getTimeStamp(p)) == t:
+            timeStamp = getTimeStamps(p)
+            if (int(timeStamp[0]), int(timeStamp[1])) == t:
                 sortedPaths.append(p)
 
     return sortedPaths
@@ -111,7 +136,7 @@ if __name__ == '__main__':
         destinationPath = os.path.abspath(sys.argv[1])
 
     # Grab files in the directory and sort them
-    files = sortByTimeStamp(listFiles(sys.argv[1], 'ldat'))
+    files = sortByTimeStamps(listFiles(sys.argv[1], 'ldat'))
 
     # Just check for the case in which no files are found
     if files == None:
@@ -119,24 +144,23 @@ if __name__ == '__main__':
         sys.exit(0)
 
     # Separate and copy the files into individual capture directories
-    captureNo = 1
     currentCapture = []
+    currentCaptureName = ''
     for f in files:
         if hasLucidHeader(f):
-            print 'Capture ' + str(captureNo) + ':'
-            print f
-
+            print '--Joining:--'
             if len(currentCapture) != 0:
-                # Make a directory and copy the capture files into it
-                copyFiles(currentCapture, os.path.join(destinationPath, str(captureNo)))
+                # Make a directory and write out the joined file to it under the first file in the capture's name
+                joinFiles(currentCapture, os.path.join(destinationPath, currentCaptureName))
                 currentCapture = []
-                captureNo += 1
-        else:
-            print f
+                currentCaptureName = ''
+
+            currentCaptureName = os.path.splitext(os.path.basename(f))[0] + '_joined.ldat'
+        print f
 
         currentCapture.append(f)
 
     # Copy out any remaining capture's files
     if len(currentCapture) != 0:
-        copyFiles(currentCapture, os.path.join(destinationPath, str(captureNo)))
+        joinFiles(currentCapture, os.path.join(destinationPath, currentCaptureName))
 

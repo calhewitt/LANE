@@ -649,11 +649,12 @@ if __name__ == '__main__':
     
     paths = getPaths(sys.argv[2])    
     for p in paths:
-        print "running on", p
-        frames = readFile(p)
-        allClusters = reorganizeFrames(frames)
-        for ID, clusters in allClusters.iteritems():
-            numberClusters(clusters)            
-            Q = getQValues(clusters)
-            pairClusters(Q, clusters)
-            #printPairing(clusters)
+        if os.path.basename(p).endswith('.bca')
+            print "running on", p
+            frames = readFile(p)
+            allClusters = reorganizeFrames(frames)
+            for ID, clusters in allClusters.iteritems():
+                numberClusters(clusters)            
+                Q = getQValues(clusters)
+                pairClusters(Q, clusters)
+                #printPairing(clusters)

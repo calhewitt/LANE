@@ -23,7 +23,7 @@ def getPaths(path):
     return paths    
     
 def readFile(path):
-    frameMeta = ('TimeStamp','ShutterTime')
+    frameMeta = ('TimeStamp', 'ShutterTime')
     f = open(path)
     lines = f.readlines()
     f.close()

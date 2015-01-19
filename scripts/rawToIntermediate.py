@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 
-import os, sys, struct
+import os, sys, struct, glob
 
 
 class CompressionMode:
@@ -139,7 +139,7 @@ class LUCIDFile:
         
     def getChannelData(self):
         return self.channels
-    import array
+
     def read(self, fileName):
         # -Header Format:-
         # First 2 bytes are header magic - 0xDC 0xCC
@@ -348,17 +348,32 @@ class LUCIDFile:
 def LUCIDFileToLane(input):
     lf = LUCIDFile()
     lf.read(input)
-    # TODO implement conversion from data structures to LANE files
+    out = open('./' + os.path.splitext(os.path.basename(input))[0] + '.ldat', 'wb')
+    lf.dump()
+    out.close()
     return
 
     
-def getDataFiles(d, ext):
-    finalList = []
-    for root, dirs, files in os.walk(d):
-        for file in files:
-            if file.endswith(ext):
-                finalList.append(os.path.join(root, file))
-    return finalList
+def listFiles(directory, extension = ''):
+    """Gets a list of files from a given directory of a given extension
+
+    :directory: The directory to search
+    :extension: The extension of the files to find. If extension is left empty,
+    grabs every file in a directory
+    :returns: A list of absolute file path strings
+
+    """
+    absDirectory = os.path.abspath(directory)
+    if extension == '':
+        globString = os.path.join(absDirectory, '*')
+    else:
+        globString = os.path.join(absDirectory, '*.' + extension)
+    fileList = []
+
+    for f in glob.glob(globString):
+        fileList.append(f)
+
+    return fileList
 
     
 if __name__ == '__main__':
@@ -366,10 +381,14 @@ if __name__ == '__main__':
         print "USAGE: %s input-path output-path" % (str(sys.argv[0]))
         sys.exit(1)
     
-    fileTypes = {'.ldat':LUCIDFileToLane}
+    fileTypes = {'ldat':LUCIDFileToLane}
 
     for ext, converter in fileTypes.iteritems():
-        print 'Converting', ext, 'files...'
-        for p in getDataFiles(sys.argv[1], ext):
-            print "Converting ", p
-            converter(p)
+        #print 'Converting', ext, 'files...'
+        #for p in listFiles(sys.argv[1], ext):
+        #    print p
+        #    print "Converting ", p
+        #    converter(p)
+         print sys.argv[1]
+         print "Converting ", sys.argv[1]
+         converter(sys.argv[1])
