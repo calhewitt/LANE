@@ -649,7 +649,7 @@ if __name__ == '__main__':
     
     paths = getPaths(sys.argv[2])    
     for p in paths:
-        if os.path.basename(p).endswith('.bca')
+        if (os.path.basename(p)).endswith('.bca'):
             print "running on", p
             frames = readFile(p)
             allClusters = reorganizeFrames(frames)

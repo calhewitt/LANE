@@ -1,6 +1,6 @@
 ###############################################################################
 # Lane lib build configuration script
-project(lane)
+project(lane CXX)
 if (CMAKE_COMPILER_IS_GNUCXX)
     #set(CXX_WARNINGS "-Wall -Wextra -Wpointer-arith -Wcast-align -fstrict-aliasing -Wno-unused-local-typedefs")
     #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CXX_WARNINGS} -fvisibility-inlines-hidden")
@@ -26,7 +26,6 @@ set(lanelib_includes
     include/Frame.hpp
     include/RawInputFile.hpp
     include/LaneFile.hpp
-    include/Lucid/LucidFile.hpp
     include/Pixel.hpp
     include/Blob.hpp
     include/BlobFinder.hpp
@@ -37,8 +36,7 @@ set(lanelib_includes
 
 set(lanelib_sources
     src/Frame.cpp
-    src/LaneFile.cpp 
-    src/Lucid/LucidFile.cpp 
+    src/LaneFile.cpp  
     src/Pixel.cpp 
     src/Blob.cpp 
     src/BlobFinder.cpp 

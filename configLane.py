@@ -38,7 +38,7 @@ configurationsPath: ./configurations
 project: all
 author: Hector Stalker
 license: BSD 2-clause
-language: cpp
+language: python
 stage: 0
 
 [basicClusterAnalysis]
