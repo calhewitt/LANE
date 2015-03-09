@@ -167,7 +167,15 @@ class LUCIDFile:
             self.fileID = '????'
             for i in range(0, 5):
                 self.chipActive[i] = True # Assume all chips are active
-            input.seek(14)
+
+            # Scan forward for first valid frame denotation
+            input.seek(0)
+            headerFound = False
+            while not headerFound:
+                if ord(peek(input, 2)[0]) == 0xDC and ord(peek(input, 2)[1]) == 0xDF:
+                    headerFound = True
+                else:
+                    input.read(1)
 
         print 'Compression mode: ', self.compressionMode
         print 'Compressed? ', 'True' if (self.isCompressed) else 'False'
